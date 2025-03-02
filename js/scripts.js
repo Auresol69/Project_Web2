@@ -1,11 +1,32 @@
-$(document).ready(function () {
-    $('#content__product').html("");
+var currentPage = 1; // Đưa ra ngoài để dùng chung
+var totalPage = 0;
 
+function Lui() {
+    if (currentPage > 1) {
+        currentPage--;
+        LoadProducts(currentPage);
+    }
+}
+
+function Tien() {
+    if (currentPage < totalPage) {
+        currentPage++;
+        LoadProducts(currentPage);
+    }
+}
+
+$(document).ready(function () {
+    LoadProducts(currentPage);
+});
+
+function LoadProducts(page) {
+    $('#content__product').html("");
 
     $.ajax({
         type: "POST",
         url: "handle/log.php",
         dataType: "json",
+        data: { page: page },
         success: function (response) {
             var tmp = "";
             console.log(response);
@@ -22,8 +43,15 @@ $(document).ready(function () {
                         </div>`;
             });
             $('#content__product').html(tmp);
-        }, error: function (xhr, status, error) {
+
+            // Cập nhật currentPage và totalPage toàn cục
+            currentPage = response.page;
+            totalPage = response.total;
+
+            console.log("Trang hiện tại:", currentPage, "Tổng số trang:", totalPage);
+        },
+        error: function (xhr, status, error) {
             console.error("Lỗi AJAX:", status, error);
         }
     });
-});
+}

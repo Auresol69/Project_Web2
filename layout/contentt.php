@@ -6,5 +6,9 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
         </div>
-        <div id="content__product"></div>
-    </div>
+        <div id="content__product">
+        </div>
+        <div class="prev" onclick="Lui()">
+            < </div>
+                <div class="next" onclick="Tien()"> > </div>
+        </div>
