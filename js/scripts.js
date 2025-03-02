@@ -8,7 +8,7 @@ $(document).ready(function () {
         dataType: "json",
         success: function (response) {
             var tmp = "";
-            console.log(response.products);
+            console.log(response);
             response.products.forEach(product => {
                 tmp += `<div class="sanpham">
                             <img src="${product.image}" alt="">
