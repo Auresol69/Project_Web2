@@ -13,6 +13,10 @@
     <?php include("layout/headerr.php"); ?>
     <?php include("layout/contentt.php"); ?>
     <?php include("layout/footerr.php");?>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script src="js/scripts.js"></script>
 </body>
 
 </html>
