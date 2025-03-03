@@ -20,13 +20,14 @@ $(document).ready(function () {
 });
 
 function LoadProducts(page) {
-    $('#content__product').html("");
+    var keyword = $("#keyword").val().trim();
 
+    $('#content__product').html("");
     $.ajax({
         type: "POST",
         url: "handle/log.php",
         dataType: "json",
-        data: { page: page },
+        data: { page: page, keyword: keyword },
         success: function (response) {
             var tmp = "";
             console.log(response);
@@ -49,9 +50,9 @@ function LoadProducts(page) {
             totalPage = response.total;
 
             console.log("Trang hiện tại:", currentPage, "Tổng số trang:", totalPage);
-        
+
             $('#page').html("");
-            for (let i = 1; i <= totalPage; ++i){
+            for (let i = 1; i <= totalPage; ++i) {
                 $('#page').append(`<span onclick="LoadProducts(${i}) ">${i}</span>`);
             }
         },

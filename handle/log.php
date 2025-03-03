@@ -8,11 +8,18 @@
 
     $offset = ($page -1) * $ItemPerPage;
 
-    $totalQuery  = $conn->query("SELECT COUNT(*) as total FROM product");
+    $keyword = isset($_POST['keyword']) ? $_POST['keyword'] : '';
+
+    $whereClause = "";
+    if (!empty($keyword)){
+        $whereClause = "WHERE ProductName LIKE '%$keyword%'";
+    }
+
+    $totalQuery  = $conn->query("SELECT COUNT(*) as total FROM product $whereClause");
     $row = mysqli_fetch_assoc($totalQuery);
     $TotalPage = ceil($row['total']/ $ItemPerPage);
     
-    $sql = "SELECT * FROM product LIMIT $offset, $ItemPerPage";
+    $sql = "SELECT * FROM product $whereClause LIMIT $offset, $ItemPerPage";
     $result = $conn->query($sql);
 
     if (!$result) {
