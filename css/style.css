@@ -127,3 +127,13 @@ input:focus {
     background-color: antiquewhite;
     flex: 0 0 calc(100%/3 - 20px);
 }
+
+.content__page{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+#page{
+    display: flex;
+    gap: 10px;
+}

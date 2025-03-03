@@ -49,6 +49,11 @@ function LoadProducts(page) {
             totalPage = response.total;
 
             console.log("Trang hiện tại:", currentPage, "Tổng số trang:", totalPage);
+        
+            $('#page').html("");
+            for (let i = 1; i <= totalPage; ++i){
+                $('#page').append(`<span onclick="LoadProducts(${i}) ">${i}</span>`);
+            }
         },
         error: function (xhr, status, error) {
             console.error("Lỗi AJAX:", status, error);

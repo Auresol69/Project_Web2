@@ -8,7 +8,10 @@
         </div>
         <div id="content__product">
         </div>
-        <div class="prev" onclick="Lui()">
-            < </div>
-                <div class="next" onclick="Tien()"> > </div>
+        <div class="content__page">
+            <div class="prev" onclick="Lui()">
+                < </div>
+                    <div id="page"> </div>
+                    <div class="next" onclick="Tien()"> > </div>
+            </div>
         </div>
