@@ -38,6 +38,28 @@ input:focus {
     margin: 20px;
 }
 
+#header__menu__sub{
+    position:absolute;
+    opacity:0;
+    transition: all ease 0.5s;
+    top:120%;
+    visibility: hidden;
+    padding: 5px;
+    gap:5px;
+    background-color: #ffffff;
+}
+
+#header__menu__product:hover #header__menu__sub{
+    opacity:1;
+    top:75%;
+    visibility: visible;
+}
+
+#header__menu__sub > div{
+    border-bottom: 1px solid black;
+    margin:0 10px;
+}
+
 .content {
     box-sizing: border-box;
     padding-top: 62.4px;

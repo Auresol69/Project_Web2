@@ -1,5 +1,6 @@
 var currentPage = 1; // Đưa ra ngoài để dùng chung
 var totalPage = 0;
+var type = "all";
 
 function Lui() {
     if (currentPage > 1) {
@@ -15,8 +16,25 @@ function Tien() {
     }
 }
 
+
 $(document).ready(function () {
     LoadProducts(currentPage);
+
+    $(document).on("click", "#header__menu__sub div", function (event) {
+        
+        // Tránh lan event lên phần tử cha
+        event.stopPropagation();
+        
+        type = $(this).data("tree_type");
+        console.log(type);
+        LoadProducts(1);
+    })
+
+    $(document).on("click", "#header__menu__product", function () { 
+        type = "all";
+        console.log(type);
+        LoadProducts(1);
+    });
 });
 
 function LoadProducts(page) {
@@ -27,7 +45,7 @@ function LoadProducts(page) {
         type: "POST",
         url: "handle/log.php",
         dataType: "json",
-        data: { page: page, keyword: keyword },
+        data: { page: page, keyword: keyword, type: type },
         success: function (response) {
             var tmp = "";
             console.log(response);
@@ -53,8 +71,12 @@ function LoadProducts(page) {
 
             $('#page').html("");
             for (let i = 1; i <= totalPage; ++i) {
-                $('#page').append(`<span onclick="LoadProducts(${i}) ">${i}</span>`);
+                $('#page').append(`<span onclick="LoadProducts(${i})">${i}</span>`);
             }
+            $("#header__menu__sub").html("");
+            response.header__menu__sub.forEach(type => {
+                $('#header__menu__sub').append(`<div data-tree_type="${type.type}">${type.type}</div>`);
+            });
         },
         error: function (xhr, status, error) {
             console.error("Lỗi AJAX:", status, error);

@@ -8,12 +8,23 @@
 
     $offset = ($page -1) * $ItemPerPage;
 
-    $keyword = isset($_POST['keyword']) ? $_POST['keyword'] : '';
 
-    $whereClause = "";
+    $conditions = [];
+
+    // Tìm kiếm sản phẩm theo tên
+    $keyword = isset($_POST['keyword']) ? $_POST['keyword'] : '';
     if (!empty($keyword)){
-        $whereClause = "WHERE ProductName LIKE '%$keyword%'";
+        $conditions[] = "ProductName LIKE '%$keyword%'";
     }
+
+    // Tìm kiếm sản phẩm theo loại
+    $type = isset($_POST['type']) ? $_POST['type'] : '';
+    if (!empty($type) && $type != 'all'){
+        $conditions[] = "ProductType = '$type'";
+    }
+
+    $whereClause = !empty($conditions) ? "WHERE ". implode(" AND ", $conditions) : "";
+
 
     $totalQuery  = $conn->query("SELECT COUNT(*) as total FROM product $whereClause");
     $row = mysqli_fetch_assoc($totalQuery);
@@ -39,7 +50,15 @@
     }
     $response["total"] = $TotalPage;
     $response["page"] = $page;
-
+    
+    $types =$conn->query("SELECT DISTINCT ProductType as types From product ORDER BY ProductType ASC");
+    
+    $response["header__menu__sub"] = [];
+    while($row = mysqli_fetch_assoc($types)){
+        $response["header__menu__sub"][]=[
+            "type" => $row['types']];
+    }
+    
     echo json_encode($response);
     mysqli_close($conn);
 ?>

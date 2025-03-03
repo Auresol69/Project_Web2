@@ -3,7 +3,10 @@
     <div class="header__name">BLUES</div>
     <div class="header__menu">
         <div>TRANG CHỦ</div>
-        <div>SẢN PHẨM</div>
+        <div id="header__menu__product">SẢN PHẨM
+            <div id="header__menu__sub">
+            </div>
+        </div>
         <div>LIÊN HỆ</div>
     </div>
     <div class="header__icons">
