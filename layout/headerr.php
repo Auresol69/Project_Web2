@@ -6,7 +6,7 @@
         <div id="header__menu__product"><a href="index.php?page=sanpham">SẢN PHẨM</a>
             <div id="header__menu__sub"></div>
         </div>
-        <div>LIÊN HỆ</div>
+        <div><a href="index.php?page=chinhsach">CHÍNH SÁCH</a></div>
     </div>
     <div class="header__icons">
         <i class="fa-solid fa-cart-shopping"></i>

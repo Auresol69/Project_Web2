@@ -24,6 +24,9 @@
         case 'sanpham':
             include('layout/contentt.php');
             break;
+        case 'chinhsach':
+            include('chinhsach.php');
+            break;
         default:
             echo "Trang không tồn tại";
             break;
