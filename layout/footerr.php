@@ -10,6 +10,7 @@
     </div>
     <div class="footer__address">
         <div>ĐỊA CHỈ LIÊN HỆ</div>
-        <div>273 An Dương Vương</div>
+        <div>273 An Dương Vương, Phường 3, Quận 5</div>
+        <div>Liên hệ:0123456789</div>
     </div>
 </div>

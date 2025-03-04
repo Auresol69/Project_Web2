@@ -1,4 +1,5 @@
 <div class="content">
+    
     <div class="content__input">
         <h1>CÂY TRỒNG<br> DÀNH CHO BẠN
         </h1>
@@ -7,8 +8,7 @@
             <i class="fa-solid fa-magnifying-glass" onclick="LoadProducts(1)"></i>
         </div>
     </div>
-    <div id="content__product">
-    </div>
+    <div id="content__product"></div>
     <div class="content__page">
         <div class="prev" onclick="Lui()">
             < </div>
