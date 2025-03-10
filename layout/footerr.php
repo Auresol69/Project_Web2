@@ -1,6 +1,6 @@
 <div class="footer">
     <div class="footer__contact">
-        <div>BLUES</div>
+        <div>Green Haven</div>
         <div>Chúng tôi giúp bạn <br> tìm ra giải pháp cây trồng</div>
         <div class="footer__contact__icon">
             <i class="fa-brands fa-facebook-f"></i>

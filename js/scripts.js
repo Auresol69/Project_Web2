@@ -21,16 +21,16 @@ $(document).ready(function () {
     LoadProducts(currentPage);
 
     $(document).on("click", "#header__menu__sub div", function (event) {
-        
+
         // Tránh lan event lên phần tử cha
         event.stopPropagation();
-        
+
         type = $(this).data("tree_type");
         console.log(type);
         LoadProducts(1);
     })
 
-    $(document).on("click", "#header__menu__product", function () { 
+    $(document).on("click", "#header__menu__product", function () {
         type = "all";
         console.log(type);
         LoadProducts(1);
@@ -38,14 +38,26 @@ $(document).ready(function () {
 });
 
 function LoadProducts(page) {
+    // Tìm tên sản phẩm
     var keyword = $("#keyword").val().trim();
 
-    $('#content__product').html("");
+    // Tìm sản phẩm trong khoảng giá
+    var min = $("#content__input__main__sort_min").val().trim();
+    var max = $("#content__input__main__sort_max").val().trim();
+
+    // Tìm sản phẩm theo phân loại
+    $("#content__input__main__sort_type").on("change", function () {
+        type = $(this).val().trim();
+    });
+
+    // Lỗi chớp nháy do line code dưới
+    // $('#content__product').html("");
+
     $.ajax({
         type: "POST",
         url: "handle/log.php",
         dataType: "json",
-        data: { page: page, keyword: keyword, type: type },
+        data: { page: page, keyword: keyword, type: type, min: min, max: max },
         success: function (response) {
             var tmp = "";
             console.log(response);
@@ -69,14 +81,39 @@ function LoadProducts(page) {
 
             console.log("Trang hiện tại:", currentPage, "Tổng số trang:", totalPage);
 
+            // Hiển thị pagination
             $('#page').html("");
             for (let i = 1; i <= totalPage; ++i) {
                 $('#page').append(`<span onclick="LoadProducts(${i})">${i}</span>`);
             }
+
+            // Ẩn/hiện div chứa pagination
+            if (!totalPage || totalPage <= 1) {
+                $('.content__page').css('display', 'none');
+            }
+            else {
+                $('.content__page').css('display', 'flex');
+            }
+
+            // Hiển thị danh mục sản phẩm
             $("#header__menu__sub").html("");
             response.header__menu__sub.forEach(type => {
                 $('#header__menu__sub').append(`<div data-tree_type="${type.type}">${type.type}</div>`);
             });
+
+            // Hiển thị phân loại sản phẩm
+
+            // Mục đích giữ lại giá trị value đã chọn
+            let selectedValue = $("#content__input__main__sort_type").val();
+
+            $("#content__input__main__sort_type").html("");
+            $("#content__input__main__sort_type").append(`<option value="all">All</option>`);
+            response.header__menu__sub.forEach(type => {
+                $("#content__input__main__sort_type").append(`<option value ="${type.type}">${type.type}</option>`);
+            });
+
+            // Chọn lại mục đã chọn
+            $("#content__input__main__sort_type").val(selectedValue);
         },
         error: function (xhr, status, error) {
             console.error("Lỗi AJAX:", status, error);

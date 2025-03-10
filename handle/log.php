@@ -23,6 +23,20 @@
         $conditions[] = "ProductType = '$type'";
     }
 
+    // Tìm kiếm sản phẩm theo khoảng giá
+    $minPrice = isset($_POST['min']) ? $_POST['min'] : '';
+    $maxPrice = isset($_POST['max'])? $_POST['max'] : '';
+    if (!empty($minPrice) && empty($maxPrice)){
+        $conditions[] = "Price >= '$minPrice'";
+    }
+    if (!empty($maxPrice) && empty($minPrice)){
+        $conditions[] = "Price <= '$maxPrice'";
+    }
+    if (!empty($minPrice) &&!empty($maxPrice)){
+        $conditions[] = "Price BETWEEN '$minPrice' AND '$maxPrice'";
+    }
+
+
     $whereClause = !empty($conditions) ? "WHERE ". implode(" AND ", $conditions) : "";
 
 
