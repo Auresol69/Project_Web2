@@ -11,7 +11,6 @@
             <input id="content__input__main__sort_min" type="text" placeholder="min">
             <input id="content__input__main__sort_max" type="text" placeholder="max">
             <select id="content__input__main__sort_type">
-                <option value="all">All</option>
             </select>
         </div>
     </div>

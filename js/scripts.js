@@ -113,7 +113,10 @@ function LoadProducts(page) {
             });
 
             // Chọn lại mục đã chọn
-            $("#content__input__main__sort_type").val(selectedValue);
+            if (selectedValue)
+                $("#content__input__main__sort_type").val(selectedValue);
+            else
+                $("#content__input__main__sort_type").val("all");
         },
         error: function (xhr, status, error) {
             console.error("Lỗi AJAX:", status, error);
