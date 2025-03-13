@@ -37,8 +37,10 @@ input:focus {
     text-decoration: none;
 }
 
-.header__menu div {
+.header__menu div a{
     text-decoration: none;
+    color: black;
+    font-weight: 500;
 }
 
 .header__menu div:hover {
@@ -82,47 +84,66 @@ input:focus {
 
 .content {
     box-sizing: border-box;
-    padding-top: 62.4px;
-    padding-left: 90px;
-    padding-right: 90px;
+    padding: 15px;
+    text-align: center;
+    padding-top:50px ;
 }
 
 .content__input {
     margin: 0 auto;
-    position: relative;
-    height: 300px;
+    padding: 0 20px;
     background-color: #b6e6cb;
+    border-radius: 5px;
+    height: 300px;
+    position: relative;
 }
+
+
 
 .content__input__main {
     display: flex;
-    padding: 15px;
-    position: absolute;
-    bottom: 70px;
-    left: 20px;
-    background-color: #ffffff;
-    border-radius: 15px 15px 15px 0;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 30px;
+    padding: 10px 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto 20px;
 }
 
-.content__input__main input,
-.content__input__sort input {
-    width: 300px;
-    border: none;
-    background-color: #ffffff;
+
+.content__input__main i {
+    color: #2c662d;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
 }
+.content__input__main input {
+    flex: 1;
+    border: none;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.content__input__main input:focus {
+    outline: none;
+}
+
 
 .content__input__sort input {
     width: 100px !important;
 }
 
+
 .content__input__sort select {
-    border: none;
-    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.content__input__sort input:focus,
+.content__input__sort select:focus {
     outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    padding: 0 20px 0 10px;
 }
 
 .content__input__sort::after {
@@ -138,31 +159,41 @@ input:focus {
 }
 
 
+
 .content__input h1 {
-    font-size: 40px;
-    width: 320px;
-    margin: 0;
-    position: absolute;
-    top: 30px;
-    left: 20px;
+    font-size: 34px;
     font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c662d;
+    padding-top:15px;
 }
+
 
 .content__input__sort {
     display: flex;
-    padding: 15px;
-    position: absolute;
-    bottom: 25px;
-    left: 20px;
-    background-color: #ffffff;
-    border-radius: 0 0 15px 15px;
+    justify-content: center;
+    gap: 10px;
+    background: white;
+    padding: 6px 10px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.content__input__sort input, 
+.content__input__sort select {
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 16px;
 }
 
 .footer {
     display: flex;
     justify-content: space-between;
     background-color: #b6e6cb;
-    padding: 40px 60px;
+    padding: 20px 40px;
 }
 
 .footer__contact {
@@ -208,16 +239,67 @@ input:focus {
     flex: 0 0 calc(100%/3 - 20px);
 }
 
+
 .content__page {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    align-items: center;
+
+    margin-top: 20px;
+}
+
+.content__page div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    border: #1f5f27;
+}
+
+
+.prev, .next{
+    width: 40px;
+    height: 40px;
+    font-size: 30px;
+    color: #1f5f27;
+    font-weight: 900;
+    cursor: pointer;
+    margin: 2px;
+}
+
+
+.content__input {
+    margin: 0 auto;
+    position: relative;
+    height: 300px;
+    margin-bottom: 8px;
+    background-color: #b6e6cb;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+}
+
+.content__slogan {
+    font-size: 18px;
+    color: #2c662d;
+    font-style: italic;
+    margin-bottom: 20px;
 }
 
 #page {
-    display: flex;
-    gap: 10px;
+    font-size: 20px;
+    border-radius: 5px; /* Tạo khoảng cách giữa các số */
+    display: inline-block;
 }
+#page span{
+    padding: 10px;
+    margin: 2px;
+    border-radius: 3px;
+    color: white;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    background-color: #1f5f27;
+}
+
 
 
 

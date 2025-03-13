@@ -143,17 +143,24 @@ $(document).ready(function () {
         updateCart("increase", productId);
     });
 
-    // Sự kiện giảm số lượng
+    // Sự kiện giảm số lượng (Đã sửa lỗi giảm dưới 1)
     $(document).on("click", ".decrease-qty", function () {
-        let productId = $(this).closest('.cart-item').data("id");
-        updateCart("decrease", productId);
+        let $quantityElement = $(this).siblings(".quantity-value");
+        let currentQuantity = parseInt($quantityElement.text()) || 1;
+
+        if (currentQuantity > 1) {
+            let productId = $(this).closest('.cart-item').data("id");
+            updateCart("decrease", productId);
+        } else {
+            alert("Số lượng tối thiểu là 1!");
+        }
     });
 
     // Sự kiện xóa sản phẩm khỏi giỏ hàng
     $(document).on("click", ".remove-cart", function () {
         let productId = $(this).closest('.cart-item').data("id");
-        if (confirm("❗ Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) {
-            updateCart("remove", productId, );
+        if (confirm("Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+            updateCart("remove", productId);
         }
     });
 
@@ -211,7 +218,7 @@ $(document).ready(function () {
             $("#cart-items").html(cartHtml);
             $(".total-price").text(total.toLocaleString('vi-VN') + "đ");
             $(".button-cart").html(`
-                <a href="index.php?page=sanpham" class="continue-shopping">🛍️ Mua tiếp</a>
+                <a href="index.php?page=sanpham" class="continue-shopping">Mua tiếp</a>
                 <a href="index.php?page=checkout" class="checkout">Thanh toán</a>
             `);
         }, "json").fail(() => alert("Lỗi khi tải giỏ hàng!"));

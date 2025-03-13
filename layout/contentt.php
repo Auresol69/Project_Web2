@@ -1,7 +1,9 @@
 <div class="content">
     <div class="content__input">
-        <h1>CÂY TRỒNG<br> DÀNH CHO BẠN
-        </h1>
+        <h1>CÂY TRỒNG<br> DÀNH CHO BẠN     
+        </h1>   
+        <p class="content__slogan">Khám phá thế giới cây xanh, làm đẹp không gian sống!</p>
+
         <div class="content__input__main">
             <input id="keyword" type="text" placeholder="Tìm kiếm">
             <i class="fa-solid fa-magnifying-glass" onclick="LoadProducts(1)"></i>
