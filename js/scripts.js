@@ -62,16 +62,16 @@ function LoadProducts(page) {
             var tmp = "";
             console.log(response);
             response.products.forEach(product => {
-                tmp += `<div class="sanpham">
-                            <img src="${product.image}" alt="">
-                            <div>Mã SP: ${product.id}</div>
-                            <div>Tên SP: ${product.name}</div>
-                            <div>Giá SP: ${product.price}</div>
-                            <div>
-                                <span>Mua</span>
-                                <span>Chi tiết</span>
-                            </div>
-                        </div>`;
+            tmp += `<div class="sanpham">
+                    <img src="${product.image}" alt="">
+                    <div class="product-id">Mã SP: ${product.id}</div>
+                    <div class="product-name">Tên SP: ${product.name}</div>
+                    <div class="product-price">Giá SP: ${product.price}</div>
+                    <div>
+                        <button class="buy-button">Mua</button>
+                        <button class="detail-button">Chi tiết</button>
+                    </div>
+                </div>`;
             });
             $('#content__product').html(tmp);
 
@@ -123,3 +123,98 @@ function LoadProducts(page) {
         }
     });
 }
+
+
+
+
+
+$(document).ready(function () {
+    loadCart();
+
+    // Sự kiện thêm sản phẩm vào giỏ hàng
+    $(document).on("click", ".buy-button", function () {
+        let productId = $(this).closest('.sanpham').find('.product-id').text().replace("Mã SP: ", "").trim();
+        updateCart("add", productId, "Đã thêm vào giỏ hàng!");
+    });
+
+    // Sự kiện tăng số lượng
+    $(document).on("click", ".increase-qty", function () {
+        let productId = $(this).closest('.cart-item').data("id");
+        updateCart("increase", productId);
+    });
+
+    // Sự kiện giảm số lượng
+    $(document).on("click", ".decrease-qty", function () {
+        let productId = $(this).closest('.cart-item').data("id");
+        updateCart("decrease", productId);
+    });
+
+    // Sự kiện xóa sản phẩm khỏi giỏ hàng
+    $(document).on("click", ".remove-cart", function () {
+        let productId = $(this).closest('.cart-item').data("id");
+        if (confirm("❗ Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?")) {
+            updateCart("remove", productId, );
+        }
+    });
+
+    // Hàm cập nhật giỏ hàng (Thêm, Xóa, Tăng, Giảm)
+    function updateCart(action, productId, successMessage = "") {
+        $.post("handle/cart.php", { action, productID: productId }, function (response) {
+            if (response.status === "success") {
+                loadCart();
+                if (successMessage) alert(successMessage);
+            } else {
+                alert("Lỗi: " + response.message);
+            }
+        }, "json").fail(() => alert("Lỗi kết nối đến server!"));
+    }
+
+    // Hàm tải giỏ hàng từ database
+    function loadCart() {
+        $.post("handle/cart.php", { action: "get" }, function (response) {
+            let total = 0, totalQuantity = 0, cartHtml = "";
+
+            if (!response.cart || response.cart.length === 0) {
+                cartHtml = `<div class="empty-cart">
+                                <i class="fa-solid fa-shopping-cart"></i>
+                                <p>Giỏ hàng của bạn đang trống!</p>
+                            </div>`;
+                $("#cart-count").text("").hide();
+            } else {
+                response.cart.forEach(item => {
+                    total += parseFloat(item.Price) * parseInt(item.Quantity);
+                    totalQuantity += parseInt(item.Quantity) || 0;
+
+                    cartHtml += `<div class="cart-item" data-id="${item.ProductID}">
+                        <img src="${item.ProductImage}" alt="${item.ProductName}" width="50">
+                        <div class="cart-info">
+                            <span class="cart-name">${item.ProductName}</span>
+                            <span class="cart-price">${parseFloat(item.Price).toLocaleString('vi-VN')}đ</span>
+                            <div class="cart-quantity">
+                                <button class="decrease-qty">−</button>
+                                <span class="quantity-value">${item.Quantity}</span>
+                                <button class="increase-qty">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-cart"><i class="fa-solid fa-trash"></i></button>
+                    </div>`;
+                });
+
+                totalQuantity = parseInt(totalQuantity) || 0;
+                if (totalQuantity > 0) {
+                    $("#cart-count").text(totalQuantity).show();
+                } else {
+                    $("#cart-count").text("").hide();
+                }
+            }
+
+            $("#cart-items").html(cartHtml);
+            $(".total-price").text(total.toLocaleString('vi-VN') + "đ");
+            $(".button-cart").html(`
+                <a href="index.php?page=sanpham" class="continue-shopping">🛍️ Mua tiếp</a>
+                <a href="index.php?page=checkout" class="checkout">Thanh toán</a>
+            `);
+        }, "json").fail(() => alert("Lỗi khi tải giỏ hàng!"));
+    }
+});
+

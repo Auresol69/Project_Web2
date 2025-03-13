@@ -1,5 +1,4 @@
 <div class="content">
-
     <div class="content__input">
         <h1>CÂY TRỒNG<br> DÀNH CHO BẠN
         </h1>

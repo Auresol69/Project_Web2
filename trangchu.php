@@ -68,25 +68,6 @@
                 <h3>Hỗ trợ 24/7</h3>
                 <p>Luôn sẵn sàng giải đáp mọi thắc mắc của bạn</p>
             </div>
+            
         </div>
     </section>
-    <!-- <section class="trangchu-footer">
-        <div class="trangchu-footer-content">
-            <p class="trangchu-footer-content-header">CÔNG TY TNHH GREEN HAVEN</p>
-            <div class="promo-item-footer">
-                <p><i class="fa-solid fa-house">              
-                </i>Văn phòng: 273 An Dương Vương, Phường 3, Quận 5</p>  
-                <p><i class="fa-solid fa-phone"></i>Liên hệ:0123456789</p>
-                <p><i class="fa-solid fa-envelope"></i>greenhaven@gmail.com</p>
-            </div>
-        </div>
-        <div class="trangchu-footer-content">
-            <div class="promo-item-footer">
-                <h4>Dịch vụ</h4>
-                <p>Điều khoản sử dụng</p>
-                <p>Chính sách bảo mật thông tin</p>
-                <p>Chính sách bảo mật thanh toán</p>
-                <p>Giới thiệu về chúng tôi</p>
-            </div>
-        </div>
-    </section> -->

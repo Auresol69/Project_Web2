@@ -27,6 +27,9 @@
         case 'chinhsach':
             include('chinhsach.php');
             break;
+        case 'giohang':
+            include('giohang.php');
+            break;
         default:
             echo "Trang không tồn tại";
             break;
