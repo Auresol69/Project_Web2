@@ -2,7 +2,6 @@
 include("../database/database.php");
 header("Content-Type: application/json");
 
-// Xác định hành động (thêm, xóa, lấy dữ liệu, tăng, giảm)
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 
 if ($action == 'add') {

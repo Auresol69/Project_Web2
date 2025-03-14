@@ -97,7 +97,13 @@ input:focus {
     height: 300px;
     position: relative;
 }
-
+.content__input-img img{
+    position: absolute;
+    top: 3px;
+    left: 20px;
+    height: 300px;
+    width: 340px;
+}
 
 
 .content__input__main {
@@ -260,7 +266,7 @@ input:focus {
 .prev, .next{
     width: 40px;
     height: 40px;
-    font-size: 30px;
+    font-size: 25px;
     color: #1f5f27;
     font-weight: 900;
     cursor: pointer;
@@ -290,7 +296,7 @@ input:focus {
     display: inline-block;
 }
 #page span{
-    padding: 10px;
+    padding: 5px;
     margin: 2px;
     border-radius: 3px;
     color: white;
@@ -424,8 +430,10 @@ input:focus {
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
     border-bottom: 1px solid #ddd;
-    background: #f8fbe6;
+    background: #cff1ce;
 }
 
 .cart-item img {

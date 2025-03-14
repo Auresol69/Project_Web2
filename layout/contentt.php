@@ -1,7 +1,10 @@
 <div class="content">
     <div class="content__input">
         <h1>CÂY TRỒNG<br> DÀNH CHO BẠN     
-        </h1>   
+        </h1>
+        <div class="content__input-img">
+            <img src="img/cay.png" alt="">
+        </div>
         <p class="content__slogan">Khám phá thế giới cây xanh, làm đẹp không gian sống!</p>
 
         <div class="content__input__main">
