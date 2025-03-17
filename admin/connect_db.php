@@ -1,9 +1,30 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "lesson-33";
-$con = mysqli_connect($host, $user, $password, $database);
-if (mysqli_connect_errno()){
-    echo "Connection Fail: ".mysqli_connect_errno();exit;
+class connect_db {
+    private $host = "localhost";
+    private $db_name = "treeshop";
+    private $username = "root";
+    private $password = ""; 
+    public $conn; //sử dụng cho PDO
+
+    // Get the PDO database connection
+    public function getConnection() {
+        $this->conn = null;
+
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+
+        } catch(PDOException $exception) {
+            echo "Connection error: " . $exception->getMessage();
+        }
+
+        return $this->conn;
+    }
+
+    // Close the PDO database connection
+    public function closeConnection() {
+        $this->conn = null;
+    }
+
 }
+
+?>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="../css/admin_style.css" >
+        <link rel="stylesheet" type="text/css" href="../css/admin_style.css">
     </head>
     <body>
         <div id="admin-heading-panel">
@@ -25,16 +25,36 @@
                     <div class="menu-heading">Admin Menu</div>
                     <div class="menu-items">
                         <ul>
-                            <li><a href="dashboard.php">Thông tin hệ thống</a></li>
-                            <li><a href="menu_listing.php">Danh mục</a></li>
-                            <li><a href="product_listing.php">Sản phẩm</a></li>
-                            <li><a href="order_listing.php">Đơn hàng</a></li>
-                            <li><a href="member_listing.php">Quản lý thành viên</a></li>
+                            <li><a href="?page=home">Thông tin hệ thống</a></li>
+                            <li><a href="?page=danhmuc">Danh mục</a></li>
+                            <li><a href="?page=sanpham">Sản phẩm</a></li>
+                            <li><a href="?page=donhang">Đơn hàng</a></li>
+                            <li><a href="?page=qltv">Quản lý thành viên</a></li>
+                            <li><a href="?page=customer">Quản lý Khách hàng</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="main-contaniner">
-
+                <?php
+                    $page= isset( $_GET['page'] ) ? $_GET['page'] :'home';
+                    switch ( $page ) {
+                        case'danhmuc':
+                            include 'danhmuc.php';
+                            break;
+                        case'sanpham':
+                            include 'product_list.php';
+                            break;
+                        case'donhang':
+                            include 'donhang.php';
+                            break;
+                        case'customer':
+                            include 'customer/customer_listing.php';
+                            break;
+                        default:
+                            echo 'Hello';
+                            break;
+                    }
+                ?>
                 </div>
             </div>
         </div>
