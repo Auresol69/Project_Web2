@@ -1,12 +1,12 @@
 <?php
 require_once "connect_db.php";
 
-class Customer {
+class customer {
     private $conn;
 
     public function __construct() {
         $db = new connect_db();
-        $this->conn = $db->getConnection();
+        // $this->conn = $db->getConnection();
     }
 
     // Lấy danh sách tất cả khách hàng
