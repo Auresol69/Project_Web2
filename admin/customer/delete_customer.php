@@ -1,9 +1,19 @@
 <!-- Xóa khách hàng -->
 <?php
-require_once 'connect_db.php';
+require_once '../connect_db.php'; // Kiểm tra đường dẫn file này
 $db = new connect_db();
-$id = $_GET['id'];
-$db->delete("users", $id);
-header("Location: customer_listing.php");
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // Kiểm tra ID có tồn tại không
+    $customer = $db->getById("users", $id);
+    if ($customer) {
+        $db->delete("users", $id);
+    }
+}
+
+// Chuyển hướng sau khi xóa
+header("Location: ../header.php?page=customer");
 exit();
 ?>
