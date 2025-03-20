@@ -20,3 +20,22 @@ INSERT INTO Product (ProductName,ProductType,ProductImage,Price) VALUES('Cẩm T
         ('Cam','Cây ăn trái' ,'img/meme.jpg', 399.99),
         ('Chanh','Cây ăn trái' ,'img/meme.jpg', 499.99);
 
+
+create table IF NOT EXISTS cart (
+    CartID INT(11) NOT NULL AUTO_INCREMENT,
+    ProductID INT(11) NOT NULL,
+    Quantity INT(11) DEFAULT 1,
+    PRIMARY KEY (CartID),
+    KEY (ProductID)
+);
+
+create table IF NOT EXISTS Orders (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    CustomerName VARCHAR(100) NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT DEFAULT 1,
+    UnitPrice DECIMAL(10,2) NOT NULL,
+    OrderDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(50) DEFAULT 'Giỏ hàng',
+    FOREIGN KEY (ProductID) REFERENCES Product(ProductID)
+);

@@ -30,6 +30,10 @@
         case 'giohang':
             include('giohang.php');
             break;
+        case 'checkout':
+            include('checkout.php');
+            break;
+
         default:
             echo "Trang không tồn tại";
             break;

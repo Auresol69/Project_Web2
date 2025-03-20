@@ -153,8 +153,8 @@ input:focus {
 }
 
 .content__input__sort::after {
-    content: '▼';
-    /* Unicode của mũi tên xuống */
+    /* content: '▼';
+    Unicode của mũi tên xuống */
     font-size: 14px;
     color: #333;
     position: absolute;
@@ -292,7 +292,7 @@ input:focus {
 
 #page {
     font-size: 20px;
-    border-radius: 5px; /* Tạo khoảng cách giữa các số */
+    border-radius: 5px; 
     display: inline-block;
 }
 #page span{
@@ -516,4 +516,117 @@ input:focus {
     line-height: 18px;
     text-align: center;
     display: none;
+}
+
+/* Thanh toán */
+
+#payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: lightgreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.payment-container {
+    width: 1000px; 
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start; 
+    flex-wrap: wrap; 
+    gap: 40px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+.payment-col-left {
+    flex-grow: 1; 
+    max-width: 600px; 
+}
+
+.payment-col-left h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+}
+
+.payment-form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.payment-form-group label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 17px;
+    color: #333;
+    margin-top: 5px;
+}
+
+.payment-form-group input,
+.payment-form-group select {
+    width: 100%;        
+    height: 40px;  
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    padding-left: 10px;
+    background-color: white;
+}
+
+
+.payment-form-group input:hover,
+.payment-form-group select:hover {
+    border-color: #0056b3;
+}
+
+.payment-form-group input:focus,
+.payment-form-group select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
+}
+
+
+.payment-col-right {
+    width: 300px; 
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.payment-content-lable{
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #333;
+}
+.preview-checkout-btn{
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color:   #a5c23b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.complete-checkout-btn{
+    margin-top: 5px;
+    padding:   10px 88px;
+    background-color: #48a592;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
 }
