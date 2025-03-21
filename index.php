@@ -12,8 +12,10 @@
 </head>
 
 <body>
-    <?php include("layout/headerr.php"); ?>
-  
+    <?php 
+    include("login.php");
+    include("layout/headerr.php"); ?>
+
     <?php
     $page = isset($_GET['page']) ? $_GET['page'] : 'trangchu';
 

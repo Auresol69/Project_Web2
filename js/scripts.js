@@ -62,7 +62,7 @@ function LoadProducts(page) {
             var tmp = "";
             console.log(response);
             response.products.forEach(product => {
-            tmp += `<div class="sanpham">
+                tmp += `<div class="sanpham">
                     <img src="${product.image}" alt="">
                     <div class="product-id">Mã SP: ${product.id}</div>
                     <div class="product-name">Tên SP: ${product.name}</div>
@@ -225,3 +225,64 @@ $(document).ready(function () {
     }
 });
 
+// Login/Logout
+$(document).ready(function () {
+    $('#overlay').hide();
+
+    $('#open-form-log-in').on('click', function () {
+        $('#overlay').show();
+    })
+
+    $('#overlay').on('click', function (event) {
+        if ($(event.target).closest('.Authentication-Form-Dad').length === 0) {
+            $('#overlay').hide();
+        }
+    })
+});
+
+function build(mode) {
+    $('#Authentication-Form').load('layout/login_layout.php?mode=' + mode);
+}
+
+$('#btn-mode').on('click', function (event) {
+    event.preventDefault();
+    var mode = $(this).data('mode');
+    if (mode == 'sign-up') {
+        build('sign-up');
+        $(this).data('mode', 'sign-in');
+        $('#lbl-mode').html('Nhập');
+    }
+    else {
+        build('sign-in');
+        $(this).data('mode', 'sign-up');
+        $('#lbl-mode').html('Ký');
+    }
+});
+
+$(document).ready(function () {
+    $('#Authentication-Form').submit(function (event) {
+        event.preventDefault();
+        var data = $(this).serialize();
+        var mode = $('#btn-mode').data('mode');
+        $.ajax({
+            type: "POST",
+            url: "handle/login.php",
+            data: data + '&mode=' + mode,
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                if (response.status == "success") {
+                    $('.error-message').remove();
+                    alert(response.message);
+                    $('#Authentication-Form')[0].reset();
+                }
+                else if (response.status == "error") {
+                    $('.error-message').remove();
+                    $.each(response.errors, function (key, message) {
+                        $("#" + key).after('<div class="error-message" style="color:red;">' + message + '</div>');
+                    });
+                }
+            }
+        });
+    });
+});

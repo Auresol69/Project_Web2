@@ -1,7 +1,8 @@
-.img_trangchu{
+.img_trangchu {
     width: 100%;
     z-index: 99;
 }
+
 .promo-section {
     display: flex;
     justify-content: space-around;
@@ -21,6 +22,7 @@
     font-size: 30px;
     color: green;
 }
+
 .categories {
     text-align: center;
     padding: 20px;
@@ -40,6 +42,7 @@
     height: 150px;
     border-radius: 10px;
 }
+
 .best-sellers {
     text-align: center;
     padding: 20px;
@@ -47,7 +50,7 @@
 
 .product-list {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     gap: 50px;/
 }
@@ -64,31 +67,36 @@
     height: 120px;
     border-radius: 10px;
 }
-.trangchu-footer{
+
+.trangchu-footer {
     background-color: #66bd9f;
-    display: flex; 
-    justify-content: space-between; 
-    padding: 20px 10%; 
-    
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10%;
+
 }
-.promo-item-footer{
+
+.promo-item-footer {
     font-size: 20px;
     gap: 5px;
 }
 
-.promo-item-footer i{
-    gap:10px;
+.promo-item-footer i {
+    gap: 10px;
     font-size: 20px;
     margin-right: 3px;
 }
-.trangchu-footer-content-header{
+
+.trangchu-footer-content-header {
     font-size: 25px;
-    font-weight: 600;   
+    font-weight: 600;
 }
+
 .trangchu-footer-content {
-    width: 45%; 
-    margin: 0; 
+    width: 45%;
+    margin: 0;
 }
+
 .why-choose-us {
     background-color: #f8f8f8;
     padding: 40px 0;

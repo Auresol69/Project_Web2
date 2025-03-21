@@ -1,5 +1,3 @@
-
-
 <div class="header">
     <div class="header__name">Green Haven</div>
     <div class="header__menu">
@@ -13,9 +11,11 @@
     <div class="header__icons">
         <a href="index.php?page=giohang" class="cart-icon">
             <i class="fa-solid fa-cart-shopping"></i>
-            <span id="cart-count">0</span> 
+            <span id="cart-count">0</span>
         </a>
-        <i class="fa-solid fa-user"></i>
+        <div id="open-form-log-in">
+            <i class="fa-solid fa-user"></i>
+        </div>
         <i class="fa-solid fa-bars"></i>
     </div>
 </div>
