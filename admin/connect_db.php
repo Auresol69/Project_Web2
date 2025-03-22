@@ -63,6 +63,11 @@ class connect_db {
 
     // Thêm dữ liệu
     public function insert($table, $data) {
+
+        // Thêm thời gian tạo và thời gian cập nhật
+        $data['created_time'] = date('Y-m-d H:i:s'); 
+        $data['last_updated'] = date('Y-m-d H:i:s'); 
+
         $columns = implode(", ", array_keys($data));
         $values = ":" . implode(", :", array_keys($data));
         $sql = "INSERT INTO $table ($columns) VALUES ($values)";
@@ -71,6 +76,10 @@ class connect_db {
 
     // Cập nhật dữ liệu
     public function update($table, $data, $id) {
+
+        // Thêm thời gian cập nhật
+        $data['last_updated'] = date('Y-m-d H:i:s');  
+
         $setValues = implode(", ", array_map(fn($key) => "$key = :$key", array_keys($data)));
         $sql = "UPDATE $table SET $setValues WHERE id = :id";
         $data['id'] = $id;
@@ -81,6 +90,10 @@ class connect_db {
     public function delete($table, $id) {
         $sql = "DELETE FROM $table WHERE id = :id";
         return $this->query($sql, ['id' => $id]);
+    }
+
+    public function getLastInsertId() {
+        return $this->conn->lastInsertId();
     }
 }
 
