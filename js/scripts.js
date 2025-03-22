@@ -327,7 +327,8 @@ $(document).ready(function () {
                     $('.error-message').remove();
                     alert(response.message);
                     $('#Authentication-Form')[0].reset();
-                    $('#open-form-log-in').after('<div style="font-style: italic;">Xin chào, ' + response.name + '!</div>');
+                    if (response.name !== undefined)
+                        $('#open-form-log-in').after('<div style="font-style: italic;">Xin chào, ' + response.name + '!</div>');
                     $('#overlay').hide();
                 }
                 else if (response.status == "error") {
