@@ -1,5 +1,5 @@
 <?php 
-    $db_name = "tree_example";
+    $db_name = "tree_shopping";
     $db_user = "root";
     $db_pass = "";
     $db_host = "localhost";

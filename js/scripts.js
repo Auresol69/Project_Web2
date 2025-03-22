@@ -223,10 +223,35 @@ $(document).ready(function () {
             $(".total-price").text(total.toLocaleString('vi-VN') + "đ");
             $(".button-cart").html(`
                 <a href="index.php?page=sanpham" class="continue-shopping">Mua tiếp</a>
-                <a href="index.php?page=checkout" class="checkout">Thanh toán</a>
+                <div class="checkout">Thanh toán</div>
             `);
         }, "json").fail(() => alert("Lỗi khi tải giỏ hàng!"));
     }
+});
+
+// Thanh toán
+$(document).ready(function () {
+    $(".checkout").on('click', function () {
+        $.ajax({
+            type: "POST",
+            url: "handle/auth.php",
+            data: { action: "check" },
+            dataType: "json",
+            success: function (response) {
+                console.log("Dữ liệu server trả về:", response);
+                console.log("Kiểu dữ liệu của response:", typeof response);
+                console.log("Kiểu dữ liệu của loggedIn:", typeof response.loggedIn);
+                if (response.loggedIn == true) {
+                    window.location.href = "index.php?page=checkout";
+                } else {
+                    $('#overlay').show();
+                }
+            },
+            error: function () {
+                alert("Lỗi kết nối đến server!");
+            }
+        });
+    });
 });
 
 // Login/Logout
@@ -238,7 +263,7 @@ $(document).ready(function () {
         dataType: "json",
         success: function (response) {
             if (response.name !== undefined)
-                $('#open-form-log-in').after('<div style="font-style: italic;">Xin chào, ' + response.name + '!</div>');
+                $('#open-form-log-in').after('<div style="font-style: italic; max-width: 300px;">Xin chào, ' + response.name + '!</div>');
         }
     });
 });
