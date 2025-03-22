@@ -15,6 +15,7 @@
         </a>
         <div id="open-form-log-in">
             <i class="fa-solid fa-user"></i>
+            <div id="open-form-log-in__logout">Đăng xuất</div>
         </div>
         <i class="fa-solid fa-bars"></i>
     </div>

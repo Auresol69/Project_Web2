@@ -359,11 +359,12 @@ input:focus {
 
 #modal-cart {
     width: 100%;
-    min-height: 480px;
+    min-height: 560px;
     background-color: rgb(208, 226, 232);
 }
 
-#modal-cart.show {
+
+#modal-cart {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -374,7 +375,7 @@ input:focus {
     max-width: 800px;
     padding: 20px;
     text-align: center;
-    margin: 100px auto;
+    margin: 50px auto;
     border-radius: 10px;
     background: white;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -659,4 +660,19 @@ input:focus {
 .Authentication-Form-Dad {
     background-color: whitesmoke;
     padding: 10px;
+}
+
+#open-form-log-in {
+    position: relative;
+}
+
+#open-form-log-in__logout {
+    position: absolute;
+    top: 30px;
+    padding: 10px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
 }

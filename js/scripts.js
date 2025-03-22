@@ -39,11 +39,14 @@ $(document).ready(function () {
 
 function LoadProducts(page) {
     // Tìm tên sản phẩm
-    var keyword = $("#keyword").val().trim();
+    if ($("#keyword").val() !== null && $("#keyword").val() !== undefined)
+        var keyword = $("#keyword").val().trim();
 
     // Tìm sản phẩm trong khoảng giá
-    var min = $("#content__input__main__sort_min").val().trim();
-    var max = $("#content__input__main__sort_max").val().trim();
+    if ($("#content__input__main__sort_min").val() != null && $("#content__input__main__sort_min").val() !== undefined)
+        var min = $("#content__input__main__sort_min").val().trim();
+    if ($("#content__input__main__sort_max").val() != null && $("#content__input__main__sort_max").val() !== undefined)
+        var max = $("#content__input__main__sort_max").val().trim();
 
     // Tìm sản phẩm theo phân loại
     $("#content__input__main__sort_type").on("change", function () {
@@ -123,10 +126,6 @@ function LoadProducts(page) {
         }
     });
 }
-
-
-
-
 
 $(document).ready(function () {
     loadCart();
@@ -227,17 +226,71 @@ $(document).ready(function () {
 
 // Login/Logout
 $(document).ready(function () {
-    $('#overlay').hide();
+    $.ajax({
+        data: { action: "check" },
+        type: "POST",
+        url: "handle/auth.php",
+        dataType: "json",
+        success: function (response) {
+            if (response.name !== undefined)
+                $('#open-form-log-in').after('<div style="font-style: italic;">Xin chào, ' + response.name + '!</div>');
+        }
+    });
+});
 
-    $('#open-form-log-in').on('click', function () {
-        $('#overlay').show();
-    })
+$(document).ready(function () {
+    $('#overlay').hide();
+    $('#open-form-log-in__logout').hide();
+
+    $('#open-form-log-in').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            data: { action: "check" },
+            type: "POST",
+            url: "handle/auth.php",
+            dataType: "json",
+            success: function (response) {
+                if (response.loggedIn) {
+                    $('#open-form-log-in__logout').show();
+                }
+                else {
+                    $('#overlay').show();
+                }
+            },
+            error: function () {
+                console.error("Lỗi AJAX!");
+            }
+        });
+    });
 
     $('#overlay').on('click', function (event) {
         if ($(event.target).closest('.Authentication-Form-Dad').length === 0) {
             $('#overlay').hide();
         }
-    })
+    });
+});
+
+$(document).ready(function () {
+    $('#open-form-log-in__logout').on('click', function (event) {
+        event.preventDefault();
+        $.ajax({
+            data: { action: 'logout' },
+            type: "POST",
+            url: "handle/auth.php",
+            dataType: "json",
+            success: function () {
+                location.reload(true);
+            },
+            error: function () {
+                console.error("Lỗi AJAX!");
+            }
+        });
+    });
+    $(document).on('click', function (event) {
+        if ($(event.target).closest('#open-form-log-in__logout').length === 0) {
+            $('#open-form-log-in__logout').hide();
+        }
+    });
 });
 
 function build(mode) {
@@ -270,11 +323,12 @@ $(document).ready(function () {
             data: data + '&mode=' + mode,
             dataType: "json",
             success: function (response) {
-                console.log(response);
                 if (response.status == "success") {
                     $('.error-message').remove();
                     alert(response.message);
                     $('#Authentication-Form')[0].reset();
+                    $('#open-form-log-in').after('<div style="font-style: italic;">Xin chào, ' + response.name + '!</div>');
+                    $('#overlay').hide();
                 }
                 else if (response.status == "error") {
                     $('.error-message').remove();
