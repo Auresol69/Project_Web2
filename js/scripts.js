@@ -63,9 +63,15 @@ function LoadProducts(page) {
         data: { page: page, keyword: keyword, type: type, min: min, max: max },
         success: function (response) {
             var tmp = "";
-            console.log(response);
-            response.products.forEach(product => {
-                tmp += `<div class="sanpham">
+            if (!response.products || response.products.length === 0) {
+                tmp = `<div class="empty-cart">
+                                <i class="fa-solid fa-face-sad-cry"></i>
+                                <p>Không có sản phẩm bạn cần!</p>
+                            </div>`;
+            }
+            else {
+                response.products.forEach(product => {
+                    tmp += `<div class="sanpham">
                     <img src="${product.image}" alt="">
                     <div class="product-id">Mã SP: ${product.id}</div>
                     <div class="product-name">Tên SP: ${product.name}</div>
@@ -75,14 +81,13 @@ function LoadProducts(page) {
                         <button class="detail-button">Chi tiết</button>
                     </div>
                 </div>`;
-            });
+                });
+            }
             $('#content__product').html(tmp);
 
             // Cập nhật currentPage và totalPage toàn cục
             currentPage = response.page;
             totalPage = response.total;
-
-            console.log("Trang hiện tại:", currentPage, "Tổng số trang:", totalPage);
 
             // Hiển thị pagination
             $('#page').html("");

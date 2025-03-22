@@ -1,6 +1,3 @@
-create DATABASE TreeShop;
-
-USE TreeShop;
 
 create table IF NOT EXISTS Product (
     ProductID INT PRIMARY KEY AUTO_INCREMENT,
