@@ -91,3 +91,21 @@ input {
 .save-btn:hover {
     background-color: #218838;
 }
+
+/* Kiểu cho các nút bấm */
+.buttons {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.buttons a {
+    background: #006ADD;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.buttons a:hover {
+    background: #2980b9;
+}

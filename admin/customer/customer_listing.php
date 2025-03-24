@@ -5,14 +5,15 @@ $db = new connect_db();
 $customers = $db->getAll("users");
 ?>
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="customer/css/style.css">
-</head>
-<body>
+<link rel="stylesheet" href="customer/css/style.css?v=<?php echo time(); ?>">
+
+
+<div class="main-content">
+    <h1>Danh sách người dùng</h1>
+    <div class="buttons">
+        <a id="openAddModal">Thêm người dùng</a>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -47,6 +48,7 @@ $customers = $db->getAll("users");
             <?php endforeach; ?>
         </tbody>
     </table>
+</div>
 
 <!-- Modal chỉnh sửa -->
 <div class="modal" id="editModal">
@@ -109,7 +111,48 @@ $customers = $db->getAll("users");
 
 </script>
 
-</body>
+<!-- Modal thêm khách hàng -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h3>Thêm khách hàng</h3>
+        <form action="customer/add_customer.php" method="POST">
+            <label for="ho_ten">Họ và Tên</label>
+            <input type="text" id="ho_ten" name="ho_ten" required>
 
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
 
-</html>
+            <label for="so_dien_thoai">Số điện thoại</label>
+            <input type="text" id="so_dien_thoai" name="so_dien_thoai" required>
+
+            <label for="mat_khau">Mật khẩu</label>
+            <input type="password" id="mat_khau" name="mat_khau" required>
+
+            <label for="vai_tro">Vai trò</label>
+            <select id="vai_tro" name="vai_tro" required>
+                <option value="Khách hàng">Khách hàng</option>
+                <option value="Quản trị viên">Quản trị viên</option>
+                <option value="Nhân viên">Nhân viên</option>
+            </select>
+
+            <button type="submit" class="save-btn">Thêm</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById("openAddModal").addEventListener("click", function () {
+        document.getElementById("addModal").style.display = "block";
+    });
+
+    document.querySelector(".close-btn").addEventListener("click", function () {
+        document.getElementById("addModal").style.display = "none";
+    });
+
+    window.onclick = function (event) {
+        if (event.target == document.getElementById("addModal")) {
+            document.getElementById("addModal").style.display = "none";
+        }
+    };
+</script>
