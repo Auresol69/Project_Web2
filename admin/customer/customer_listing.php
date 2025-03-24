@@ -76,6 +76,8 @@ $customers = $db->getAll("users");
         const closeBtn = document.querySelector(".close-btn");
         const editButtons = document.querySelectorAll(".edit-btn");
 
+        modal.style.display = "none";
+
         // Duyệt qua từng nút "Sửa" và gán sự kiện click
         editButtons.forEach(button => {
             button.addEventListener("click", function (event) {

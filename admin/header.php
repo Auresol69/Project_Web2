@@ -29,7 +29,6 @@
                             <li><a href="?page=danhmuc">Danh mục</a></li>
                             <li><a href="?page=sanpham">Sản phẩm</a></li>
                             <li><a href="?page=donhang">Đơn hàng</a></li>
-                            <li><a href="?page=qltv">Quản lý thành viên</a></li>
                             <li><a href="?page=customer">Quản lý Khách hàng</a></li>
                         </ul>
                     </div>
@@ -42,7 +41,7 @@
                             include 'danhmuc.php';
                             break;
                         case'sanpham':
-                            include 'product_list.php';
+                            include 'product/product_list.php';
                             break;
                         case'donhang':
                             include 'donhang.php';
