@@ -13,8 +13,6 @@ DROP TABLE IF EXISTS entry_form;
 CREATE Table IF NOT EXISTS entry_form(
     `maphieunhap` VARCHAR(20) NOT NULL,
     `ngaynhap` DATETIME(6),
-    `dongianhap` int(11) NOT NULL,
-    `soluongnhap` int(11) NOT NULL,
     `mancc` VARCHAR(20) NOT NULL,
     `mastaff` VARCHAR(20) NOT NULL
 );
@@ -51,6 +49,7 @@ DROP TABLE IF EXISTS detail_entry_form;
 CREATE Table if NOT exists detail_entry_form(
     `maphieunhap` VARCHAR(20) NOT NULL,
     `masp` VARCHAR(20) NOT NULL,
+    `dongianhap` int(11) NOT NULL,
     `soluongnhap` int(11) NOT NULL
 );
 
@@ -60,10 +59,9 @@ CREATE Table IF NOT EXISTS product(
     `tensp` VARCHAR(50) NOT NULL,
     `soluong` INT(11) NOT NULL,
     `dongiasanpham` int(11) DEFAULT NULL,
-    `donvitinh` CHAR(50) NOT NULL,
     `maloaisp` VARCHAR(20) NOT NULL,
     `mancc` VARCHAR(20) NOT NULL,
-    `img` VARCHAR(100) NOT NULL  -- DEFAULT "Blank.img"
+    `img` VARCHAR(100) NOT NULL DEFAULT "img/Blank.img"
 );
 
 DROP TABLE IF EXISTS comment;
@@ -184,17 +182,42 @@ ALTER TABLE bill ADD CONSTRAINT fk_bill_mapayby FOREIGN KEY (`mapayby`) REFERENC
 
 -- Trigger
 
-DELIMITER //
-
-//
+DELIMITER $$
 
 CREATE TRIGGER before_insert_customer
-BEFORE INSERT on customer
-for EACH row
+BEFORE INSERT ON customer
+FOR EACH ROW
 BEGIN
-DECLARE new_id int;
-SELECT COALESCE(MAX(CAST(SUBSTRING(macustomer,4) AS UNSIGNED)),0) + 1 into new_id from customer;
-set new.macustomer = CONCAT('CUS',LPAD(cast(new_id as CHAR),3,'0')); 
-END;
+    DECLARE new_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(macustomer,4) AS UNSIGNED)),0) + 1 INTO new_id FROM customer;
+    SET NEW.macustomer = CONCAT('CUS', LPAD(CAST(new_id AS CHAR),3,'0')); 
+END$$
+
+CREATE TRIGGER before_insert_product
+BEFORE INSERT ON product
+FOR EACH ROW
+BEGIN
+    DECLARE new_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(masp,4) AS UNSIGNED)),0) + 1 INTO new_id FROM product;
+    SET NEW.masp = CONCAT('PRO', LPAD(CAST(new_id AS CHAR),3,'0')); 
+END$$
+
+CREATE TRIGGER before_insert_producttype
+BEFORE INSERT ON producttype
+FOR EACH ROW
+BEGIN
+    DECLARE new_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(maloaisp,4) AS UNSIGNED)),0) + 1 INTO new_id FROM producttype;
+    SET NEW.maloaisp = CONCAT('TYP', LPAD(CAST(new_id AS CHAR),3,'0')); 
+END$$
+
+CREATE TRIGGER before_insert_supplier
+BEFORE INSERT ON supplier
+FOR EACH ROW
+BEGIN
+    DECLARE new_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(mancc,4) AS UNSIGNED)),0) + 1 INTO new_id FROM supplier;
+    SET NEW.mancc = CONCAT('SUP', LPAD(CAST(new_id AS CHAR),3,'0')); 
+END$$
 
 DELIMITER ;
