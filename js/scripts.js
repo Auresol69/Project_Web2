@@ -62,6 +62,7 @@ function LoadProducts(page) {
         dataType: "json",
         data: { page: page, keyword: keyword, type: type, min: min, max: max },
         success: function (response) {
+            console.log(response);
             var tmp = "";
             if (!response.products || response.products.length === 0) {
                 tmp = `<div class="empty-cart">
@@ -76,6 +77,7 @@ function LoadProducts(page) {
                     <div class="product-id">Mã SP: ${product.id}</div>
                     <div class="product-name">Tên SP: ${product.name}</div>
                     <div class="product-price">Giá SP: ${product.price}</div>
+                    <div class="product-soluong">Số lượng SP: ${product.soluong}</div>
                     <div>
                         <button class="buy-button">Mua</button>
                         <button class="detail-button">Chi tiết</button>
@@ -106,7 +108,7 @@ function LoadProducts(page) {
             // Hiển thị danh mục sản phẩm
             $("#header__menu__sub").html("");
             response.header__menu__sub.forEach(type => {
-                $('#header__menu__sub').append(`<div data-tree_type="${type.type}">${type.type}</div>`);
+                $('#header__menu__sub').append(`<div data-tree_type="${type.typeid}">${type.type}</div>`);
             });
 
             // Hiển thị phân loại sản phẩm
@@ -117,7 +119,7 @@ function LoadProducts(page) {
             $("#content__input__main__sort_type").html("");
             $("#content__input__main__sort_type").append(`<option value="all">All</option>`);
             response.header__menu__sub.forEach(type => {
-                $("#content__input__main__sort_type").append(`<option value ="${type.type}">${type.type}</option>`);
+                $("#content__input__main__sort_type").append(`<option value ="${type.typeid}">${type.type}</option>`);
             });
 
             // Chọn lại mục đã chọn
@@ -238,9 +240,6 @@ $(document).ready(function () {
             data: { action: "check" },
             dataType: "json",
             success: function (response) {
-                console.log("Dữ liệu server trả về:", response);
-                console.log("Kiểu dữ liệu của response:", typeof response);
-                console.log("Kiểu dữ liệu của loggedIn:", typeof response.loggedIn);
                 if (response.loggedIn == true) {
                     window.location.href = "index.php?page=checkout";
                 } else {

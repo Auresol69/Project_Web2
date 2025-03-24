@@ -61,7 +61,7 @@ CREATE Table IF NOT EXISTS product(
     `dongiasanpham` int(11) DEFAULT NULL,
     `maloaisp` VARCHAR(20) NOT NULL,
     `mancc` VARCHAR(20) NOT NULL,
-    `img` VARCHAR(100) NOT NULL DEFAULT "img/Blank.img"
+    `img` VARCHAR(100) NOT NULL DEFAULT "img/Blank.png"
 );
 
 DROP TABLE IF EXISTS comment;
