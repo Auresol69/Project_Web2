@@ -72,45 +72,6 @@ $customers = $db->getAll("users");
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const modal = document.getElementById("editModal");
-        const closeBtn = document.querySelector(".close-btn");
-        const editButtons = document.querySelectorAll(".edit-btn");
-
-        modal.style.display = "none";
-
-        // Duyệt qua từng nút "Sửa" và gán sự kiện click
-        editButtons.forEach(button => {
-            button.addEventListener("click", function (event) {
-                event.preventDefault(); // Ngăn chuyển trang do thẻ <a>
-
-                // Lấy dữ liệu từ data-attributes của nút
-                document.getElementById("edit-id").value = this.dataset.id;
-                document.getElementById("edit-name").value = this.dataset.name;
-                document.getElementById("edit-email").value = this.dataset.email;
-                document.getElementById("edit-phone").value = this.dataset.phone;
-
-                // Hiện modal lên
-                modal.style.display = "block";
-            });
-        });
-
-        // Đóng modal khi bấm nút "X"
-        closeBtn.addEventListener("click", function () {
-            modal.style.display = "none";
-        });
-
-        // Đóng modal khi bấm ra ngoài
-        window.addEventListener("click", function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        });
-    });
-
-</script>
-
 <!-- Modal thêm khách hàng -->
 <div id="addModal" class="modal">
     <div class="modal-content">
@@ -132,7 +93,7 @@ $customers = $db->getAll("users");
             <label for="vai_tro">Vai trò</label>
             <select id="vai_tro" name="vai_tro" required>
                 <option value="Khách hàng">Khách hàng</option>
-                <option value="Quản trị viên">Quản trị viên</option>
+                <option value="Admin">Admin</option>
                 <option value="Nhân viên">Nhân viên</option>
             </select>
 
@@ -142,17 +103,56 @@ $customers = $db->getAll("users");
 </div>
 
 <script>
-    document.getElementById("openAddModal").addEventListener("click", function () {
-        document.getElementById("addModal").style.display = "block";
+    document.addEventListener("DOMContentLoaded", function () {
+    // Lấy các modal
+    let addModal = document.getElementById("addModal");
+    let editModal = document.getElementById("editModal");
+
+    // Lấy các nút mở modal
+    let openAddModalBtn = document.getElementById("openAddModal");
+    let editButtons = document.querySelectorAll(".edit-btn");
+
+    // Lấy tất cả các nút đóng modal
+    let closeButtons = document.querySelectorAll(".close-btn");
+
+    // Đảm bảo modal luôn ẩn khi tải lại trang
+    addModal.style.display = "none";
+    editModal.style.display = "none";
+
+    // Mở modal thêm khách hàng
+    openAddModalBtn.addEventListener("click", function () {
+        addModal.style.display = "block";
     });
 
-    document.querySelector(".close-btn").addEventListener("click", function () {
-        document.getElementById("addModal").style.display = "none";
+    // Đóng modal khi nhấn nút "X"
+    closeButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            this.closest(".modal").style.display = "none";
+        });
     });
 
-    window.onclick = function (event) {
-        if (event.target == document.getElementById("addModal")) {
-            document.getElementById("addModal").style.display = "none";
+    // Mở modal chỉnh sửa khi nhấn vào nút "Sửa"
+    editButtons.forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault(); // Ngăn chuyển trang
+
+            // Lấy dữ liệu từ data-attributes của nút
+            document.getElementById("edit-id").value = this.dataset.id;
+            document.getElementById("edit-name").value = this.dataset.name;
+            document.getElementById("edit-email").value = this.dataset.email;
+            document.getElementById("edit-phone").value = this.dataset.phone;
+
+            // Hiện modal chỉnh sửa
+            editModal.style.display = "block";
+        });
+    });
+
+    // Đóng modal khi bấm ra ngoài
+    window.addEventListener("click", function (event) {
+        if (event.target.classList.contains("modal")) {
+            event.target.style.display = "none";
         }
-    };
+    });
+});
+
 </script>
