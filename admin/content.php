@@ -29,7 +29,7 @@
                     include 'customer/customer_listing.php';
                     break;
                 default:
-                    echo 'Hello';
+                    echo 'Welcome to Admin Page';
                     break;
             }
         ?>

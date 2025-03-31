@@ -123,4 +123,5 @@ tr:nth-child(even) {
 
 .buttons a:hover {
     background: #2980b9;
+    cursor: pointer;
 } 

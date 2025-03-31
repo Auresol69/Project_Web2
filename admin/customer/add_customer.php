@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Thêm khách hàng
     if ($db->insert("users", $customerData)) {
         // Chuyển hướng về danh sách khách hàng
-        header("Location: ../header.php?page=customer");
+        header("Location: ../index.php?page=customer");
         exit();
     } else {
         echo "Lỗi khi thêm khách hàng.";

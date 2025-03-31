@@ -14,6 +14,6 @@ if (isset($_GET['id'])) {
 }
 
 // Chuyển hướng sau khi xóa
-header("Location: ../header.php?page=customer");
+header("Location: ../index.php?page=customer");
 exit();
 ?>

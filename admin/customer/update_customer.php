@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ], $id);
 
     // Chuyển hướng về danh sách khách hàng
-    header("Location: ../header.php?page=customer");
+    header("Location: ../index.php?page=customer");
     exit();
 }
 ?>
