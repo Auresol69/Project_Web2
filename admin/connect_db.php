@@ -69,6 +69,26 @@ class connect_db {
     public function getLastInsertId() {
         return $this->conn->lastInsertId();
     }
+
+    // Tìm kiếm dữ liệu
+    public function search($table, $id = null, $name = null) {
+        $sql = "SELECT * FROM $table WHERE 1"; // Luôn đúng để nối điều kiện
+    
+        $params = [];
+    
+        if (!empty($id)) {
+            $sql .= " AND id = :id";
+            $params['id'] = $id;
+        }
+    
+        if (!empty($name)) {
+            $sql .= " AND ho_ten LIKE :name"; // Nếu bảng sản phẩm, đổi "ho_ten" thành "ten_san_pham"
+            $params['name'] = "%$name%";
+        }
+    
+        return $this->query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
 }
 
 ?>

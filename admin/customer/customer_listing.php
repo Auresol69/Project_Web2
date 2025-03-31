@@ -1,18 +1,52 @@
 <!-- Giao diện chính trang quản lý khách hàng -->
 <?php
-require_once 'connect_db.php';
-$db = new connect_db();
-$customers = $db->getAll("users");
+    require_once 'connect_db.php';
+    $db = new connect_db();
+
+    // Lấy dữ liệu tìm kiếm từ form
+    $id = $_POST['id'] ?? '';
+    $name = $_POST['name'] ?? '';
+
+    // Xây dựng truy vấn tìm kiếm
+    $sql = "SELECT * FROM users WHERE 1=1";
+    $params = [];
+
+    if (!empty($id)) {
+        $sql .= " AND id = :id";
+        $params['id'] = $id;
+    }
+
+    if (!empty($name)) {
+        $sql .= " AND ho_ten LIKE :name";
+        $params['name'] = "%$name%";
+    }
+
+    // Thực thi truy vấn
+    $customers = $db->query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <link rel="stylesheet" href="customer/css/style.css?v=<?php echo time(); ?>">
 
 
 <div class="main-content">
     <h1>Danh sách người dùng</h1>
+
     <div class="buttons">
         <a id="openAddModal">Thêm người dùng</a>
     </div>
+
+    <div class="listing-search">
+        <form method="POST">
+            <fieldset>
+                <legend>Tìm kiếm người dùng:</legend>
+                ID: <input type="text" name="id">
+                Tên người dùng: <input type="text" name="name">
+                <input type="submit" value="Tìm">
+            </fieldset>
+        </form>
+    </div>
+
 
     <table>
         <thead>

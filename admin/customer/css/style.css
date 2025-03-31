@@ -134,3 +134,15 @@ tr:nth-child(even) {
     background: #2980b9;
     cursor: pointer;
 } 
+
+/* Kiểu cho phần tìm kiếm */
+.listing-search {
+    margin-bottom: 20px;
+}
+
+.listing-search input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
