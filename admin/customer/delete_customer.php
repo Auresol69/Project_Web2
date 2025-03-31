@@ -1,6 +1,6 @@
 <!-- Xóa khách hàng -->
 <?php
-require_once '../connect_db.php'; // Kiểm tra đường dẫn file này
+require_once '../connect_db.php';
 $db = new connect_db();
 
 if (isset($_GET['id'])) {
