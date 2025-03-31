@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS product;
 CREATE Table IF NOT EXISTS product(
     `masp` VARCHAR(20) NOT NULL,
     `tensp` VARCHAR(50) NOT NULL,
-    `soluong` INT(11) NOT NULL,
+    `soluong` INT(11) NOT NULL DEFAULT 0,
     `dongiasanpham` int(11) DEFAULT NULL,
     `maloaisp` VARCHAR(20) NOT NULL,
     `mancc` VARCHAR(20) NOT NULL,
@@ -220,4 +220,33 @@ BEGIN
     SET NEW.mancc = CONCAT('SUP', LPAD(CAST(new_id AS CHAR),3,'0')); 
 END$$
 
+CREATE TRIGGER before_insert_entry_form
+BEFORE INSERT ON entry_form
+FOR EACH ROW
+BEGIN
+    DECLARE new_id INT;
+    SELECT COALESCE(MAX(CAST(SUBSTRING(maphieunhap,4) AS UNSIGNED)),0) + 1 INTO new_id FROM entry_form;
+    SET NEW.maphieunhap = CONCAT('EFO', LPAD(CAST(new_id AS CHAR),3,'0')); 
+END$$
+
+CREATE TRIGGER after_insert_detail_entry_form
+AFTER INSERT ON detail_entry_form
+FOR EACH ROW
+BEGIN
+    UPDATE product SET soluong = soluong + NEW.soluongnhap, dongiasanpham = NEW.dongianhap where masp = NEW.masp;
+END$$
+
+CREATE TRIGGER after_update_cart
+AFTER UPDATE ON cart
+FOR EACH ROW
+BEGIN
+    -- Kiểm tra nếu maorder được cập nhật từ NULL thành một giá trị hợp lệ
+    IF OLD.maorder IS NULL AND NEW.maorder IS NOT NULL THEN
+        -- Cập nhật số lượng sản phẩm trong bảng product
+        UPDATE product p
+        JOIN product_cart pc ON p.masp = pc.masp
+        SET p.soluong = p.soluong - pc.soluong
+        WHERE pc.magiohang = NEW.magiohang;
+    END IF;
+END$$
 DELIMITER ;
