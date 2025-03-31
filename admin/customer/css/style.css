@@ -57,7 +57,7 @@ tr:nth-child(even) {
 /* Nội dung modal */
 .modal-content {
     position: absolute;
-    top: 25%;
+    top: 20%;
     left: 38%;
     background: white;
     padding: 20px;
@@ -73,13 +73,21 @@ tr:nth-child(even) {
     text-align: center;
 }
 
-/* Ô input */
-.modal-content input {
+/* Ô input và select trong modal */
+
+.modal-content input,
+.modal-content select {
     width: 100%;
     padding: 8px;
     margin: 6px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 /* Nút đóng */
@@ -101,6 +109,7 @@ tr:nth-child(even) {
     color: white;
     font-size: 16px;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .save-btn:hover {

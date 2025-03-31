@@ -21,6 +21,7 @@ $customers = $db->getAll("users");
                 <th>Họ và Tên</th>
                 <th>Email</th>
                 <th>Số điện thoại</th>
+                <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
@@ -32,13 +33,16 @@ $customers = $db->getAll("users");
                     <td><?= $customer['ho_ten']; ?></td>
                     <td><?= $customer['email']; ?></td>
                     <td><?= $customer['so_dien_thoai']; ?></td>
+                    <td><?= $customer['trang_thai']; ?></td>
                     <td>
                         <!-- Nút "Sửa" có thêm class edit-btn và data attributes -->
                         <a href="#" class="btn btn-warning btn-sm edit-btn"
-                                data-id="<?= $customer['id']; ?>"
-                                data-name="<?= $customer['ho_ten']; ?>"
-                                data-email="<?= $customer['email']; ?>"
-                                data-phone="<?= $customer['so_dien_thoai']; ?>">
+                            data-id="<?= $customer['id']; ?>"
+                            data-name="<?= $customer['ho_ten']; ?>"
+                            data-email="<?= $customer['email']; ?>"
+                            data-phone="<?= $customer['so_dien_thoai']; ?>"
+                            data-vaitro="<?= $customer['vai_tro']; ?>"
+                            data-trangthai="<?= $customer['trang_thai']; ?>">
                             Sửa
                         </a>
 
@@ -67,6 +71,22 @@ $customers = $db->getAll("users");
             <label for="edit-phone">Số điện thoại</label>
             <input type="text" id="edit-phone" name="so_dien_thoai" required>
 
+            <label for="edit-vaitro">Vai trò</label>
+            <select id="edit-vaitro" name="vai_tro" required>
+                <option value="Khách hàng">Khách hàng</option>
+                <option value="Nhân viên">Nhân viên</option>
+                <option value="Admin">Admin</option>
+            </select>
+
+            <label for="edit-trangthai">Trạng thái</label>
+            <select id="edit-trangthai" name="trang_thai" required>
+                <option value="Hoạt động">Hoạt động</option>
+                <option value="Bị khóa">Bị khóa</option>
+            </select>
+
+            <label for="edit-password">Mật khẩu mới</label>
+            <input type="password" id="edit-password" name="mat_khau" placeholder="Để trống nếu không đổi mật khẩu">
+
             <button type="submit" class="save-btn">Cập nhật</button>
         </form>
     </div>
@@ -93,8 +113,14 @@ $customers = $db->getAll("users");
             <label for="vai_tro">Vai trò</label>
             <select id="vai_tro" name="vai_tro" required>
                 <option value="Khách hàng">Khách hàng</option>
-                <option value="Admin">Admin</option>
                 <option value="Nhân viên">Nhân viên</option>
+                <option value="Admin">Admin</option>
+            </select>
+
+            <label for="trang_thai">Trạng thái</label>
+            <select id="trang_thai" name="trang_thai" required>
+                <option value="Hoạt động">Hoạt động</option>
+                <option value="Bị khóa">Bị khóa</option>
             </select>
 
             <button type="submit" class="save-btn">Thêm</button>
@@ -141,6 +167,8 @@ $customers = $db->getAll("users");
             document.getElementById("edit-name").value = this.dataset.name;
             document.getElementById("edit-email").value = this.dataset.email;
             document.getElementById("edit-phone").value = this.dataset.phone;
+            document.getElementById("edit-vaitro").value = this.dataset.vaitro;
+            document.getElementById("edit-trangthai").value = this.dataset.trangthai;
 
             // Hiện modal chỉnh sửa
             editModal.style.display = "block";
