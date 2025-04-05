@@ -1,5 +1,5 @@
 <?php 
-    $db_name = "tree_shopping";
+    $db_name = "treeshop";
     $db_user = "root";
     $db_pass = "";
     $db_host = "localhost";
@@ -14,3 +14,4 @@
     if (!$conn){
         echo "Errorrrrrr";
     }
+?>
