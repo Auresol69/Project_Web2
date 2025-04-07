@@ -18,7 +18,7 @@ function Tien() {
 
 
 $(document).ready(function () {
-    LoadProducts(currentPage);
+    //LoadProducts(currentPage);
 
     $(document).on("click", "#header__menu__sub div", function (event) {
 
@@ -135,7 +135,7 @@ function LoadProducts(page) {
 }
 
 $(document).ready(function () {
-    loadCart();
+    //loadCart();
 
     // Sự kiện thêm sản phẩm vào giỏ hàng
     $(document).on("click", ".buy-button", function () {
