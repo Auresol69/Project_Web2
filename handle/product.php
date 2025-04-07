@@ -82,3 +82,15 @@
 </div>
 
 <?php include('../layout/footerr.php');?>
+
+<!-- Modal Popup -->
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modal-img" class="modal-img" src="" alt="Ảnh sản phẩm">
+    <h2 id="modal-title">Tên sản phẩm</h2>
+    <p id="modal-price" class="modal-price">Giá sản phẩm</p>
+    <p id="modal-description">Mô tả sản phẩm</p>
+    <button class="btn-them">Thêm vào giỏ</button>
+  </div>
+</div>
