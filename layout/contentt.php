@@ -23,40 +23,56 @@
 
     <div class="product-category-grid">
         <div class="category-card">
-            <img src="img/caydecham.jpg" alt="Cây dễ chăm">
-            <div class="category-label">CÂY DỄ CHĂM</div>
+            <a href="handle/product.php?maloaisp=TYP001">
+                <img src="img/caydecham.jpg" alt="Cây dễ chăm">
+                <div class="category-label">CÂY DỄ CHĂM</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/cayvanphong.jpg" alt="Cây văn phòng">
-            <div class="category-label">CÂY VĂN PHÒNG</div>
+            <a href="handle/product.php?maloaisp=TYP002">
+                <img src="img/cayvanphong.jpg" alt="Cây văn phòng">
+                <div class="category-label">CÂY VĂN PHÒNG</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/cayphongthuy.jpg" alt="Cây phong thủy">
-            <div class="category-label">CÂY PHONG THUỶ</div>
+            <a href="handle/product.php?maloaisp=TYP003">
+                <img src="img/cayphongthuy.jpg" alt="Cây phong thủy">
+                <div class="category-label">CÂY PHONG THUỶ</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/caydeban.jpg" alt="Cây để bàn">
-            <div class="category-label">CÂY ĐỂ BÀN</div>
+            <a href="handle/product.php?maloaisp=TYP004">
+                <img src="img/caydeban.jpg" alt="Cây để bàn">
+                <div class="category-label">CÂY ĐỂ BÀN</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/caytrongnuoc.jpg" alt="Cây trồng nước">
-            <div class="category-label">CÂY TRỒNG NƯỚC</div>
+            <a href="handle/product.php?maloaisp=TYP005">
+                <img src="img/caytrongnuoc.jpg" alt="Cây trồng nước">
+                <div class="category-label">CÂY TRỒNG NƯỚC</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/caycaocap.jpg" alt="Cây cao cấp">
-            <div class="category-label">CÂY CAO CẤP</div>
+            <a href="handle/product.php?maloaisp=TYP006">
+                <img src="img/caycaocap.jpg" alt="Cây cao cấp">
+                <div class="category-label">CÂY CAO CẤP</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/chaudatnung.jpg" alt="Chậu đất nung">
-            <div class="category-label">CHẬU ĐẤT NUNG</div>
+            <a href="handle/product.php?maloaisp=TYP007">
+                <img src="img/chaudatnung.jpg" alt="Chậu đất nung">
+                <div class="category-label">CHẬU ĐẤT NUNG</div>
+            </a>
         </div>
         <div class="category-card">
-            <img src="img/chauximang.jpg" alt="Chậu xi măng">
-            <div class="category-label">CHẬU XI MĂNG</div>
+            <a href="handle/product.php?maloaisp=TYP008">
+                <img src="img/chauximang.jpg" alt="Chậu xi măng">
+                <div class="category-label">CHẬU XI MĂNG</div>
+            </a>
         </div>
     </div>
 
-    <h2 class="product-title">SẢN PHẨM</h2>
+    <h2 class="product-title">SẢN PHẨM MỚI</h2>
 
     <div id="content__product">
         <div class="sanpham-card">

@@ -3,15 +3,12 @@
     $db_user = "root";
     $db_pass = "";
     $db_host = "localhost";
-    $conn = "";
 
-    try {    $conn = mysqli_connect($db_host,$db_user,
-        $db_pass,$db_name);}
-        catch (mysqli_sql_exception) {
-            echo "Error connecting to database!";
-        }
+    // Kết nối đến cơ sở dữ liệu MySQL
+    $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 
-    if (!$conn){
-        echo "Errorrrrrr";
+    // Kiểm tra kết nối
+    if (!$conn) {
+        die("Lỗi kết nối cơ sở dữ liệu: " . mysqli_connect_error());
     }
 ?>
