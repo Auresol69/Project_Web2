@@ -30,7 +30,8 @@ CREATE Table if not exists staff(
 DROP TABLE IF EXISTS powergroup;
 CREATE Table if not exists powergroup(
     `powergroupid` VARCHAR(20) NOT NULL,
-    `powergroupname` varchar(50) NOT NULL
+    `powergroupname` varchar(50) NOT NULL,
+    `status` TINYINT(1) DEFAULT 1
 );
 
 DROP TABLE IF EXISTS powergroup_func;

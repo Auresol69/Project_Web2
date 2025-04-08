@@ -9,11 +9,12 @@
                     <li><a href="?page=sanpham">Sản phẩm</a></li>
                     <li><a href="?page=donhang">Đơn hàng</a></li>
                     <li><a href="?page=customer">Quản lý tài khoản</a></li>
+                    <li><a href="?page=phanquyen">Phân quyền</a></li>
                 </ul>
             </div>
         </div>
         <div class="main-contaniner">
-        <?php
+            <?php
             $page= isset( $_GET['page'] ) ? $_GET['page'] :'home';
             switch ( $page ) {
                 case'danhmuc':
@@ -28,6 +29,10 @@
                 case'customer':
                     include 'customer/customer_listing.php';
                     break;
+                case 'phanquyen':
+                    include 'phanquyen/phanquyen_customer.php';
+                    break;
+                case 'home':
                 default:
                     echo 'Welcome to Admin Page';
                     break;

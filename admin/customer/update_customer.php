@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $so_dien_thoai = $_POST['so_dien_thoai'];
     $trang_thai = $_POST['trang_thai'];
-    $vai_tro = $_POST['vai_tro'];
+    // $vai_tro = $_POST['vai_tro'];
     $mat_khau = $_POST['mat_khau']; // Mật khẩu mới (nếu có)
 
     if (!empty($mat_khau)) {
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "email" => $email,
         "so_dien_thoai" => $so_dien_thoai,
         "trang_thai" => $trang_thai,
-        "vai_tro" => $vai_tro,
+        // "vai_tro" => $vai_tro,
         "mat_khau" => $mat_khau
     ], $id);
 

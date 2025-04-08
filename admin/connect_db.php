@@ -1,7 +1,7 @@
 <?php
 class connect_db {
     private $host = "localhost";
-    private $db_name = "treeshop";
+    private $db_name = "user_example";
     private $username = "root";
     private $password = "";
     private $conn;

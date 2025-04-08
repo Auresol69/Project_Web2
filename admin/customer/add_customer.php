@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $so_dien_thoai = trim($_POST['so_dien_thoai']);
     $mat_khau = password_hash($_POST['mat_khau'], PASSWORD_DEFAULT);
     $trang_thai = 'Hoạt động';
-    $vai_tro = trim($_POST['vai_tro']); // Lấy vai trò từ form
+    // $vai_tro = trim($_POST['vai_tro']); // Lấy vai trò từ form
 
     // Kiểm tra email đã tồn tại chưa
     $existingCustomer = $db->query("SELECT id FROM users WHERE email = ?", [$email])->fetch();
@@ -25,8 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'email' => $email,
         'so_dien_thoai' => $so_dien_thoai,
         'mat_khau' => $mat_khau,
-        'trang_thai' => $trang_thai,
-        'vai_tro' => $vai_tro
+        'trang_thai' => $trang_thai
+        // 'vai_tro' => $vai_tro
     ];
 
     // Thêm khách hàng

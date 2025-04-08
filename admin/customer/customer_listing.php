@@ -62,27 +62,25 @@
 
         <tbody>
             <?php foreach ($customers as $customer) : ?>
-                <tr>
-                    <td><?= $customer['id']; ?></td>
-                    <td><?= $customer['ho_ten']; ?></td>
-                    <td><?= $customer['email']; ?></td>
-                    <td><?= $customer['so_dien_thoai']; ?></td>
-                    <td><?= $customer['trang_thai']; ?></td>
-                    <td>
-                        <!-- Nút "Sửa" có thêm class edit-btn và data attributes -->
-                        <a href="#" class="btn btn-warning btn-sm edit-btn"
-                            data-id="<?= $customer['id']; ?>"
-                            data-name="<?= $customer['ho_ten']; ?>"
-                            data-email="<?= $customer['email']; ?>"
-                            data-phone="<?= $customer['so_dien_thoai']; ?>"
-                            data-vaitro="<?= $customer['vai_tro']; ?>"
-                            data-trangthai="<?= $customer['trang_thai']; ?>">
-                            Sửa
-                        </a>
+            <tr>
+                <td><?= $customer['id']; ?></td>
+                <td><?= $customer['ho_ten']; ?></td>
+                <td><?= $customer['email']; ?></td>
+                <td><?= $customer['so_dien_thoai']; ?></td>
+                <td><?= $customer['trang_thai']; ?></td>
+                <td>
+                    <!-- Nút "Sửa" có thêm class edit-btn và data attributes -->
+                    <a href="#" class="btn btn-warning btn-sm edit-btn" data-id="<?= $customer['id']; ?>"
+                        data-name="<?= $customer['ho_ten']; ?>" data-email="<?= $customer['email']; ?>"
+                        data-phone="<?= $customer['so_dien_thoai']; ?>"
+                        data-trangthai="<?= $customer['trang_thai']; ?>">
+                        Sửa
+                    </a>
 
-                        <a href="customer/delete_customer.php?id=<?= $customer['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
-                    </td>
-                </tr>
+                    <a href="customer/delete_customer.php?id=<?= $customer['id']; ?>" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
+                </td>
+            </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
@@ -104,12 +102,6 @@
 
             <label for="edit-phone">Số điện thoại</label>
             <input type="text" id="edit-phone" name="so_dien_thoai" required>
-
-            <label for="edit-vaitro">Vai trò</label>
-            <select id="edit-vaitro" name="vai_tro" required>
-                <option value="Khách hàng">Khách hàng</option>
-                <option value="Nhân viên">Nhân viên</option>
-                <option value="Admin">Admin</option>
             </select>
 
             <label for="edit-trangthai">Trạng thái</label>
@@ -144,11 +136,6 @@
             <label for="mat_khau">Mật khẩu</label>
             <input type="password" id="mat_khau" name="mat_khau" required>
 
-            <label for="vai_tro">Vai trò</label>
-            <select id="vai_tro" name="vai_tro" required>
-                <option value="Khách hàng">Khách hàng</option>
-                <option value="Nhân viên">Nhân viên</option>
-                <option value="Admin">Admin</option>
             </select>
 
             <label for="trang_thai">Trạng thái</label>
@@ -163,7 +150,7 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     // Lấy các modal
     let addModal = document.getElementById("addModal");
     let editModal = document.getElementById("editModal");
@@ -180,20 +167,20 @@
     editModal.style.display = "none";
 
     // Mở modal thêm khách hàng
-    openAddModalBtn.addEventListener("click", function () {
+    openAddModalBtn.addEventListener("click", function() {
         addModal.style.display = "block";
     });
 
     // Đóng modal khi nhấn nút "X"
     closeButtons.forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
             this.closest(".modal").style.display = "none";
         });
     });
 
     // Mở modal chỉnh sửa khi nhấn vào nút "Sửa"
     editButtons.forEach(button => {
-        button.addEventListener("click", function (event) {
+        button.addEventListener("click", function(event) {
             event.preventDefault(); // Ngăn chuyển trang
 
             // Lấy dữ liệu từ data-attributes của nút
@@ -201,7 +188,7 @@
             document.getElementById("edit-name").value = this.dataset.name;
             document.getElementById("edit-email").value = this.dataset.email;
             document.getElementById("edit-phone").value = this.dataset.phone;
-            document.getElementById("edit-vaitro").value = this.dataset.vaitro;
+            // document.getElementById("edit-vaitro").value = this.dataset.vaitro;
             document.getElementById("edit-trangthai").value = this.dataset.trangthai;
 
             // Hiện modal chỉnh sửa
@@ -210,11 +197,10 @@
     });
 
     // Đóng modal khi bấm ra ngoài
-    window.addEventListener("click", function (event) {
+    window.addEventListener("click", function(event) {
         if (event.target.classList.contains("modal")) {
             event.target.style.display = "none";
         }
     });
 });
-
 </script>
