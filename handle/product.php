@@ -57,16 +57,20 @@
         <?php
         // Kiểm tra nếu có sản phẩm
         if ($result->num_rows > 0) {
-            // Hiển thị sản phẩm
             while ($row = $result->fetch_assoc()) {
-                echo "<div class='sanpham-card'>";
+                echo "<div class='sanpham-card'> ";
+            
+                echo "<div class='sanpham-img-container'>";
                 echo "<img src='/treeshopuser/Project_Web2/" . $row['img'] . "' alt='" . $row['tensp'] . "' class='sanpham-img'>";
+                echo "<div class='overlay-xemnhanh' onclick='openModal(" . json_encode($row) . ")'>Xem chi tiết</div>";
+                echo "</div>";
+            
                 echo "<h3 class='sanpham-ten'>" . $row['tensp'] . "</h3>";
                 echo "<p class='sanpham-gia'>" . number_format($row['dongiasanpham'], 0, ',', '.') . "₫</p>";
                 echo "<button class='btn-them'>Thêm vào giỏ</button>";
-                echo "<button class='btn-them' onclick='openModal(" . json_encode($row) . ")'>Chi tiet </button>";
+                
                 echo "</div>";
-            }
+            }            
         } else {
             echo "<p>Không có sản phẩm nào trong danh mục này.</p>";
         }

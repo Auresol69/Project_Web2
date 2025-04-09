@@ -963,4 +963,27 @@ input[type="submit"]:hover {
     font-size: 20px;
     transition: background-color 0.3s ease;
 }
+
+.sanpham-img-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+.overlay-xemnhanh {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #2d572c;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
   
+.sanpham-img-container:hover .overlay-xemnhanh {
+    opacity: 1;
+}
