@@ -24,8 +24,12 @@
 
 <?php include('../layout/headerr.php');?>
 
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/trangchu.css">
+<link rel="stylesheet" href="../css/style.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="../css/trangchu.css?v=<?php echo time(); ?>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<script src="../js/scripts.js?v=<?php echo time(); ?>"></script>
+
 
 <div class="content">
     <div class="content__input">
@@ -60,6 +64,7 @@
                 echo "<h3 class='sanpham-ten'>" . $row['tensp'] . "</h3>";
                 echo "<p class='sanpham-gia'>" . number_format($row['dongiasanpham'], 0, ',', '.') . "₫</p>";
                 echo "<button class='btn-them'>Thêm vào giỏ</button>";
+                echo "<button class='btn-them' onclick='openModal(" . json_encode($row) . ")'>Chi tiet </button>";
                 echo "</div>";
             }
         } else {
@@ -83,14 +88,33 @@
 
 <?php include('../layout/footerr.php');?>
 
-<!-- Modal Popup -->
+
+<!-- Modal chi tiết sản phẩm -->
 <div id="productModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <img id="modal-img" class="modal-img" src="" alt="Ảnh sản phẩm">
-    <h2 id="modal-title">Tên sản phẩm</h2>
-    <p id="modal-price" class="modal-price">Giá sản phẩm</p>
-    <p id="modal-description">Mô tả sản phẩm</p>
-    <button class="btn-them">Thêm vào giỏ</button>
-  </div>
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+
+        <div class="modal-layout">
+            <div class="modal-left">
+                <img id="modal-img" src="" alt="Ảnh sản phẩm">
+            </div>
+            
+            <div class="modal-right">
+                <h1 id="modal-title" class="sanpham-ten">Tên sản phẩm</h1>
+                <p id="modal-code" class="product-code">Mã sản phẩm</p>
+                <p id="modal-quantity" class="product-quantity">Số lượng: 0</p>
+                <p id="modal-price" class="sanpham-gia">0.000₫</p>
+                <p id="modal-description">Mô tả sản phẩm...</p>
+
+                <div class="button-group">
+                    <div class="cart-icon-sp">
+                        <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <button class="btn-muanhanh">Mua ngay</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
+

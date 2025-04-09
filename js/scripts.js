@@ -370,3 +370,19 @@ $(document).ready(function () {
         });
     });
 });
+
+//Modal chi tiết sản phẩm
+function openModal(product) {
+    document.getElementById("modal-img").src = "/treeshopuser/Project_Web2/" + product.img;
+    document.getElementById("modal-title").textContent = product.tensp;
+    document.getElementById("modal-code").textContent = "Mã sản phẩm: " + product.masp;
+    document.getElementById("modal-quantity").textContent = "Số lượng: " + product.soluong;
+    document.getElementById("modal-price").textContent = Number(product.dongiasanpham).toLocaleString('vi-VN') + "₫";
+    document.getElementById("modal-description").textContent = product.mota || "Không có mô tả.";
+
+    document.getElementById("productModal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("productModal").style.display = "none";
+} 
