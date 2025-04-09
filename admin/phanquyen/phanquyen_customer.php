@@ -6,11 +6,11 @@
 
     $sql.= " AND status != 0"; // Xóa rồi thì không hiển thị
 
-    $powergroups= $db->query($sql,$params);
+    $powergroups= $db->query($sql,$params)->fetchAll(PDO::FETCH_ASSOC);
 
     $sql = "SELECT * FROM func WHERE 1=1";
 
-    $funcs = $db->query($sql);
+    $funcs = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <link rel="stylesheet" href="customer/css/style.css?v=<?php echo time(); ?>">
 
@@ -78,9 +78,27 @@
         <form action="phanquyen/update_nhomquyen.php" method="POST">
             <input type="hidden" id="edit-id" name="powergroupid">
 
+            <label for="edit-name">Tên nhóm quyền</label>
             <input type="text" id="edit-name" name="powergroupname">
 
-
+            <table>
+                <thead>
+                    <tr>
+                        <?php foreach($funcs as $func) :?>
+                        <th><?=htmlspecialchars($func['funcname']) ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <?php foreach($funcs as $func) :?>
+                        <td>
+                            <input type="checkbox" name="<?= $func['funcid'] ?>">
+                        </td>
+                        <?php endforeach; ?>
+                    </tr>
+                </tbody>
+            </table>
 
             <button type="submit" class="save-btn">Cập nhật</button>
         </form>
