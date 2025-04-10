@@ -67,6 +67,13 @@ function LoadProducts(page) {
         type = $(this).val().trim();
     });
 
+    // Nếu chọn loại cụ thể (không phải "all" hay "")
+    if (type && type !== "all") {
+        $(".product-category").hide(); // ẩn danh mục
+    } else {
+        $(".product-category").show(); // nếu chọn lại "Tất cả", hiện lại danh mục
+    }
+
     // Lỗi chớp nháy do line code dưới
     // $('#content__product').html("");
 
@@ -88,8 +95,8 @@ function LoadProducts(page) {
                 }
             }
             
-
             var tmp = "";
+            
             if (!response.products || response.products.length === 0) {
                 tmp = `<div class="empty-cart">
                                 <i class="fa-solid fa-face-sad-cry"></i>

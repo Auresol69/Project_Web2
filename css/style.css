@@ -206,6 +206,7 @@ input:focus {
     background-color: #b6e6cb;
     padding: 20px 40px;
     z-index: 2;
+    margin-top: 10px;
 }
 
 .footer__contact {
