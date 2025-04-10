@@ -20,7 +20,7 @@
     </div>
 
     <div class="product-category">
-        <h2 class="product-title">DANH MỤC SẢN PHẨM</h2>
+        <h2 class="product-title">DANH MỤC</h2>
 
         <div class="product-category-grid">
             <div class="category-card" data-tree_type="TYP001">
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <h2 class="product-title">SẢN PHẨM MỚI</h2>
+    <h2 class="product-title">SẢN PHẨM</h2>
 
     <div id="content__product">
         <div class="sanpham-card">
