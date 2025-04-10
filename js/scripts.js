@@ -30,7 +30,8 @@ $(document).ready(function () {
         LoadProducts(1);
 
         $('.product-category').css('display', 'none');
-    })
+        
+    });
 
     $(document).on("click", "#header__menu__product", function () { //chọn sản phẩm hiện tất cả
         type = "all";
@@ -76,6 +77,18 @@ function LoadProducts(page) {
         data: { page: page, keyword: keyword, type: type, min: min, max: max },
         success: function (response) {
             console.log(response);
+
+            // Hiển thị tên loại sản phẩm trước
+            if (type && response.header__menu__sub) {
+                const selectedType = response.header__menu__sub.find(item => item.typeid === type);
+                if (selectedType) {
+                    $(".product-title").text(selectedType.type.toUpperCase());
+                } else {
+                $(".product-title").text("TẤT CẢ SẢN PHẨM");
+                }
+            }
+            
+
             var tmp = "";
             if (!response.products || response.products.length === 0) {
                 tmp = `<div class="empty-cart">
@@ -84,6 +97,7 @@ function LoadProducts(page) {
                             </div>`;
             }
             else {
+                // Duyệt qua danh sách sản phẩm và tạo HTML
                 response.products.forEach(product => {
                     tmp += `
                         <div class="sanpham-card">

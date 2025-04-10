@@ -85,11 +85,10 @@ input:focus {
 
 #header__menu__sub>div:hover {
     transform: scaleX(1.1);
+    cursor: pointer;
 }
 
 .content {
-    box-sizing: border-box;
-    padding: 15px;
     text-align: center;
     padding-top: 50px;
     min-height: 558.98px;
@@ -97,11 +96,9 @@ input:focus {
 
 .content__input {
     margin: 0 auto;
-    padding: 0 20px;
-    background-color: #b6e6cb;
-    border-radius: 5px;
-    height: 300px;
     position: relative;
+    height: 300px;
+    background-color: #b6e6cb;
 }
 
 .content__input-img img {
@@ -298,7 +295,6 @@ input:focus {
     height: 300px;
     margin-bottom: 8px;
     background-color: #b6e6cb;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 .content__slogan {
@@ -324,9 +320,6 @@ input:focus {
     cursor: pointer;
     background-color: #1f5f27;
 }
-
-
-
 
 .policy-container {
     max-width: 800px;
@@ -783,7 +776,6 @@ input[type="submit"]:hover {
 .sanpham-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    cursor: pointer;
 }
 
 .sanpham-img {
@@ -828,7 +820,7 @@ input[type="submit"]:hover {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 20px;
+    background-color: #fffaf0;
 }
 
 .product-category-grid {
@@ -886,7 +878,7 @@ input[type="submit"]:hover {
 }
 
 /* Tiêu đề danh mục */
-.product-title {
+.product-title, .category-title {
     font-size: 35px; /* Kích thước chữ */
     color: #055c08; /* Màu chữ tối */
     text-align: center; /* Căn giữa tiêu đề */
