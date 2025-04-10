@@ -18,7 +18,7 @@ function Tien() {
 
 
 $(document).ready(function () {
-    //LoadProducts(currentPage);
+    LoadProducts(currentPage);
 
     $(document).on("click", "#header__menu__sub div", function (event) {
 
@@ -36,6 +36,14 @@ $(document).ready(function () {
         LoadProducts(1);
     });
 });
+
+//lọc sản phẩm từ danh mục
+$(document).on("click", ".category-card", function () {
+    type = $(this).data("tree_type");
+    console.log("Loại sản phẩm:", type);
+    LoadProducts(1);
+});
+
 
 function LoadProducts(page) {
     // Tìm tên sản phẩm
@@ -72,17 +80,17 @@ function LoadProducts(page) {
             }
             else {
                 response.products.forEach(product => {
-                    tmp += `<div class="sanpham">
-                    <img src="${product.image}" alt="">
-                    <div class="product-id">Mã SP: ${product.id}</div>
-                    <div class="product-name">Tên SP: ${product.name}</div>
-                    <div class="product-price">Giá SP: ${product.price}</div>
-                    <div class="product-soluong">Số lượng SP: ${product.soluong}</div>
-                    <div>
-                        <button class="buy-button">Mua</button>
-                        <button class="detail-button">Chi tiết</button>
-                    </div>
-                </div>`;
+                    tmp += `
+                        <div class="sanpham-card">
+                            <div class="sanpham-img-container">
+                                <img src="/treeshopuser/Project_Web2/${product.image}" alt="${product.name}" class="sanpham-img">
+                                <div class="overlay-xemnhanh" onclick='openModal(${JSON.stringify(product)})'>Xem chi tiết</div>
+                            </div>
+                            <h3 class="sanpham-ten">${product.name}</h3>
+                            <p class="sanpham-gia">${Number(product.price).toLocaleString("vi-VN")}₫</p>
+                            <button class="btn-them">Thêm vào giỏ</button>
+                        </div>
+                    `;
                 });
             }
             $('#content__product').html(tmp);
@@ -91,18 +99,17 @@ function LoadProducts(page) {
             currentPage = response.page;
             totalPage = response.total;
 
+            // $('.product-category-grid').css('display', 'none');
             // Hiển thị pagination
-            $('#page').html("");
-            for (let i = 1; i <= totalPage; ++i) {
-                $('#page').append(`<span onclick="LoadProducts(${i})">${i}</span>`);
-            }
-
-            // Ẩn/hiện div chứa pagination
-            if (!totalPage || totalPage <= 1) {
-                $('.content__page').css('display', 'none');
-            }
-            else {
-                $('.content__page').css('display', 'flex');
+            if (totalPage && totalPage > 1) { //2 trang trở lên
+                $('#page').html(""); // Xóa pagination cũ nếu có
+                for (let i = 1; i <= totalPage; ++i) {
+                    $('#page').append(`<span onclick="LoadProducts(${i})">${i}</span>`);
+                }
+                $('.content__page').css('display', 'flex'); // Hiện pagination
+            } else {
+                $('#page').html(""); // Xóa pagination nếu chỉ có 1 trang
+                $('.content__page').css('display', 'none'); // Ẩn pagination
             }
 
             // Hiển thị danh mục sản phẩm
@@ -135,7 +142,7 @@ function LoadProducts(page) {
 }
 
 $(document).ready(function () {
-    //loadCart();
+    loadCart();
 
     // Sự kiện thêm sản phẩm vào giỏ hàng
     $(document).on("click", ".buy-button", function () {
@@ -373,16 +380,16 @@ $(document).ready(function () {
 
 //Modal chi tiết sản phẩm
 function openModal(product) {
-    document.getElementById("modal-img").src = "/treeshopuser/Project_Web2/" + product.img;
-    document.getElementById("modal-title").textContent = product.tensp;
-    document.getElementById("modal-code").textContent = "Mã sản phẩm: " + product.masp;
+    document.getElementById("modal-img").src = "/treeshopuser/Project_Web2/" + product.image;
+    document.getElementById("modal-title").textContent = product.name;
+    document.getElementById("modal-code").textContent = "Mã sản phẩm: " + product.id;
     document.getElementById("modal-quantity").textContent = "Số lượng: " + product.soluong;
-    document.getElementById("modal-price").textContent = Number(product.dongiasanpham).toLocaleString('vi-VN') + "₫";
-    document.getElementById("modal-description").textContent = product.mota || "Không có mô tả.";
+    document.getElementById("modal-price").textContent = Number(product.price).toLocaleString("vi-VN") + "₫";
+    document.getElementById("modal-description").textContent = product.mota || "Chưa có mô tả";
 
     document.getElementById("productModal").style.display = "block";
 }
 
 function closeModal() {
     document.getElementById("productModal").style.display = "none";
-} 
+}

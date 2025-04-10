@@ -60,7 +60,8 @@
                 "name" => $row["tensp"],
                 "price" => $row["dongiasanpham"],
                 "image" => $row["img"],
-                "soluong" => $row["soluong"]
+                "soluong" => $row["soluong"],
+                "mota" => $row["mota"]
             ];
         }
         $response["total"] = $TotalPage;

@@ -187,7 +187,7 @@ input:focus {
     display: flex;
     justify-content: center;
     gap: 10px;
-    background: white;
+    background-color: black; /*xíu đổi màu sau */
     padding: 6px 10px;
     border-radius: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -964,10 +964,14 @@ input[type="submit"]:hover {
     transition: background-color 0.3s ease;
 }
 
+.cart-icon-sp:hover {
+    background-color: #b71c1c;
+}
+
 .sanpham-img-container {
     position: relative;
     overflow: hidden;
-  }
+}
 
 .overlay-xemnhanh {
     position: absolute;
