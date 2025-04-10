@@ -20,7 +20,7 @@ function Tien() {
 $(document).ready(function () {
     LoadProducts(currentPage);
 
-    $(document).on("click", "#header__menu__sub div", function (event) {
+    $(document).on("click", "#header__menu__sub div", function (event) { //chọn từ header
 
         // Tránh lan event lên phần tử cha
         event.stopPropagation();
@@ -28,9 +28,11 @@ $(document).ready(function () {
         type = $(this).data("tree_type");
         console.log(type);
         LoadProducts(1);
+
+        $('.product-category').css('display', 'none');
     })
 
-    $(document).on("click", "#header__menu__product", function () {
+    $(document).on("click", "#header__menu__product", function () { //chọn sản phẩm hiện tất cả
         type = "all";
         console.log(type);
         LoadProducts(1);
@@ -42,6 +44,9 @@ $(document).on("click", ".category-card", function () {
     type = $(this).data("tree_type");
     console.log("Loại sản phẩm:", type);
     LoadProducts(1);
+
+    $('.product-category').css('display', 'none');
+
 });
 
 
@@ -98,8 +103,7 @@ function LoadProducts(page) {
             // Cập nhật currentPage và totalPage toàn cục
             currentPage = response.page;
             totalPage = response.total;
-
-            // $('.product-category-grid').css('display', 'none');
+            
             // Hiển thị pagination
             if (totalPage && totalPage > 1) { //2 trang trở lên
                 $('#page').html(""); // Xóa pagination cũ nếu có
@@ -142,7 +146,7 @@ function LoadProducts(page) {
 }
 
 $(document).ready(function () {
-    loadCart();
+    //loadCart();
 
     // Sự kiện thêm sản phẩm vào giỏ hàng
     $(document).on("click", ".buy-button", function () {

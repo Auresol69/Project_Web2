@@ -271,6 +271,14 @@ input:focus {
     border: #1f5f27;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
 
 .prev,
 .next {
@@ -814,11 +822,20 @@ input[type="submit"]:hover {
 }
 
 /* Danh mục */
+
+.product-category {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
 .product-category-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr); /* 4 cột cố định */
     gap: 20px;
-    padding: 20px;
+    padding: 0px 20px 20px;
     max-width: 1200px; /* Giới hạn chiều rộng của container */
     margin: 0 auto; /* Canh giữa container */
 }
@@ -871,11 +888,8 @@ input[type="submit"]:hover {
 /* Tiêu đề danh mục */
 .product-title {
     font-size: 35px; /* Kích thước chữ */
-    font-weight: 200; /* Đậm chữ */
     color: #055c08; /* Màu chữ tối */
     text-align: center; /* Căn giữa tiêu đề */
-    margin-top: 50px; /* Khoảng cách dưới tiêu đề */
-    padding: 10px 0; /* Khoảng cách trên và dưới tiêu đề */
 }
 
 /* Modal chi tiết sản phẩm */
@@ -956,8 +970,8 @@ input[type="submit"]:hover {
 .cart-icon-sp {
     position: relative;
     display: inline-block;
-    color: #d32f2f;
-    border: 1px solid #ddd;
+    background-color: #d32f2f;
+    color: white;
     padding: 10px 16px;
     cursor: pointer;
     font-size: 20px;

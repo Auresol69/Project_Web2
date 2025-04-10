@@ -19,47 +19,49 @@
         </div>
     </div>
 
-    <h2 class="product-title">DANH MỤC SẢN PHẨM</h2>
+    <div class="product-category">
+        <h2 class="product-title">DANH MỤC SẢN PHẨM</h2>
 
-    <div class="product-category-grid">
-        <div class="category-card" data-tree_type="TYP001">
-            <img src="img/caydecham.jpg" alt="Cây dễ chăm">
-            <div class="category-label">CÂY DỄ CHĂM</div>
-        </div>
+        <div class="product-category-grid">
+            <div class="category-card" data-tree_type="TYP001">
+                <img src="img/caydecham.jpg" alt="Cây dễ chăm">
+                <div class="category-label">CÂY DỄ CHĂM</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP002">
-            <img src="img/cayvanphong.jpg" alt="Cây văn phòng">
-            <div class="category-label">CÂY VĂN PHÒNG</div>
-        </div>
+            <div class="category-card" data-tree_type="TYP002">
+                <img src="img/cayvanphong.jpg" alt="Cây văn phòng">
+                <div class="category-label">CÂY VĂN PHÒNG</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP003">
-            <img src="img/cayphongthuy.jpg" alt="Cây phong thủy">
-            <div class="category-label">CÂY PHONG THUỶ</div>
-        </div>
+            <div class="category-card" data-tree_type="TYP003">
+                <img src="img/cayphongthuy.jpg" alt="Cây phong thủy">
+                <div class="category-label">CÂY PHONG THUỶ</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP004">
-            <img src="img/caydeban.jpg" alt="Cây để bàn">
-            <div class="category-label">CÂY ĐỂ BÀN</div>
-        </div>
+            <div class="category-card" data-tree_type="TYP004">
+                <img src="img/caydeban.jpg" alt="Cây để bàn">
+                <div class="category-label">CÂY ĐỂ BÀN</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP005">
-            <img src="img/caytrongnuoc.jpg" alt="Cây trồng nước">
-            <div class="category-label">CÂY TRỒNG NƯỚC</div>
-        </div>
+            <div class="category-card" data-tree_type="TYP005">
+                <img src="img/caytrongnuoc.jpg" alt="Cây trồng nước">
+                <div class="category-label">CÂY TRỒNG NƯỚC</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP006">
-            <img src="img/caycaocap.jpg" alt="Cây cao cấp">
-            <div class="category-label">CÂY CAO CẤP</div>
-        </div>
+            <div class="category-card" data-tree_type="TYP006">
+                <img src="img/caycaocap.jpg" alt="Cây cao cấp">
+                <div class="category-label">CÂY CAO CẤP</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP007">
-            <img src="img/chaudatnung.jpg" alt="Chậu đất nung">
-            <div class="category-label">CHẬU ĐẤT NUNG</div>
-        </div>
+            <div class="category-card" data-tree_type="TYP007">
+                <img src="img/chaudatnung.jpg" alt="Chậu đất nung">
+                <div class="category-label">CHẬU ĐẤT NUNG</div>
+            </div>
 
-        <div class="category-card" data-tree_type="TYP008">
-            <img src="img/chauximang.jpg" alt="Chậu xi măng">
-            <div class="category-label">CHẬU XI MĂNG</div>
+            <div class="category-card" data-tree_type="TYP008">
+                <img src="img/chauximang.jpg" alt="Chậu xi măng">
+                <div class="category-label">CHẬU XI MĂNG</div>
+            </div>
         </div>
     </div>
 
@@ -185,12 +187,14 @@
             <button class="btn-them">Thêm vào giỏ</button>
         </div>
     </div>
+    <div class="content__page">
         <div class="prev" onclick="Lui()">
             < </div>
                 <div id="page"> </div>
                 <div class="next" onclick="Tien()"> > </div>
         </div>
     </div>
+    
 </div>
 
 <!-- Modal chi tiết sản phẩm -->
