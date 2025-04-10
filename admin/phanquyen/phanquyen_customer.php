@@ -1,13 +1,39 @@
 <?php
     require_once 'connect_db.php';
     $db = new connect_db();
-    $sql = "SELECT * FROM powergroup WHERE 1=1";
+
+    // Lấy các powergroup và chức năng tương ứng
+    $sql = "SELECT pg.*, pf.funcid 
+            FROM powergroup pg 
+            LEFT JOIN powergroup_func pf on pg.powergroupid=pf.powergroupid
+            WHERE 1=1";
     $params = [];
 
-    $sql.= " AND status != 0"; // Xóa rồi thì không hiển thị
+    $sql.= " AND pg.status != 0"; // Xóa rồi thì không hiển thị
 
-    $powergroups= $db->query($sql,$params)->fetchAll(PDO::FETCH_ASSOC);
+    $powergroups_raw= $db->query($sql,$params)->fetchAll(PDO::FETCH_ASSOC);
 
+    $powergroups = [];
+
+    foreach($powergroups_raw as $row){
+        $id = $row['powergroupid']; // vì có thể nhiều dòng trùng powergroupid
+        if (!isset($powergroups[$id])){
+            $powergroups[$id] = [
+                'powergroupid' => $row['powergroupid'],
+                'powergroupname' => $row['powergroupname'],
+                'status' => $row['status'],
+                'created_time' => $row['created_time'],
+                'last_updated' => $row['last_updated'],
+                'funcs' => []
+            ];
+        }
+        if (!empty($row['funcid']))
+        {
+            $powergroups[$id]['funcs'][]=$row['funcid'];
+        }
+    }
+
+    // Lấy các chức năng
     $sql = "SELECT * FROM func WHERE 1=1";
 
     $funcs = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -43,11 +69,12 @@
                 <td>
                     <a href="#" class="btn btn-warning btn-sm edit-btn"
                         data-powergroupid="<?= $powergroup['powergroupid']; ?>"
-                        data-powergroupname="<?= $powergroup['powergroupname']; ?>">
+                        data-powergroupname="<?= $powergroup['powergroupname']; ?>"
+                        data-funcs="<?= htmlspecialchars(json_encode($powergroup['funcs']));?>">
                         Sửa
                     </a>
 
-                    <a href="phanquyen/delete_powergroup.php?id=<?= $powergroup['powergroupid']; ?>"
+                    <a href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
                         class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
                 </td>
             </tr>
@@ -85,7 +112,7 @@
                 <thead>
                     <tr>
                         <?php foreach($funcs as $func) :?>
-                        <th><?=htmlspecialchars($func['funcname']) ?></th>
+                        <th><?=htmlspecialchars(string: $func['funcname']) ?></th>
                         <?php endforeach; ?>
                     </tr>
                 </thead>
@@ -93,7 +120,7 @@
                     <tr>
                         <?php foreach($funcs as $func) :?>
                         <td>
-                            <input type="checkbox" name="<?= $func['funcid'] ?>">
+                            <input type="checkbox" name="permissions[]" value="<?= $func['funcid'] ?>">
                         </td>
                         <?php endforeach; ?>
                     </tr>
@@ -132,7 +159,25 @@ document.addEventListener("DOMContentLoaded", function() {
     editButtons.forEach(button => {
         button.addEventListener("click", function(event) {
             event.preventDefault();
+
+
+            document.getElementById("edit-id").value = this.dataset.powergroupid;
+
+            document.getElementById("edit-name").value = this.dataset.powergroupname;
+
             editModal.style.display = "block";
+
+            // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
+            let funcsJSON = this.dataset.funcs;
+
+            let funcs = JSON.parse(funcsJSON);
+
+            funcs.forEach(id => {
+                let checkbox = document.querySelector(
+                    `input[type="checkbox"][value="${id}"]`);
+                if (checkbox)
+                    checkbox.checked = true;
+            });
         });
     });
 
