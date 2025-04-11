@@ -9,14 +9,12 @@
 
         <div class="content__input__main">
             <input id="keyword" type="text" placeholder="Tìm kiếm">
-            <i class="fa-solid fa-magnifying-glass" onclick="LoadProducts(1)"></i>
-        </div>
-        <div class="content__input__sort">
             <input id="content__input__main__sort_min" type="text" placeholder="min">
             <input id="content__input__main__sort_max" type="text" placeholder="max">
             <select id="content__input__main__sort_type">
             </select>
-        </div>
+            <i class="fa-solid fa-magnifying-glass" onclick="LoadProducts(1)"></i>
+        </div>        
     </div>
 
     <div class="product-category">
@@ -73,6 +71,7 @@
                 <!-- Sản phẩm sẽ được tải vào đây -->
             
         </div>
+        
     </div>
 
     <div class="content__page">
