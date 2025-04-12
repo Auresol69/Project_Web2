@@ -338,18 +338,17 @@ input:focus {
 }
 
 
+/* giỏ hàng */
 
-#modal-cart {
-    width: 100%;
-    min-height: 560px;
-    background-color: rgb(208, 226, 232);
-}
 
 
 #modal-cart {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-height: 560px;
+    background-color: rgb(208, 226, 232);
 }
 
 #container-cart {
@@ -506,7 +505,7 @@ input:focus {
     height: 18px;
     line-height: 18px;
     text-align: center;
-    display: none;
+    /* display: none; */
 }
 
 .fa-user,
