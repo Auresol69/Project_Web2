@@ -2,7 +2,7 @@
         include("../database/database.php");
         header("Content-Type: application/json");
 
-        $ItemPerPage = 6;
+        $ItemPerPage = 10;
         $page = isset($_POST['page']) ? $_POST['page'] : 1;
         $page = max(1, $page);
 

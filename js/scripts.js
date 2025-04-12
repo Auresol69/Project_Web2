@@ -418,3 +418,41 @@ function openModal(product) {
 function closeModal() {
     document.getElementById("productModal").style.display = "none";
 }
+
+// Tìm kiếm theo tên sản phẩm
+function liveSearch(keyword) {
+    if (keyword.trim() === "") {
+        document.getElementById("searchResult").style.display = "none";
+        return;
+    }
+
+    fetch("handle/search.php", {
+        method: "POST",
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: "keyword=" + encodeURIComponent(keyword)
+    })
+    .then(res => res.json())
+    .then(data => {
+        const resultBox = document.getElementById("searchResult");
+        if (data.products.length > 0) {
+            let html = "";
+            data.products.forEach(item => {
+                html += `
+                    <div class="search-item" onclick='openModal(${JSON.stringify(item)})'>
+                        <img src="${item.image}" alt="">
+                        <div class="info">
+                            <div>${item.name}</div>
+                            <div class="price">${Number(item.price).toLocaleString("vi-VN")}₫</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultBox.innerHTML = html;
+            resultBox.style.display = "block";
+        } else {
+            resultBox.innerHTML = "<div style='padding: 10px'>Không tìm thấy sản phẩm</div>";
+            resultBox.style.display = "block";
+        }
+    });
+}
