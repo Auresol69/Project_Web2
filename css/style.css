@@ -23,6 +23,8 @@ input:focus {
     font-size: 20px;
     display: flex;
     justify-content: space-between;
+    align-items: center; /* ✅ canh giữa theo chiều dọc */
+    padding: 10px 20px; /* ✅ cho đỡ bị dính sát */
 }
 
 .header__name {
@@ -33,7 +35,7 @@ input:focus {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    margin: 20px;
+    margin-right: 20px;
 
 }
 
@@ -54,9 +56,8 @@ input:focus {
 
 .header__icons {
     display: flex;
-    justify-content: space-between;
+    align-items: center; /* ✅ canh giữa icon và search */
     gap: 20px;
-    margin: 20px;
 }
 
 #header__menu__sub {
@@ -120,7 +121,6 @@ input:focus {
     padding: 15px 25px;
     max-width: 800px;
     margin: 0 auto;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .content__input__main input,
@@ -130,13 +130,11 @@ input:focus {
     border-radius: 25px;
     font-size: 16px;
     min-width: 120px;
-    background-color: #f0f8f1;
-    color: #2e4733;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
     flex: 1 1 150px;
 }
 
-.content__input__main input::placeholder {
+.content__input__main input[type="text"]::placeholder {
     color: #000;
 }
 
@@ -147,10 +145,6 @@ input:focus {
     transform: scale(1.02);
 }
 
-.content__input__main select {
-    appearance: none;
-}
-
 .content__input__main i {
     color: #bdf1c3;
     font-size: 22px;
@@ -158,14 +152,7 @@ input:focus {
     padding: 10px;
     transition: transform 0.3s ease, color 0.2s ease;
     border-radius: 50%;
-    background: transparent;
 }
-
-.content__input__main i:hover {
-    transform: scale(1.2);
-    color: #a3e6aa;
-}
-
 
 .content__input h1 {
     font-size: 34px;
@@ -173,6 +160,76 @@ input:focus {
     margin-bottom: 10px;
     color: #2c662d;
     padding-top: 15px;
+}
+
+/* Tìm kiếm theo tên sản phẩm */
+.live-search-wrapper {
+    display: flex;
+    align-items: center; /* ✅ canh giữa input với icon */
+    height: 40px; /* ✅ chiều cao cố định tương đương icon */
+}
+
+.search-bar {
+    position: relative;
+    width: 250px;
+}
+
+.search-bar input {
+    width: 100%;
+    height: 40px; /* ✅ chiều cao đều với các icon */
+    padding: 10px 40px 10px 15px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.search-bar i {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+    cursor: pointer;
+}
+
+.search-result {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none;
+    overflow-y: auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.search-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.search-item .price {
+    font-weight: bold;
+    color: green;
+}
+
+.search-item:hover {
+    background-color: #f0f0f0;
 }
 
 .footer {
