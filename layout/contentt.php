@@ -103,7 +103,7 @@
                 <p id="modal-description">Mô tả sản phẩm...</p>
 
                 <div class="button-group">
-                    <div class="cart-icon-sp">
+                    <div class="cart-icon-sp" id="modal-cart-icon">
                         <i class="fa fa-shopping-cart"></i>
                     </div>
                     <button class="btn-muanhanh">Mua ngay</button>

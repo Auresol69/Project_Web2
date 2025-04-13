@@ -1,7 +1,6 @@
 
 <div id="modal-cart">
     <div id="container-cart">
-        <button class="close-modal-cart">×</button>
         <h2>Giỏ hàng của bạn</h2>
         <div id="cart-items"></div>
         <p class="total-letter">Tổng: <span class="total-price">0đ</span></p>

@@ -139,48 +139,44 @@ $('#open-form-log-in__info').on('click', function (event) {
                   dataType: "json",
                   success: function (response) {
                       if (response.status === "success") {
-                          // Tạo HTML cho modal
+
                           let infoHtml = `
-                              <div class="account-info-modal">
-                                  <h2>Thông tin tài khoản</h2>
-                                  <div><strong>Tên đăng nhập:</strong> ${response.data.username} (Không thể chỉnh sửa)</div>
-                                  <div>
-                                      <strong>Tên:</strong>
-                                      <input type="text" id="name-input" value="${response.data.name}" placeholder="Nhập tên">
-                                  </div>
-                                  <div>
-                                      <strong>Email:</strong>
-                                      <input type="email" id="email-input" value="${response.data.email}" placeholder="Nhập email">
-                                  </div>
-                                  <div>
-                                      <strong>Số điện thoại:</strong>
-                                      <input type="text" id="phone-input" value="${response.data.phone}" placeholder="Nhập số điện thoại">
-                                  </div>
-                                  <div>
-                                      <strong>Tỉnh/Thành phố:</strong>
-                                      <select id="province-select">
-                                          <option value="">-- Chọn tỉnh/thành phố --</option>
-                                          ${response.provinces.map(province => `
-                                              <option value="${province.province_id}" ${response.data.province_id === province.province_id ? 'selected' : ''}>
-                                                  ${province.name}
-                                              </option>
-                                          `).join('')}
-                                      </select>
-                                  </div>
-                                  <div>
-                                      <strong>Quận/Huyện:</strong>
-                                      <select id="district-select">
-                                          <option value="">-- Chọn quận/huyện --</option>
-                                      </select>
-                                  </div>
-                                  <div>
-                                      <strong>Địa chỉ chi tiết:</strong>
-                                      <input type="text" id="address-detail-input" value="${response.data.address_detail}" placeholder="Nhập địa chỉ chi tiết (tùy chọn)">
-                                  </div>
-                                  <button class="save-account">Lưu</button>
-                                  <button class="close-modal">Đóng</button>
+                          <div class="account-info-modal">
+                              <h2>Thông tin tài khoản</h2>
+                              <div><strong>Tên đăng nhập:</strong> ${response.data.username} (Không thể chỉnh sửa)</div>
+                              <div>
+                                  <strong>Email:</strong>
+                                  <input type="email" id="email-input" value="${response.data.email}" placeholder="Nhập email">
                               </div>
-                          `;
+                              <div>
+                                  <strong>Số điện thoại:</strong>
+                                  <input type="text" id="phone-input" value="${response.data.phone}" placeholder="Nhập số điện thoại">
+                              </div>
+                              <div>
+                                  <strong>Tỉnh/Thành phố:</strong>
+                                  <select id="province-select">
+                                      <option value="">-- Chọn tỉnh/thành phố --</option>
+                                      ${response.provinces.map(province => `
+                                          <option value="${province.province_id}" ${response.data.province_id === province.province_id ? 'selected' : ''}>
+                                              ${province.name}
+                                          </option>
+                                      `).join('')}
+                                  </select>
+                              </div>
+                              <div>
+                                  <strong>Quận/Huyện:</strong>
+                                  <select id="district-select">
+                                      <option value="">-- Chọn quận/huyện --</option>
+                                  </select>
+                              </div>
+                              <div>
+                                  <strong>Địa chỉ chi tiết:</strong>
+                                  <input type="text" id="address-detail-input" value="${response.data.address_detail}" placeholder="Nhập địa chỉ chi tiết (tùy chọn)">
+                              </div>
+                              <button class="save-account">Lưu</button>
+                              <button class="close-modal">Đóng</button>
+                          </div>
+                      `;
                           $('body').append(infoHtml);
 
                           // Cập nhật danh sách quận/huyện dựa trên tỉnh/thành phố được chọn
@@ -211,39 +207,41 @@ $('#open-form-log-in__info').on('click', function (event) {
 
                           // Xử lý sự kiện nút "Lưu"
                           $('.save-account').on('click', function () {
-                            let newName = $('#name-input').val().trim();
                             let newEmail = $('#email-input').val().trim();
                             let newPhone = $('#phone-input').val().trim();
                             let newProvinceId = $('#province-select').val();
                             let newDistrictId = $('#district-select').val();
                             let newAddress = $('#address-detail-input').val().trim();
-
-                            if (!newName || !newEmail || !newPhone) {
-                                alert("Tên, email và số điện thoại không được để trống!");
+                        
+                            if (!newEmail || !newPhone) {
+                                alert("Email và số điện thoại không được để trống!");
                                 return;
                             }
-
+                        
+                            // Chuyển chuỗi rỗng thành null
+                            newProvinceId = newProvinceId === '' ? null : newProvinceId;
+                            newDistrictId = newDistrictId === '' ? null : newDistrictId;
+                            newAddress = newAddress === '' ? null : newAddress;
+                        
                             $.ajax({
                                 type: "POST",
                                 url: "handle/update_account.php",
                                 data: {
-                                    name: newName,
                                     email: newEmail,
                                     phone: newPhone,
-                                    province_id: newProvinceId || null,
-                                    district_id: newDistrictId || null,
-                                    address_detail: newAddress || null
+                                    province_id: newProvinceId,
+                                    district_id: newDistrictId,
+                                    address_detail: newAddress
                                 },
                                 dataType: "json",
                                 success: function (updateResponse) {
                                     if (updateResponse.status === "success") {
                                         alert(updateResponse.message);
                                         // Cập nhật lại giá trị hiển thị trên modal
-                                        $('#name-input').val(newName);
                                         $('#email-input').val(newEmail);
                                         $('#phone-input').val(newPhone);
                                         $('#address-detail-input').val(newAddress);
-                                        // Đóng modal với hiệu ứng fadeOut
+                                        // Đóng modal
                                         $('.account-info-modal').fadeOut(300, function() {
                                             $(this).remove();
                                         });
@@ -257,7 +255,7 @@ $('#open-form-log-in__info').on('click', function (event) {
                                     alert("Lỗi khi cập nhật thông tin tài khoản: " + error);
                                 }
                             });
-                          });
+                        });
 
                           // Xử lý sự kiện nút "Đóng" (cũng áp dụng hiệu ứng fadeOut)
                           $('.close-modal').on('click', function () {
@@ -302,12 +300,56 @@ $('#open-form-log-in__info').on('click', function (event) {
     if ($(event.target).closest(".Authentication-Form-Dad").length === 0) {
       $("#overlay").hide();
     }
-  });
+  });       
 
   // Sự kiện mở giỏ hàng
-  $(document).on("click", ".cart-icon", function (e) {
+  $(document).on("click", ".cart-icon, .cart-icon-sp", function (e) {
     e.preventDefault();
-    loadCart(true);
+
+    if ($(this).closest("#productModal").length) {
+        let productId = $(this).attr("data-id");
+        let productName = $("#modal-title").text();
+
+        if (!productId || productId === "undefined") {
+            console.error("productId không hợp lệ trong modal:", productId);
+            alert("Không thể thêm sản phẩm: Mã sản phẩm không hợp lệ!");
+            return;
+        }
+
+        console.log("Thêm sản phẩm từ modal chi tiết:", { productId, productName });
+
+        $.ajax({
+            type: "POST",
+            url: "handle/auth.php",
+            data: { action: "check" },
+            dataType: "json",
+            success: function (response) {
+                if (response.loggedIn) {
+                    updateCart(
+                        "add",
+                        productId,
+                        "Đã thêm " + productName + " vào giỏ hàng!"
+                    );
+                    loadCart(false); // Không hiển thị giỏ hàng
+                    closeModal();
+                } else {
+                    $("#overlay").show();
+                    alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(
+                    "Lỗi kiểm tra đăng nhập:",
+                    status,
+                    error,
+                    xhr.responseText
+                );
+                alert("Lỗi kiểm tra trạng thái đăng nhập!");
+            },
+        });
+    } else {
+        loadCart(true); 
+    }
   });
 
   // Sự kiện cho nút "Mua tiếp"
@@ -395,43 +437,51 @@ $('#open-form-log-in__info').on('click', function (event) {
 
   // Sự kiện cho nút "Thêm vào giỏ" trong danh sách sản phẩm
   $(document).on("click", ".btn-them", function () {
-    let productId = $(this).data("id");
+    let productId = $(this).attr("data-id"); 
     let productName = $(this)
-      .closest(".sanpham-card")
-      .find(".sanpham-ten")
-      .text();
-    console.log("Thêm sản phẩm:", productId, productName);
+        .closest(".sanpham-card")
+        .find(".sanpham-ten")
+        .text();
+
+    // Kiểm tra productId
+    if (!productId || productId === "undefined") {
+        console.error("productId không hợp lệ:", productId);
+        alert("Không thể thêm sản phẩm: Mã sản phẩm không hợp lệ!");
+        return;
+    }
+
+    console.log("Thêm sản phẩm từ danh sách:", { productId, productName });
 
     $.ajax({
-      type: "POST",
-      url: "handle/auth.php",
-      data: {action: "check"},
-      dataType: "json",
-      success: function (response) {
-        console.log("Trạng thái đăng nhập:", response);
-        if (response.loggedIn) {
-          updateCart(
-            "add",
-            productId,
-            "Đã thêm " + productName + " vào giỏ hàng!"
-          );
-          loadCart(false);
-        } else {
-          $("#overlay").show();
-          alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error(
-          "Lỗi kiểm tra đăng nhập:",
-          status,
-          error,
-          xhr.responseText
-        );
-        alert("Lỗi kiểm tra trạng thái đăng nhập!");
-      },
+        type: "POST",
+        url: "handle/auth.php",
+        data: { action: "check" },
+        dataType: "json",
+        success: function (response) {
+            console.log("Trạng thái đăng nhập:", response);
+            if (response.loggedIn) {
+                updateCart(
+                    "add",
+                    productId,
+                    "Đã thêm " + productName + " vào giỏ hàng!"
+                );
+                loadCart(false);
+            } else {
+                $("#overlay").show();
+                alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error(
+                "Lỗi kiểm tra đăng nhập:",
+                status,
+                error,
+                xhr.responseText
+            );
+            alert("Lỗi kiểm tra trạng thái đăng nhập!");
+        },
     });
-  });
+});
 
   // Sự kiện chuyển đổi giữa đăng nhập và đăng ký
   $("#btn-mode").on("click", function (event) {
@@ -568,6 +618,7 @@ function LoadProducts(page) {
       } else {
         $("#page").html("");
         $(".content__page").css("display", "none");
+
       }
 
       if (Array.isArray(response.header__menu__sub)) {
@@ -736,22 +787,40 @@ function build(mode) {
   $("#Authentication-Form").load("layout/login_layout.php?mode=" + mode);
 }
 
-// Modal chi tiết sản phẩm
 function openModal(product) {
-  document.getElementById("modal-img").src =
-    "/treeshopuser/Project_Web2/" + product.image;
+  // Kiểm tra product.id
+  if (!product.id || product.id === "undefined") {
+      console.error("product.id không hợp lệ:", product);
+      alert("Không thể mở chi tiết sản phẩm: Mã sản phẩm không hợp lệ!");
+      return;
+  }
+
+  // Sử dụng đường dẫn tương đối cho hình ảnh
+  document.getElementById("modal-img").src = "./img/" + product.image.split('/').pop();
   document.getElementById("modal-title").textContent = product.name;
-  document.getElementById("modal-code").textContent =
-    "Mã sản phẩm: " + product.id;
-  document.getElementById("modal-quantity").textContent =
-    "Số lượng: " + product.soluong;
-  document.getElementById("modal-price").textContent =
-    Number(product.price).toLocaleString("vi-VN") + "₫";
-  document.getElementById("modal-description").textContent =
-    product.mota || "Chưa có mô tả";
+  document.getElementById("modal-code").textContent = "Mã sản phẩm: " + product.id;
+  document.getElementById("modal-quantity").textContent = "Số lượng: " + product.soluong;
+  document.getElementById("modal-price").textContent = Number(product.price).toLocaleString("vi-VN") + "₫";
+  document.getElementById("modal-description").textContent = product.mota || "Chưa có mô tả";
+
+  // Cập nhật data-id cho biểu tượng giỏ hàng trong modal
+  const cartIcon = document.getElementById("modal-cart-icon");
+  if (cartIcon) {
+      cartIcon.setAttribute("data-id", product.id);
+      console.log("Đã thiết lập data-id cho modal-cart-icon:", product.id);
+  } else {
+      console.warn("Phần tử modal-cart-icon không tồn tại trong modal chi tiết sản phẩm!");
+      // Tạo động nếu cần (tùy chọn)
+      const newCartIcon = document.createElement("div");
+      newCartIcon.id = "modal-cart-icon";
+      newCartIcon.className = "cart-icon-sp";
+      newCartIcon.innerHTML = '<i class="fa fa-shopping-cart"></i> ';
+      document.querySelector("#productModal .button-group").appendChild(newCartIcon);
+      newCartIcon.setAttribute("data-id", product.id);
+  }
+
   document.getElementById("productModal").style.display = "block";
 }
-
 function closeModal() {
   document.getElementById("productModal").style.display = "none";
 }
