@@ -677,8 +677,155 @@ input:focus {
     justify-content: center;
     align-items: center;
     z-index: 999;
+}   
+
+
+/* Định dạng cho khu vực chứa dòng chào và biểu tượng người dùng */
+#open-form-log-in {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa dòng chào và biểu tượng người dùng */
+    cursor: pointer; /* Con trỏ chuột hiển thị kiểu pointer để người dùng biết có thể tương tác */
 }
 
+/* Định dạng dòng chào cố định */
+#user-greeting {
+    font-style: italic;
+    max-width: 400px;
+    color: #333; /* Màu chữ tối để dễ đọc */
+    font-size: 14px; /* Kích thước chữ nhỏ gọn */
+}
+
+/* Định dạng biểu tượng người dùng (nếu cần) */
+.user-icon {
+    font-size: 20px; /* Kích thước biểu tượng */
+    color: #333; /* Màu biểu tượng */
+}
+
+/* Định dạng dropdown */
+#open-form-log-in__dropdown {
+    position: absolute;
+    top: 100%; /* Hiển thị ngay dưới khu vực cha */
+    right: 0; 
+    left: 0;/* Căn phải để không vượt ra ngoài */
+    background-color: white; /* Nền trắng */
+    border: 1px solid #ccc; /* Viền nhẹ */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng để nổi bật */
+    display: none; /* Ẩn mặc định */
+    z-index: 1000; /* Đảm bảo dropdown nằm trên các phần tử khác */
+    padding: 10px; /* Khoảng cách bên trong dropdown */
+    min-width: 180px; /* Độ rộng tối thiểu để không bị quá hẹp */
+}
+
+/* Định dạng các mục trong dropdown */
+#open-form-log-in__dropdown a {
+    display: block; /* Hiển thị dạng khối để chiếm toàn bộ chiều rộng */
+    padding: 5px 10px; /* Khoảng cách bên trong mỗi mục */
+    color: #333; /* Màu chữ */
+    text-decoration: none; /* Bỏ gạch chân của liên kết */
+    font-size: 14px; /* Kích thước chữ */
+}
+
+/* Hiệu ứng khi rê chuột vào các mục trong dropdown */
+#open-form-log-in__dropdown a:hover {
+    background-color: #f0f0f0; /* Màu nền xám nhạt khi rê chuột */
+    color: #000; /* Màu chữ đậm hơn khi hover */
+}
+
+/* Đảm bảo dropdown hiển thị ngay dưới biểu tượng người dùng */
+#open-form-log-in:hover #open-form-log-in__dropdown {
+    display: block; /* Hiển thị dropdown khi rê chuột (có thể không cần nếu đã xử lý bằng JS) */
+}
+
+.customer-info-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.customer-info-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.customer-info-container div {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.customer-info-container strong {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+    color: #555;
+}
+
+
+
+
+.account-info-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(62, 110, 102);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    color: white;
+    width: 400px;
+    max-width: 90%;
+}
+
+.account-info-modal h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #dab89b;
+    align-items: center;
+    text-align: center;
+}
+
+.account-info-modal div {
+    margin: 10px 0;
+    font-size: 1em;
+}
+
+.account-info-modal input,
+.account-info-modal select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.account-info-modal button {
+    padding: 10px 20px;
+    margin: 10px 5px 0 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.account-info-modal .save-account {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.account-info-modal .close-modal {
+    background-color: #f44336;
+    color: white;
+}
 /* Khung chứa form */
 .Authentication-Form-Dad {
     background: rgba(255, 255, 255, 0.08);

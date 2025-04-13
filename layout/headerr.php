@@ -14,9 +14,13 @@
             <span id="cart-count">0</span>
         </a>
         <div id="open-form-log-in">
-            <i class="fa-solid fa-user"></i>
-            <div id="open-form-log-in__logout">Đăng xuất</div>
+        <div style="font-style: italic; max-width: 300px;" id="user-greeting"></div>
+        <span class="user-icon"><i class="fa-solid fa-user"></i></span>
+        <div id="open-form-log-in__dropdown" style="display: none;">
+        <a href="#" id="open-form-log-in__info">Thông tin tài khoản</a>
+        <a href="#" id="open-form-log-in__logout">Đăng xuất</a>
         </div>
+    </div>
         <i class="fa-solid fa-bars"></i>
     </div>
 </div>

@@ -29,6 +29,49 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `bill`
 --
+CREATE TABLE provinces (
+    `province_id` VARCHAR(10) PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE districts (
+    `district_id` VARCHAR(10) PRIMARY KEY,
+    `name` VARCHAR(100) NOT NULL,
+    `province_id` VARCHAR(10),
+    FOREIGN KEY (province_id) REFERENCES provinces(province_id)
+);
+
+
+
+
+INSERT INTO provinces (province_id, name) VALUES 
+('01', 'TP. Hồ Chí Minh'),
+('02', 'TP. Đà Nẵng'),
+('03', 'TP. Hà Nội');
+
+
+
+INSERT INTO districts (district_id, name, province_id) VALUES 
+-- Quận/Huyện thuộc TP. Hồ Chí Minh (province_id = '01')
+('001', 'Quận 1', '01'),
+('002', 'Quận 3', '01'),
+('003', 'Quận 7', '01'),
+('004', 'Quận 10', '01'),
+('005', 'Quận 5', '01'),
+('006', 'Huyện Bình Chánh', '01'),
+('007', 'Huyện Nhà Bè', '01'),
+('008', 'Huyện Cần Giờ', '01'),
+-- Quận/Huyện thuộc Đà Nẵng (province_id = '02')
+('009', 'Quận Hải Châu', '02'),
+('010', 'Quận Thanh Khê', '02'),
+('011', 'Quận Liên Chiểu', '02'),
+('012', 'Huyện Hòa Vang', '02'),
+-- Quận/Huyện thuộc Hà Nội (province_id = '03')
+('013', 'Quận Ba Đình', '03'),
+('014', 'Quận Hoàn Kiếm', '03'),
+('015', 'Quận Đống Đa', '03'),
+('016', 'Huyện Đông Anh', '03');
+
 
 CREATE TABLE `bill` (
   `mabill` varchar(20) NOT NULL,
@@ -100,14 +143,21 @@ CREATE TABLE `comment` (
 --
 
 CREATE TABLE `customer` (
-  `macustomer` varchar(20) NOT NULL,
-  `username` varchar(25) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `address` varchar(100) DEFAULT NULL,
-  `phone` varchar(11) DEFAULT NULL,
-  `name` varchar(25) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL
+    `macustomer` varchar(20) NOT NULL,
+    `username` varchar(25) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `address` varchar(100) DEFAULT NULL,
+    `phone` varchar(11) DEFAULT NULL,
+    `name` varchar(25) DEFAULT NULL,
+    `email` varchar(255) DEFAULT NULL,
+    `province_id` VARCHAR(10) DEFAULT NULL, 
+    `district_id` VARCHAR(10) DEFAULT NULL,
+    `address_detail` TEXT DEFAULT NULL,
+    PRIMARY KEY (`macustomer`),
+    CONSTRAINT `fk_customer_province` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`province_id`) ON DELETE SET NULL,
+    CONSTRAINT `fk_customer_district` FOREIGN KEY (`district_id`) REFERENCES `districts` (`district_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 
 --
 -- Triggers `customer`
