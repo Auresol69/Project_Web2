@@ -365,50 +365,35 @@ $('#open-form-log-in__info').on('click', function (event) {
     $(this).text("Đang xử lý...").prop("disabled", true);
 
     if (
-      $("#cart-items").children().length === 0 ||
-      $("#cart-items").find(".empty-cart").length > 0
+        $("#cart-items").children().length === 0 ||
+        $("#cart-items").find(".empty-cart").length > 0
     ) {
-      alert(
-        "Giỏ hàng của bạn đang trống! Vui lòng thêm sản phẩm trước khi thanh toán."
-      );
-      $(this).text("Thanh toán").prop("disabled", false);
-      return;
+        alert("Giỏ hàng của bạn đang trống! Vui lòng thêm sản phẩm trước khi thanh toán.");
+        $(this).text("Thanh toán").prop("disabled", false);
+        return;
     }
 
     $.ajax({
-      type: "POST",
-      url: "handle/auth.php",
-      data: {action: "check"},
-      dataType: "json",
-      success: function (response) {
-        console.log("Phản hồi từ handle/auth.php:", response);
-        if (response.loggedIn) {
-          if ($("#payment-modal").length) {
-            $("#payment-modal").css("display", "flex");
-            $("#modal-cart").css("display", "none");
-          } else {
-            console.warn(
-              "#payment-modal không tồn tại, chuyển hướng đến checkout."
-            );
-            window.location.href = "index.php?page=checkout";
-          }
-        } else {
-          $("#overlay").show();
-          alert("Vui lòng đăng nhập để thanh toán!");
+        type: "POST",
+        url: "handle/auth.php",
+        data: { action: "check" },
+        dataType: "json",
+        success: function (response) {
+            if (response.loggedIn) {
+                $("#modal-cart").css("display", "none"); // Đóng modal giỏ hàng
+                window.location.href = "index.php?page=checkout"; // Chuyển hướng đến trang thanh toán
+            } else {
+                $("#overlay").show();
+                alert("Vui lòng đăng nhập để thanh toán!");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi AJAX khi kiểm tra đăng nhập:", status, error, xhr.responseText);
+            alert("Lỗi kiểm tra trạng thái đăng nhập!");
+        },
+        complete: function () {
+            $(".checkout").text("Thanh toán").prop("disabled", false);
         }
-      },
-      error: function (xhr, status, error) {
-        console.error(
-          "Lỗi AJAX khi kiểm tra đăng nhập:",
-          status,
-          error,
-          xhr.responseText
-        );
-        alert("Lỗi kiểm tra trạng thái đăng nhập!");
-      },
-      complete: function () {
-        $(".checkout").text("Thanh toán").prop("disabled", false);
-      },
     });
   });
 
@@ -481,6 +466,26 @@ $('#open-form-log-in__info').on('click', function (event) {
             alert("Lỗi kiểm tra trạng thái đăng nhập!");
         },
     });
+    $("#payment-modal").on("display", function () {
+      initializePaymentModal();
+  });
+
+  // Sự kiện thay đổi lựa chọn địa chỉ
+  $('input[name="address_option"]').on("change", function () {
+      toggleAddressFields();
+  });
+
+  // Sự kiện thay đổi tỉnh/thành phố để cập nhật quận/huyện
+  $("#city").on("change", function () {
+      updateDistricts($(this).val());
+  });
+
+  // Đóng modal thanh toán khi nhấp ra ngoài
+  $("#payment-modal").on("click", function (event) {
+      if ($(event.target).closest(".payment-container").length === 0) {
+          $("#payment-modal").css("display", "none");
+      }
+  });
 });
 
   // Sự kiện chuyển đổi giữa đăng nhập và đăng ký
@@ -528,7 +533,31 @@ $('#open-form-log-in__info').on('click', function (event) {
       },
     });
   });
+  const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+
+    if (page === 'checkout') {
+      initializePaymentModal();
+      $("#payment-modal").css("display", "block");
+  
+      $('input[name="address_option"]').on("change", function () {
+          toggleAddressFields();
+      });
+  
+      $("#city").on("change", function () {
+          updateDistricts($(this).val());
+      });
+  
+      $("#payment-modal").on("click", function (event) {
+          if ($(event.target).is("#payment-modal")) {
+              $("#payment-modal").css("display", "none");
+          }
+      });
+  
+  }
 });
+
+
 
 function LoadProducts(page) {
   if ($("#keyword").val() !== null && $("#keyword").val() !== undefined)
@@ -861,4 +890,266 @@ function liveSearch(keyword) {
             resultBox.style.display = "block";
         }
     });
+}
+
+
+
+
+// Khởi tạo modal thanh toán
+let allDistricts = []; // Biến toàn cục để lưu trữ danh sách quận/huyện
+
+function initializePaymentModal() {
+    console.log("Khởi tạo modal thanh toán...");
+    $.ajax({
+        type: "GET",
+        url: "handle/customer_info.php",
+        dataType: "json",
+        success: function (response) {
+            console.log("Phản hồi từ customer_info.php:", response);
+            if (response.status === "success") {
+                let customer = response.data;
+                let isAddressComplete =
+                    customer.name &&
+                    customer.phone &&
+                    customer.province_id &&
+                    customer.district_id &&
+                    customer.address_detail;
+
+                if (!isAddressComplete) {
+                    $("#old_address").prop("disabled", true);
+                    $(".address-error").show();
+                    $("#new_address").prop("checked", true);
+                } else {
+                    $("#old_address").prop("disabled", false);
+                    $(".address-error").hide();
+                    $("#old_address").prop("checked", true);
+                }
+
+                $("#receiver_name").val(customer.name || "");
+                $("#phone_number").val(customer.phone || "");
+                $("#address_detail").val(customer.address_detail || "");
+
+                let citySelect = $("#city");
+                citySelect.html('<option value="">-- Chọn tỉnh/thành phố --</option>');
+                response.provinces.forEach(province => {
+                    citySelect.append(
+                        `<option value="${province.province_id}" ${customer.province_id === province.province_id ? 'selected' : ''}>
+                            ${province.name}
+                        </option>`
+                    );
+                });
+
+                // Lưu trữ danh sách quận/huyện
+                allDistricts = response.districts || [];
+
+                // Cập nhật quận/huyện dựa trên province_id của khách hàng
+                if (customer.province_id) {
+                    updateDistricts(customer.province_id);
+                    // Chọn quận/huyện mặc định nếu có
+                    let districtSelect = $("#district");
+                    districtSelect.val(customer.district_id || "");
+                } else {
+                    $("#district").html('<option value="">-- Chọn quận/huyện --</option>');
+                }
+
+                toggleAddressFields();
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi AJAX (customer_info.php):", status, error);
+            alert("Lỗi khi lấy thông tin khách hàng: " + error);
+        }
+    });
+
+    loadOrderSummary();
+}
+
+// Cập nhật danh sách quận/huyện dựa trên tỉnh/thành phố
+function updateDistricts(provinceId) {
+  console.log("Gọi updateDistricts với provinceId:", provinceId);
+  let districtSelect = $("#district");
+  districtSelect.html('<option value="">-- Chọn quận/huyện --</option>');
+
+  if (provinceId) {
+      // Lọc quận/huyện theo province_id từ allDistricts
+      let filteredDistricts = allDistricts.filter(district => district.province_id === provinceId);
+      console.log("Danh sách quận/huyện lọc được:", filteredDistricts);
+
+      filteredDistricts.forEach(district => {
+          districtSelect.append(
+              `<option value="${district.district_id}">
+                  ${district.name}
+              </option>`
+          );
+      });
+  }
+}
+// Chuyển đổi trạng thái các trường dựa trên lựa chọn địa chỉ
+function toggleAddressFields() {
+  const selectedOption = $('input[name="address_option"]:checked').val();
+  if (selectedOption === "old") {
+      $("#receiver_name").prop("readonly", true);
+      $("#phone_number").prop("readonly", true);
+      $("#address_detail").prop("readonly", true);
+      $("#city").prop("disabled", true);
+      $("#district").prop("disabled", true);
+  } else {
+      $("#receiver_name").prop("readonly", false);
+      $("#phone_number").prop("readonly", false);
+      $("#address_detail").prop("readonly", false);
+      $("#city").prop("disabled", false);
+      $("#district").prop("disabled", false);
+  }
+}
+
+// Load thông tin đơn hàng
+function loadOrderSummary() {
+  console.log("Loading giohang.php dynamically.");
+  $("#list-order-payment").load("giohang.php", function(response, status, xhr) {
+      if (status == "error") {
+          console.error("Lỗi khi tải giohang.php: " + xhr.status + " " + xhr.statusText);
+          $("#list-order-payment").html("<p>Lỗi khi tải thông tin đơn hàng.</p>");
+      } else {
+          console.log("Tải giohang.php thành công:", response);
+          if (response.includes("Giỏ hàng trống")) {
+              console.warn("Giỏ hàng trống trong trang thanh toán.");
+          } else {
+              console.log("Có sản phẩm trong giỏ hàng, kiểm tra hiển thị trong #list-order-payment.");
+          }
+          $.ajax({
+              type: "POST",
+              url: "handle/cart.php",
+              data: { action: "get" },
+              dataType: "json",
+              success: function (response) {
+                  if (response.status === "success" && response.cart) {
+                      let totalPrice = 0;
+                      response.cart.forEach(item => {
+                          totalPrice += item.Price * item.Quantity;
+                      });
+                      $("#payment-cart-price-final").text(totalPrice.toLocaleString('vi-VN') + "đ");
+                  } else {
+                      console.warn("Không lấy được dữ liệu giỏ hàng từ cart.php:", response);
+                  }
+              },
+              error: function (xhr, status, error) {
+                  console.error("Lỗi khi tải tổng tiền:", status, error);
+              }
+          });
+      }
+  });
+}
+// Xử lý đặt hàng
+function placeOrder() {
+  const receiverName = $("#receiver_name").val();
+  const phoneNumber = $("#phone_number").val();
+  const addressDetail = $("#address_detail").val();
+  const cityId = $("#city").val();
+  const districtId = $("#district").val();
+
+  if (!receiverName || !phoneNumber || !addressDetail || !cityId || !districtId) {
+      alert("Vui lòng điền đầy đủ thông tin giao hàng!");
+      return;
+  }
+
+  $.ajax({
+      type: "POST",
+      url: "handle/order.php",
+      data: {
+          receiver_name: receiverName,
+          phone_number: phoneNumber,
+          address_detail: addressDetail,
+          city_id: cityId,
+          district_id: districtId
+      },
+      dataType: "json",
+      success: function (response) {
+          if (response.status === "success") {
+              alert("Đặt hàng thành công!");
+              window.location.href = "index.php?page=order_confirmation";
+          } else {
+              alert("Lỗi khi đặt hàng: " + response.message);
+          }
+      },
+      error: function (xhr, status, error) {
+          console.error("Lỗi khi đặt hàng:", status, error);
+          alert("Lỗi khi đặt hàng: " + error);
+      }
+  });
+}
+
+// Cập nhật hàm showPreviewOrder() nếu cần
+function showPreviewOrder() {
+  let addressOption = $('input[name="address_option"]:checked').val();
+  let receiverName = $("#receiver_name").val().trim();
+  let phoneNumber = $("#phone_number").val().trim();
+  let addressDetail = $("#address_detail").val().trim();
+  let city = $("#city option:selected").text();
+  let district = $("#district option:selected").text();
+
+  let previewHtml = `
+      <div class="preview-order-modal">
+          <h2>Tổng quan đơn hàng</h2>
+          <div><strong>Tên người nhận:</strong> ${receiverName}</div>
+          <div><strong>Số điện thoại:</strong> ${phoneNumber}</div>
+          <div><strong>Địa chỉ:</strong> ${addressDetail}, ${district}, ${city}</div>
+          <div><strong>Tổng tiền:</strong> ${$("#payment-cart-price-final").text()}</div>
+          <button onclick="$('.preview-order-modal').remove();">Đóng</button>
+      </div>
+  `;
+  $("body").append(previewHtml);
+}
+
+$(document).on("click", ".btn-muanhanh", function () {
+  let productId = $("#modal-cart-icon").attr("data-id");
+  let productName = $("#modal-title").text();
+
+  if (!productId || productId === "undefined") {
+      console.error("productId không hợp lệ:", productId);
+      alert("Không thể mua sản phẩm: Mã sản phẩm không hợp lệ!");
+      return;
+  }
+
+  $.ajax({
+      type: "POST",
+      url: "handle/auth.php",
+      data: { action: "check" },
+      dataType: "json",
+      success: function (response) {
+          if (response.loggedIn) {
+              // Thêm sản phẩm vào giỏ hàng
+              updateCart("add", productId, "Đã thêm " + productName + " vào giỏ hàng!");
+              loadCart(false); // Cập nhật giỏ hàng nhưng không hiển thị modal
+              closeModal(); // Đóng modal chi tiết sản phẩm
+              window.location.href = "index.php?page=checkout"; // Chuyển hướng đến trang thanh toán
+          } else {
+              $("#overlay").show();
+              alert("Vui lòng đăng nhập để mua hàng!");
+          }
+      },
+      error: function (xhr, status, error) {
+          console.error("Lỗi kiểm tra đăng nhập:", status, error, xhr.responseText);
+          alert("Lỗi kiểm tra trạng thái đăng nhập!");
+      }
+  });
+});
+
+
+function showPreviewOrder() {
+  const receiverName = $("#receiver_name").val();
+  const phoneNumber = $("#phone_number").val();
+  const addressDetail = $("#address_detail").val();
+  const city = $("#city option:selected").text();
+  const district = $("#district option:selected").text();
+  const totalPrice = $("#payment-cart-price-final").text();
+
+  alert(
+      `Đơn hàng của bạn:\n` +
+      `Tên người nhận: ${receiverName}\n` +
+      `Số điện thoại: ${phoneNumber}\n` +
+      `Địa chỉ: ${addressDetail}, ${district}, ${city}\n` +
+      `Tổng tiền: ${totalPrice}`
+  );
 }
