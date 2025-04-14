@@ -54,6 +54,7 @@
                 <th>ID</th>
                 <th>Họ và Tên</th>
                 <th>Email</th>
+                <th>Nhóm quyền</th>
                 <th>Số điện thoại</th>
                 <th>Trạng thái</th>
                 <th>Thao tác</th>
@@ -66,6 +67,7 @@
                 <td><?= $customer['id']; ?></td>
                 <td><?= $customer['ho_ten']; ?></td>
                 <td><?= $customer['email']; ?></td>
+                <td><?= $customer['powergroupid']; ?></td>
                 <td><?= $customer['so_dien_thoai']; ?></td>
                 <td><?= $customer['trang_thai']; ?></td>
                 <td>

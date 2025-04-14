@@ -3,9 +3,9 @@
     $db = new connect_db();
 
     // Lấy các powergroup và chức năng tương ứng
-    $sql = "SELECT pg.*, pf.funcid 
+    $sql = "SELECT pg.*, pfp.funcid, pfp.permissionid
             FROM powergroup pg 
-            LEFT JOIN powergroup_func pf on pg.powergroupid=pf.powergroupid
+            LEFT JOIN powergroup_func_permission pfp on pg.powergroupid=pfp.powergroupid
             WHERE 1=1";
     $params = [];
 
@@ -24,12 +24,14 @@
                 'status' => $row['status'],
                 'created_time' => $row['created_time'],
                 'last_updated' => $row['last_updated'],
-                'funcs' => []
+                'funcs' => [],
+                'permissions' => []
             ];
         }
         if (!empty($row['funcid']))
         {
             $powergroups[$id]['funcs'][]=$row['funcid'];
+            $powergroups[$id]['permissions'][]=$row['permissionid'];
         }
     }
 
@@ -37,6 +39,13 @@
     $sql = "SELECT * FROM func WHERE 1=1";
 
     $funcs = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+
+    // Lấy các tên quyền
+    $sql = "SELECT * FROM permission WHERE 1=1";
+
+    $permissions = $db->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <link rel="stylesheet" href="customer/css/style.css?v=<?php echo time(); ?>">
 
@@ -70,7 +79,8 @@
                     <a href="#" class="btn btn-warning btn-sm edit-btn"
                         data-powergroupid="<?= $powergroup['powergroupid']; ?>"
                         data-powergroupname="<?= $powergroup['powergroupname']; ?>"
-                        data-funcs="<?= htmlspecialchars(json_encode($powergroup['funcs']));?>">
+                        data-funcs="<?= htmlspecialchars(json_encode($powergroup['funcs']));?>"
+                        data-permissions="<?= htmlspecialchars(json_encode($powergroup['permissions']));?>">
                         Sửa
                     </a>
 
@@ -111,19 +121,24 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Tên quyền</th>
                         <?php foreach($funcs as $func) :?>
                         <th><?=htmlspecialchars(string: $func['funcname']) ?></th>
                         <?php endforeach; ?>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach($permissions as $permission) :?>
                     <tr>
+                        <td><?= htmlspecialchars($permission['permissionname']); ?></td>
                         <?php foreach($funcs as $func) :?>
                         <td>
-                            <input type="checkbox" name="permissions[]" value="<?= $func['funcid'] ?>">
+                            <input type="checkbox" name="permission_func_map[]"
+                                value="<?=$permission['permissionid'] . '_' . $func['funcid'] ?>">
                         </td>
                         <?php endforeach; ?>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
 
@@ -170,13 +185,24 @@ document.addEventListener("DOMContentLoaded", function() {
             // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
             let funcsJSON = this.dataset.funcs;
 
+            let permissionsJSON = this.dataset.permissions;
+
             let funcs = JSON.parse(funcsJSON);
 
-            funcs.forEach(id => {
-                let checkbox = document.querySelector(
-                    `input[type="checkbox"][value="${id}"]`);
-                if (checkbox)
-                    checkbox.checked = true;
+            let permissions = JSON.parse(permissionsJSON);
+
+            document.querySelectorAll('input[name="permission_func_map[]"]').forEach(cb => {
+                cb.checked = false;
+            });
+
+            permissions.forEach(permission => {
+                funcs.forEach(func => {
+                    let checkbox = document.querySelector(
+                        `input[type="checkbox"][value="${permission}_${func}"]`
+                    );
+                    if (checkbox)
+                        checkbox.checked = true;
+                });
             });
         });
     });
