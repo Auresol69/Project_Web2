@@ -14,9 +14,9 @@
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Tìm sản phẩm..." onkeyup="liveSearch(this.value)">
                 <i class="fa-solid fa-magnifying-glass"></i>
+                <div class="search-result" id="searchResult"></div>
             </div>
 
-            <div class="search-result" id="searchResult"></div>
         </div>
 
         <a href="index.php?page=giohang" class="cart-icon">

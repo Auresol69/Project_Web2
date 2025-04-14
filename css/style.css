@@ -173,6 +173,10 @@ input:focus {
     width: 250px;
 }
 
+#searchInput::placeholder {
+    color: #2e4733;
+}
+
 .search-bar input {
     width: 100%;
     height: 40px; 
