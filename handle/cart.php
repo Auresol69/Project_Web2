@@ -18,7 +18,7 @@ if (!isset($conn) || $conn->connect_error) {
 $action = isset($_POST['action']) ? $_POST['action'] : '';
 $productId = isset($_POST['productID']) ? $_POST['productID'] : '';
 $userId = isset($_SESSION['macustomer']) ? $_SESSION['macustomer'] : null;
-error_log("UserID in cart.php (action: $action): " . $userId); // Ghi log
+error_log("UserID in cart.php (action: $action): " . $userId); 
 
 if (!$userId) {
     $response['message'] = 'Bạn cần đăng nhập để thực hiện thao tác này!';
@@ -27,7 +27,7 @@ if (!$userId) {
 }
 
 if ($action === 'add') {
-    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ?";
+    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
@@ -100,17 +100,16 @@ if ($action === 'add') {
         }
     }
     
-
     $response['status'] = 'success';
     $response['message'] = 'Thêm sản phẩm thành công!';
 }
 
 if ($action === 'get') {
     $cartQuery = "SELECT p.masp, p.tensp, p.dongiasanpham, p.img, pc.soluong 
-                FROM product_cart pc 
-                JOIN product p ON pc.masp = p.masp 
-                JOIN cart c ON pc.magiohang = c.magiohang 
-                WHERE c.mauser = ?";
+                  FROM product_cart pc 
+                  JOIN product p ON pc.masp = p.masp 
+                  JOIN cart c ON pc.magiohang = c.magiohang 
+                  WHERE c.mauser = ? AND c.maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
@@ -136,7 +135,7 @@ if ($action === 'get') {
 }
 
 if ($action === 'increase') {
-    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ?";
+    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
@@ -160,10 +159,8 @@ if ($action === 'increase') {
     $response['message'] = 'Tăng số lượng thành công!';
 }
 
-
-
 if ($action === 'decrease') {
-    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ?";
+    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
@@ -202,7 +199,7 @@ if ($action === 'decrease') {
 }
 
 if ($action === 'remove') {
-    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ?";
+    $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
