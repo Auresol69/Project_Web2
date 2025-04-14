@@ -1,13 +1,13 @@
 <div id="payment-modal">
+    <a href="index.php?page=sanpham" class="back-to-products" title="Trở về trang sản phẩm">⟵</a>
     <div class="payment-container">
         <div class="payment-col-left">
             <h2>THÔNG TIN NGƯỜI NHẬN</h2>
             <form action="" class="payment-form-left">
-                <button class="close-payment-modal"><a href="index.php?page=sanpham">Thoát</a></button>
                 <div class="payment-col-left-radio-btn">
                     <input type="radio" name="address_option" id="old_address" value="old">
                     <label for="old_address">Sử dụng địa chỉ từ tài khoản</label>
-                    <span class="address-error" style="color: red; display: none; font-size: 14px; margin-left: 10px;">
+                    <span class="address-error">
                         (Địa chỉ không đầy đủ, vui lòng nhập địa chỉ mới)
                     </span>
                 </div>
@@ -15,7 +15,6 @@
                     <input type="radio" name="address_option" id="new_address" value="new">
                     <label for="new_address">Nhập địa chỉ giao hàng mới</label>
                 </div>
-
                 <div class="payment-form-group">
                     <label for="receiver_name">Tên người nhận: <span class="required">*</span></label>
                     <input type="text" id="receiver_name" name="receiver_name" required>
@@ -46,7 +45,6 @@
             <p class="payment-content-lable">ĐƠN HÀNG</p>
             <div class="bill-total" id="list-order-payment"></div>
             <div class="bill-payment">
-                <div class="total-bill-order"></div>
                 <div class="policy-note">
                     Bằng việc bấm vào nút “Đặt hàng”, tôi đồng ý với <a href="index.php?page=chinhsach" target="_blank">chính sách</a> của chúng tôi.
                 </div>
@@ -56,8 +54,10 @@
                         <div class="price-final" id="payment-cart-price-final">0</div>
                     </div>
                 </div>
-                <button class="preview-checkout-btn" onclick="showPreviewOrder();">Xem tổng quát đơn hàng</button>
-                <button class="complete-checkout-btn" onclick="placeOrder();">Đặt hàng</button>
+                <div class="button-group">
+                    <button type="button" class="preview-checkout-btn" onclick="showPreviewOrder();">Xem tổng quát đơn hàng</button>
+                    <button type="submit" class="complete-checkout-btn" onclick="placeOrder();">Đặt hàng</button>
+                </div>
             </div>
         </div>
     </div>

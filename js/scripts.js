@@ -1006,38 +1006,55 @@ function toggleAddressFields() {
 
 // Load thông tin đơn hàng
 function loadOrderSummary() {
-  console.log("Loading giohang.php dynamically.");
-  $("#list-order-payment").load("giohang.php", function(response, status, xhr) {
-      if (status == "error") {
-          console.error("Lỗi khi tải giohang.php: " + xhr.status + " " + xhr.statusText);
-          $("#list-order-payment").html("<p>Lỗi khi tải thông tin đơn hàng.</p>");
-      } else {
-          console.log("Tải giohang.php thành công:", response);
-          if (response.includes("Giỏ hàng trống")) {
-              console.warn("Giỏ hàng trống trong trang thanh toán.");
+  console.log("Loading cart items via AJAX from handle/cart.php.");
+  $.ajax({
+      type: "POST",
+      url: "handle/cart.php",
+      data: { action: "get" },
+      dataType: "json",
+      success: function (response) {
+          console.log("Phản hồi từ cart.php:", response);
+          let htmlContent = "";
+
+          if (response.status === "success" && response.cart && response.cart.length > 0) {
+
+              htmlContent = response.cart.map(item => `
+                  <div class="cart-item" data-id="${item.ProductID}">
+                      <div class="cart-info">
+                          <span class="cart-name">${item.ProductName}</span>
+                          <span class="cart-quantity">Số lượng: ${item.Quantity}</span>
+                      </div>
+                  </div>
+              `).join("");
           } else {
-              console.log("Có sản phẩm trong giỏ hàng, kiểm tra hiển thị trong #list-order-payment.");
+              htmlContent = `
+                  <div class="empty-cart" id="empty-cart">
+                      <p>Giỏ hàng trống.</p>
+                  </div>
+              `;
           }
-          $.ajax({
-              type: "POST",
-              url: "handle/cart.php",
-              data: { action: "get" },
-              dataType: "json",
-              success: function (response) {
-                  if (response.status === "success" && response.cart) {
-                      let totalPrice = 0;
-                      response.cart.forEach(item => {
-                          totalPrice += item.Price * item.Quantity;
-                      });
-                      $("#payment-cart-price-final").text(totalPrice.toLocaleString('vi-VN') + "đ");
-                  } else {
-                      console.warn("Không lấy được dữ liệu giỏ hàng từ cart.php:", response);
-                  }
-              },
-              error: function (xhr, status, error) {
-                  console.error("Lỗi khi tải tổng tiền:", status, error);
-              }
-          });
+
+          $("#list-order-payment").html(htmlContent);
+
+
+          console.log("CSS display của #list-order-payment:", $("#list-order-payment").css("display"));
+          console.log("CSS visibility của #list-order-payment:", $("#list-order-payment").css("visibility"));
+
+          // Cập nhật tổng tiền
+          if (response.status === "success" && response.cart) {
+              let totalPrice = 0;
+              response.cart.forEach(item => {
+                  totalPrice += item.Price * item.Quantity;
+              });
+              $("#payment-cart-price-final").text(totalPrice.toLocaleString('vi-VN') + "đ");
+          } else {
+              $("#payment-cart-price-final").text("0đ");
+              console.warn("Không lấy được dữ liệu giỏ hàng từ cart.php:", response);
+          }
+      },
+      error: function (xhr, status, error) {
+          console.error("Lỗi khi tải dữ liệu giỏ hàng:", status, error, xhr.responseText);
+          $("#list-order-payment").html("<p>Lỗi khi tải thông tin đơn hàng.</p>");
       }
   });
 }
@@ -1080,7 +1097,7 @@ function placeOrder() {
   });
 }
 
-// Cập nhật hàm showPreviewOrder() nếu cần
+
 function showPreviewOrder() {
   let addressOption = $('input[name="address_option"]:checked').val();
   let receiverName = $("#receiver_name").val().trim();
@@ -1119,11 +1136,10 @@ $(document).on("click", ".btn-muanhanh", function () {
       dataType: "json",
       success: function (response) {
           if (response.loggedIn) {
-              // Thêm sản phẩm vào giỏ hàng
               updateCart("add", productId, "Đã thêm " + productName + " vào giỏ hàng!");
-              loadCart(false); // Cập nhật giỏ hàng nhưng không hiển thị modal
-              closeModal(); // Đóng modal chi tiết sản phẩm
-              window.location.href = "index.php?page=checkout"; // Chuyển hướng đến trang thanh toán
+              loadCart(false); 
+              closeModal(); 
+              window.location.href = "index.php?page=checkout"; 
           } else {
               $("#overlay").show();
               alert("Vui lòng đăng nhập để mua hàng!");

@@ -14,13 +14,12 @@ if (!isset($_SESSION['macustomer'])) {
 $userId = $_SESSION['macustomer'];
 
 // Lấy thông tin từ yêu cầu POST
-$action = isset($_POST['action']) ? $_POST['action'] : '';
-$addressOption = isset($_POST['address_option']) ? $_POST['address_option'] : '';
 $receiverName = isset($_POST['receiver_name']) ? trim($_POST['receiver_name']) : '';
 $phoneNumber = isset($_POST['phone_number']) ? trim($_POST['phone_number']) : '';
 $addressDetail = isset($_POST['address_detail']) ? trim($_POST['address_detail']) : '';
-$provinceId = isset($_POST['province_id']) ? trim($_POST['province_id']) : null;
+$provinceId = isset($_POST['city_id']) ? trim($_POST['city_id']) : null;
 $districtId = isset($_POST['district_id']) ? trim($_POST['district_id']) : null;
+$addressOption = isset($_POST['address_option']) ? $_POST['address_option'] : '';
 
 // Kiểm tra các trường bắt buộc
 if (!$receiverName || !$phoneNumber || !$addressDetail || !$provinceId || !$districtId) {
@@ -36,7 +35,7 @@ if (!preg_match('/^[0-9]{10,11}$/', $phoneNumber)) {
     exit;
 }
 
-// Lấy giỏ hàng
+// Lấy giỏ hàng hiện tại
 $sqlCart = "SELECT * FROM cart WHERE mauser = ? AND maorder IS NULL";
 $stmtCart = $conn->prepare($sqlCart);
 $stmtCart->bind_param("s", $userId);
@@ -44,7 +43,7 @@ $stmtCart->execute();
 $resultCart = $stmtCart->get_result();
 
 if ($resultCart->num_rows === 0) {
-    $response['message'] = 'Giỏ hàng của bạn đang trống!';
+    $response['message'] = 'Giỏ hàng của bạn đang trống hoặc đã được đặt hàng!';
     echo json_encode($response);
     exit;
 }
@@ -102,6 +101,13 @@ $stmtUpdateCart = $conn->prepare($sqlUpdateCart);
 $stmtUpdateCart->bind_param("ss", $orderId, $cartId);
 $stmtUpdateCart->execute();
 
+// Tạo giỏ hàng mới cho người dùng
+$newCartId = 'CART' . uniqid();
+$insertNewCart = "INSERT INTO cart (magiohang, mauser, maorder) VALUES (?, ?, NULL)";
+$stmtNewCart = $conn->prepare($insertNewCart);
+$stmtNewCart->bind_param("ss", $newCartId, $userId);
+$stmtNewCart->execute();
+
 // Cập nhật thông tin địa chỉ nếu chọn "Nhập địa chỉ mới"
 if ($addressOption === 'new') {
     $sqlUpdateCustomer = "UPDATE customer 
@@ -116,12 +122,14 @@ $response['status'] = 'success';
 $response['message'] = 'Đặt hàng thành công!';
 echo json_encode($response);
 
+// Đóng tất cả statement
 $stmtCart->close();
 $stmtItems->close();
 $stmtPayBy->close();
 $stmtOrder->close();
 $stmtBill->close();
 $stmtUpdateCart->close();
+$stmtNewCart->close();
 if (isset($stmtUpdateCustomer)) {
     $stmtUpdateCustomer->close();
 }
