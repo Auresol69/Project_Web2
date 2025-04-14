@@ -76,26 +76,26 @@ $(document).ready(function () {
     $(".product-category").css("display", "none");
   });
 
-  // Hiển thị dropdown khi rê chuột vào
-  $("#open-form-log-in").on("mouseenter", function () {
-    $.ajax({
-        data: {action: "check"},
-        type: "POST",
-        url: "handle/auth.php",
-        dataType: "json",
-        success: function (response) {
-            if (response.loggedIn) {
-                $("#open-form-log-in__dropdown").show();
-            } else {
-                $("#overlay").show();
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error("Lỗi AJAX (auth.php - mouseenter):", status, error);
-            console.log("Phản hồi từ server:", xhr.responseText);
-        },
-    });
+
+$("#open-form-log-in").on("click", function () {
+  $.ajax({
+      data: {action: "check"},
+      type: "POST",
+      url: "handle/auth.php",
+      dataType: "json",
+      success: function (response) {
+          if (response.loggedIn) {
+              $("#open-form-log-in__dropdown").show();
+          } else {
+              $("#overlay").show();
+          }
+      },
+      error: function (xhr, status, error) {
+          console.error("Lỗi AJAX (auth.php - click):", status, error);
+          console.log("Phản hồi từ server:", xhr.responseText);
+      },
   });
+});
 
   // Ẩn dropdown khi rê chuột ra ngoài
   $("#open-form-log-in").on("mouseleave", function () {
@@ -407,18 +407,18 @@ $('#open-form-log-in__info').on('click', function (event) {
     url: "handle/auth.php",
     dataType: "json",
     success: function (response) {
-        if (response.name !== undefined) {
+        if (response.username !== undefined) {
             // Kiểm tra xem dòng "Xin chào" đã tồn tại chưa
             if ($(".greeting-message").length === 0) {
                 $("#open-form-log-in").after(
                     '<div class="greeting-message" style="font-style: italic; max-width: 300px;">Xin chào, ' +
-                    response.name +
+                    response.username +
                     "!</div>"
                 );
             }
         }
     },
-  });
+});
 
   // Sự kiện cho nút "Thêm vào giỏ" trong danh sách sản phẩm
   $(document).on("click", ".btn-them", function () {

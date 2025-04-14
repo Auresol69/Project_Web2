@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $response = ["status" => "success", "message" => "Đăng nhập thành công!"];
                     session_start();
                     $_SESSION['macustomer'] = $customer['macustomer'];
-                    $response['name'] = $customer['name'];
+                    $response['username'] = $customer['username'];
                 } else {
                     $response["errors"]["password"] = "Mật khẩu không chính xác!";
                 }

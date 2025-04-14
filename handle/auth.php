@@ -23,7 +23,7 @@ if ($_POST['action'] === 'check') {
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
             $customer = $result->fetch_assoc();
-            echo json_encode(["loggedIn" => true, "name" => $customer['name']]);
+            echo json_encode(["loggedIn" => true, "username" => $customer['username']]);
         } else {
             echo json_encode(["loggedIn" => false]);
         }
