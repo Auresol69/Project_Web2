@@ -550,6 +550,13 @@ $('#open-form-log-in__info').on('click', function (event) {
       });
   
     }
+    $(document).on("change", 'input[name="payment_method"]', function () {
+      if ($(this).val() === "online") {
+          $(".online-payment-form").css("display", "block");
+      } else {
+          $(".online-payment-form").css("display", "none");
+      }
+  });
 });
 
 
@@ -1094,29 +1101,48 @@ function placeOrder() {
   const cityId = $("#city").val();
   const districtId = $("#district").val();
   const addressOption = $('input[name="address_option"]:checked').val();
+  const paymentMethod = $('input[name="payment_method"]:checked').val();
 
   if (!receiverName || !phoneNumber || !addressDetail || !cityId || !districtId) {
       alert("Vui lòng điền đầy đủ thông tin giao hàng!");
       return;
   }
 
+  const data = {
+      receiver_name: receiverName,
+      phone_number: phoneNumber,
+      address_detail: addressDetail,
+      city_id: cityId,
+      district_id: districtId,
+      address_option: addressOption,
+      payment_method: paymentMethod
+  };
+
+  if (paymentMethod === "online") {
+      const cardNumber = $("#so-the").val();
+      const expiryDate = $("#ngay-het-han").val();
+      const cvv = $("#cvv").val();
+
+      if (!cardNumber || !expiryDate || !cvv) {
+          alert("Vui lòng điền đầy đủ thông tin thẻ!");
+          return;
+      }
+
+      data["so-the"] = cardNumber;
+      data["ngay-het-han"] = expiryDate;
+      data["cvv"] = cvv;
+  }
+
   $.ajax({
       type: "POST",
       url: "handle/order.php",
-      data: {
-          receiver_name: receiverName,
-          phone_number: phoneNumber,
-          address_detail: addressDetail,
-          city_id: cityId,
-          district_id: districtId,
-          address_option: addressOption
-      },
+      data: data,
       dataType: "json",
       success: function (response) {
           if (response.status === "success") {
               alert("Đặt hàng thành công!");
               $("#payment-modal").css("display", "none");
-              window.location.href = "index.php?page=sanpham";
+              showInvoiceModal(response.invoice);
           } else {
               alert("Lỗi khi đặt hàng: " + response.message);
           }
@@ -1151,55 +1177,55 @@ function showPreviewOrder() {
 $(document).on("click", ".btn-muanhanh", function () {
   let productId = $("#modal-cart-icon").attr("data-id");
   let quantity = parseInt($("#buy-now-quantity").val());
-  let stock = parseInt($("#modal-quantity").text().replace("Số lượng: ", ""));
+  let stock = parseInt($("#modal-quantity").text().replace("Kho: ", ""));
 
   if (!productId || productId === "undefined") {
-    alert("Không thể mua sản phẩm: Mã sản phẩm không hợp lệ!");
-    return;
+      alert("Không thể mua sản phẩm: Mã sản phẩm không hợp lệ!");
+      return;
   }
 
   if (isNaN(quantity) || quantity < 1) {
-    alert("Vui lòng nhập số lượng hợp lệ (tối thiểu 1)!");
-    return;
+      alert("Vui lòng nhập số lượng hợp lệ (tối thiểu 1)!");
+      return;
   }
 
   if (quantity > stock) {
-    alert("Số lượng yêu cầu vượt quá tồn kho!");
-    return;
+      alert("Số lượng yêu cầu vượt quá tồn kho!");
+      return;
   }
 
   $.ajax({
-    type: "POST",
-    url: "handle/auth.php",
-    data: { action: "check" },
-    dataType: "json",
-    success: function (response) {
-      if (response.loggedIn) {
-        $.ajax({
-          type: "POST",
-          url: "handle/buy_now.php",
-          data: { action: "prepare", productId: productId, quantity: quantity },
-          dataType: "json",
-          success: function (buyNowResponse) {
-            if (buyNowResponse.status === "success") {
-              closeModal();
-              window.location.href = "index.php?page=checkout&buy_now=1&product_id=" + productId;
-            } else {
-              alert("Lỗi: " + buyNowResponse.message);
-            }
-          },
-          error: function () {
-            alert("Lỗi khi xử lý mua ngay!");
+      type: "POST",
+      url: "handle/auth.php",
+      data: { action: "check" },
+      dataType: "json",
+      success: function (response) {
+          if (response.loggedIn) {
+              $.ajax({
+                  type: "POST",
+                  url: "handle/buy_now.php",
+                  data: { action: "prepare", productId: productId, quantity: quantity },
+                  dataType: "json",
+                  success: function (buyNowResponse) {
+                      if (buyNowResponse.status === "success") {
+                          closeModal();
+                          window.location.href = "index.php?page=checkout&buy_now=1&product_id=" + productId;
+                      } else {
+                          alert("Lỗi: " + buyNowResponse.message);
+                      }
+                  },
+                  error: function () {
+                      alert("Lỗi khi xử lý mua ngay!");
+                  }
+              });
+          } else {
+              $("#overlay").show();
+              alert("Vui lòng đăng nhập để mua hàng!");
           }
-        });
-      } else {
-        $("#overlay").show();
-        alert("Vui lòng đăng nhập để mua hàng!");
+      },
+      error: function () {
+          alert("Lỗi kiểm tra trạng thái đăng nhập!");
       }
-    },
-    error: function () {
-      alert("Lỗi kiểm tra trạng thái đăng nhập!");
-    }
   });
 });
 
@@ -1236,8 +1262,7 @@ function openOrderOverviewModal() {
       orderItems.forEach(item => {
           const name = item.querySelector('.cart-name').textContent;
           const quantity = item.querySelector('.cart-quantity').textContent;
-          // Giả sử giá sản phẩm được lưu trong data-price (cần thêm thuộc tính này trong HTML)
-          const price = item.getAttribute('data-price') || '0'; // Cần thêm data-price vào .cart-item
+          const price = item.getAttribute('data-price') || '0'; 
 
           const orderItem = `
               <div class="order-item">
@@ -1277,4 +1302,79 @@ document.getElementById('order-overview-modal').addEventListener('click', functi
   }
 });
 
+
+function showInvoiceModal(invoice) {
+  let addressDisplay = `${invoice.address.split(", ")[0]} (Chưa xác định quận/huyện, tỉnh/thành phố)`;
+  $.ajax({
+      type: "GET",
+      url: "handle/get_location.php",
+      data: {
+          province_id: invoice.address.split(", ")[2], // province_id là phần tử cuối
+          district_id: invoice.address.split(", ")[1]  // district_id là phần tử giữa
+      },
+      dataType: "json",
+      success: function (location) {
+          if (location.status === "success") {
+              addressDisplay = `${invoice.address.split(", ")[0]}, ${location.district_name}, ${location.province_name}`;
+          }
+          renderInvoiceModal(invoice, addressDisplay);
+      },
+      error: function () {
+          console.error("Lỗi khi lấy thông tin địa chỉ, sử dụng địa chỉ mặc định.");
+          renderInvoiceModal(invoice, addressDisplay);
+      }
+  });
+}
+
+function renderInvoiceModal(invoice, addressDisplay) {
+  let itemsHtml = invoice.items.map(item => `
+      <tr>
+          <td>${item.tensp}</td>
+          <td>${item.soluong}</td>
+          <td>${Number(item.dongiasanpham).toLocaleString('vi-VN')}₫</td>
+          <td>${Number(item.thanhtien).toLocaleString('vi-VN')}₫</td>
+      </tr>
+  `).join('');
+
+  let invoiceHtml = `
+      <div class="invoice-modal">
+          <div class="invoice-content">
+              <h2>HÓA ĐƠN THANH TOÁN</h2>
+              <p><strong>Mã hóa đơn:</strong> ${invoice.bill_id}</p>
+              <p><strong>Mã đơn hàng:</strong> ${invoice.order_id}</p>
+              <p><strong>Ngày đặt hàng:</strong> ${new Date(invoice.order_date).toLocaleString('vi-VN')}</p>
+              <p><strong>Tên người nhận:</strong> ${invoice.receiver_name}</p>
+              <p><strong>Số điện thoại:</strong> ${invoice.phone_number}</p>
+              <p><strong>Địa chỉ giao hàng:</strong> ${addressDisplay}</p>
+              <p><strong>Phương thức thanh toán:</strong> ${invoice.payment_method}</p>
+              <table class="invoice-table">
+                  <thead>
+                      <tr>
+                          <th>Sản phẩm</th>
+                          <th>Số lượng</th>
+                          <th>Đơn giá</th>
+                          <th>Thành tiền</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      ${itemsHtml}
+                  </tbody>
+              </table>
+              <p><strong>Tổng tiền:</strong> ${Number(invoice.total_price).toLocaleString('vi-VN')}₫</p>
+              <div class="invoice-actions">
+                  <button class="close-invoice">Đóng</button>
+              </div>
+          </div>
+      </div>
+  `;
+
+  $("body").append(invoiceHtml);
+
+  $(".close-invoice").on("click", function () {
+      $(".invoice-modal").fadeOut(300, function() {
+          $(this).remove();
+          window.location.href = "index.php?page=sanpham";
+      });
+  });
+}
 

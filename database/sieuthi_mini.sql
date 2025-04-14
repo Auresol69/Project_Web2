@@ -159,6 +159,18 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
+CREATE TABLE `bill_details` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `mabill` VARCHAR(20),
+    `masp` VARCHAR(20),
+    `tensp` VARCHAR(255),
+    `soluong` INT,
+    `dongia` INT,
+    `thanhtien` INT,
+    FOREIGN KEY (mabill) REFERENCES bill(mabill),
+    FOREIGN KEY (masp) REFERENCES product(masp)
+);
+
 --
 -- Triggers `customer`
 --
@@ -630,6 +642,7 @@ ALTER TABLE `staff`
   ADD CONSTRAINT `fk_staff_powergroup` FOREIGN KEY (`powergroupid`) REFERENCES `powergroup` (`powergroupid`) ON DELETE SET NULL;
 COMMIT;
 
+ALTER TABLE bill CHANGE ngaymua bill_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6);
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

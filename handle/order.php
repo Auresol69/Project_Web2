@@ -1,14 +1,11 @@
 <?php
 session_start();
 header('Content-Type: application/json; charset=UTF-8');
-ob_start(); // Bắt đầu bộ đệm đầu ra để ngăn xuất nội dung không mong muốn
+ob_start();
 include("../database/database.php");
 
-// Tắt hiển thị lỗi trực tiếp trên trình duyệt
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
-
-// Ghi log lỗi vào tệp
 ini_set('log_errors', 1);
 ini_set('error_log', '../logs/php_errors.log');
 
@@ -20,13 +17,13 @@ try {
     }
 
     $userId = $_SESSION['macustomer'];
-
     $receiverName = isset($_POST['receiver_name']) ? trim($_POST['receiver_name']) : '';
     $phoneNumber = isset($_POST['phone_number']) ? trim($_POST['phone_number']) : '';
     $addressDetail = isset($_POST['address_detail']) ? trim($_POST['address_detail']) : '';
     $provinceId = isset($_POST['city_id']) ? trim($_POST['city_id']) : null;
     $districtId = isset($_POST['district_id']) ? trim($_POST['district_id']) : null;
     $addressOption = isset($_POST['address_option']) ? trim($_POST['address_option']) : '';
+    $paymentMethod = isset($_POST['payment_method']) ? trim($_POST['payment_method']) : 'cod';
 
     if (!$receiverName || !$phoneNumber || !$addressDetail || !$provinceId || !$districtId) {
         throw new Exception('Vui lòng điền đầy đủ thông tin bắt buộc!');
@@ -36,11 +33,30 @@ try {
         throw new Exception('Số điện thoại không hợp lệ!');
     }
 
+    if ($paymentMethod === 'online') {
+        $cardNumber = isset($_POST['so-the']) ? trim($_POST['so-the']) : '';
+        $expiryDate = isset($_POST['ngay-het-han']) ? trim($_POST['ngay-het-han']) : '';
+        $cvv = isset($_POST['cvv']) ? trim($_POST['cvv']) : '';
+
+        if (!$cardNumber || !$expiryDate || !$cvv) {
+            throw new Exception('Vui lòng điền đầy đủ thông tin thẻ!');
+        }
+
+        if (!preg_match('/^[0-9]{16}$/', $cardNumber)) {
+            throw new Exception('Số thẻ không hợp lệ!');
+        }
+
+        if (!preg_match('/^[0-9]{3}$/', $cvv)) {
+            throw new Exception('Mã CVV không hợp lệ!');
+        }
+    }
+
     $isBuyNow = isset($_SESSION['buy_now']) && !empty($_SESSION['buy_now']);
     $cartId = null;
     $totalPrice = 0;
+    $items = [];
 
-    $conn->begin_transaction(); // Bắt đầu giao dịch
+    $conn->begin_transaction();
 
     if ($isBuyNow) {
         if (!isset($_SESSION['buy_now']['productId']) || !isset($_SESSION['buy_now']['quantity'])) {
@@ -50,7 +66,7 @@ try {
         $productId = $_SESSION['buy_now']['productId'];
         $quantity = (int)$_SESSION['buy_now']['quantity'];
 
-        $sql = "SELECT dongiasanpham, soluong FROM product WHERE masp = ?";
+        $sql = "SELECT masp, tensp, dongiasanpham, soluong FROM product WHERE masp = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $productId);
         $stmt->execute();
@@ -67,6 +83,13 @@ try {
         }
 
         $totalPrice = $product['dongiasanpham'] * $quantity;
+        $items[] = [
+            'masp' => $product['masp'],
+            'tensp' => $product['tensp'],
+            'soluong' => $quantity,
+            'dongiasanpham' => $product['dongiasanpham'],
+            'thanhtien' => $product['dongiasanpham'] * $quantity
+        ];
 
         $cartId = 'CART' . uniqid();
         $sqlCart = "INSERT INTO cart (magiohang, mauser, maorder) VALUES (?, ?, NULL)";
@@ -95,7 +118,7 @@ try {
         $cartId = $cart['magiohang'];
         $stmtCart->close();
 
-        $sqlItems = "SELECT pc.soluong, p.dongiasanpham 
+        $sqlItems = "SELECT pc.soluong, p.masp, p.tensp, p.dongiasanpham 
                      FROM product_cart pc 
                      JOIN product p ON pc.masp = p.masp 
                      WHERE pc.magiohang = ?";
@@ -106,35 +129,59 @@ try {
 
         while ($item = $resultItems->fetch_assoc()) {
             $totalPrice += $item['soluong'] * $item['dongiasanpham'];
+            $items[] = [
+                'masp' => $item['masp'],
+                'tensp' => $item['tensp'],
+                'soluong' => $item['soluong'],
+                'dongiasanpham' => $item['dongiasanpham'],
+                'thanhtien' => $item['soluong'] * $item['dongiasanpham']
+            ];
         }
         $stmtItems->close();
     }
 
     $orderId = 'ORD' . str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
     $billId = 'BIL' . str_pad(mt_rand(1, 999), 3, '0', STR_PAD_LEFT);
-    $payById = 'PAY001';
+    $payById = ($paymentMethod === 'online') ? 'PAY002' : 'PAY001';
+    $paymentName = ($paymentMethod === 'online') ? 'Thanh toán trực tuyến' : 'Thanh toán khi nhận hàng';
+    $orderDate = date('Y-m-d H:i:s');
+
+    $paymentDetails = ($paymentMethod === 'online') ? json_encode([
+        'card_number' => substr($cardNumber, -4), // Chỉ lưu 4 số cuối để bảo mật
+        'expiry_date' => $expiryDate,
+        'cvv' => '***'
+    ]) : '{}';
 
     $sqlPayBy = "INSERT INTO payby (mapayby, paybyname, address, details) 
-                 VALUES (?, 'Thanh toán khi nhận hàng', ?, '{}') 
-                 ON DUPLICATE KEY UPDATE address = ?";
+                 VALUES (?, ?, ?, ?) 
+                 ON DUPLICATE KEY UPDATE address = ?, details = ?";
     $stmtPayBy = $conn->prepare($sqlPayBy);
     $fullAddress = "$addressDetail, $districtId, $provinceId";
-    $stmtPayBy->bind_param("sss", $payById, $fullAddress, $fullAddress);
+    $stmtPayBy->bind_param("ssssss", $payById, $paymentName, $fullAddress, $paymentDetails, $fullAddress, $paymentDetails);
     $stmtPayBy->execute();
     $stmtPayBy->close();
 
+    // Sửa câu lệnh SQL: loại bỏ cột order_date
     $sqlOrder = "INSERT INTO `order` (maorder, magiohang, mauser, status) VALUES (?, ?, ?, 1)";
     $stmtOrder = $conn->prepare($sqlOrder);
     $stmtOrder->bind_param("sss", $orderId, $cartId, $userId);
     $stmtOrder->execute();
     $stmtOrder->close();
 
-    $sqlBill = "INSERT INTO bill (mabill, macustomer, maorder, mapayby, tongtien) 
-                VALUES (?, ?, ?, ?, ?)";
+    $sqlBill = "INSERT INTO bill (mabill, macustomer, maorder, mapayby, tongtien, bill_date) 
+                VALUES (?, ?, ?, ?, ?, ?)";
     $stmtBill = $conn->prepare($sqlBill);
-    $stmtBill->bind_param("ssssi", $billId, $userId, $orderId, $payById, $totalPrice);
+    $stmtBill->bind_param("ssssis", $billId, $userId, $orderId, $payById, $totalPrice, $orderDate);
     $stmtBill->execute();
     $stmtBill->close();
+
+    $sqlBillDetails = "INSERT INTO bill_details (mabill, masp, tensp, soluong, dongia, thanhtien) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmtBillDetails = $conn->prepare($sqlBillDetails);
+    foreach ($items as $item) {
+        $stmtBillDetails->bind_param("sssiii", $billId, $item['masp'], $item['tensp'], $item['soluong'], $item['dongiasanpham'], $item['thanhtien']);
+        $stmtBillDetails->execute();
+    }
+    $stmtBillDetails->close();
 
     $sqlUpdateCart = "UPDATE cart SET maorder = ? WHERE magiohang = ?";
     $stmtUpdateCart = $conn->prepare($sqlUpdateCart);
@@ -164,15 +211,27 @@ try {
     }
 
     $conn->commit();
+
     $response['status'] = 'success';
     $response['message'] = 'Đặt hàng thành công!';
+    $response['invoice'] = [
+        'bill_id' => $billId,
+        'order_id' => $orderId,
+        'order_date' => $orderDate, // Lấy từ biến $orderDate, sẽ được hiển thị trong modal
+        'receiver_name' => $receiverName,
+        'phone_number' => $phoneNumber,
+        'address' => $fullAddress,
+        'total_price' => $totalPrice,
+        'items' => $items,
+        'payment_method' => $paymentName
+    ];
 } catch (Exception $e) {
     $conn->rollback();
     $response['message'] = $e->getMessage();
     error_log("Lỗi trong order.php: " . $e->getMessage());
 }
 
-ob_end_clean(); // Xóa bộ đệm đầu ra
+ob_end_clean();
 echo json_encode($response);
 $conn->close();
 ?>

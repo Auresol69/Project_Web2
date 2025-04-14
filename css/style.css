@@ -750,7 +750,7 @@ input:focus {
 }
 
 /* Thanh toán */
-/* Thanh toán */
+
 #payment-modal {
     display: none;
     position: fixed;
@@ -758,7 +758,7 @@ input:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgb(232, 250, 221);
     backdrop-filter: blur(5px);
     z-index: 1000;
     align-items: center;
@@ -2087,4 +2087,61 @@ input[type="submit"]:hover {
   
 .sanpham-img-container:hover .overlay-xemnhanh {
     opacity: 1;
+}
+
+/* hóa đơn */
+
+.invoice-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(227, 247, 229);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.invoice-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.invoice-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.invoice-table th, .invoice-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.invoice-table th {
+    background: #f4f4f4;
+}
+
+.invoice-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.invoice-actions button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
 }
