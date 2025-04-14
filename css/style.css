@@ -754,7 +754,7 @@ input:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(221, 230, 216);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(5px);
     z-index: 1000;
     align-items: center;
@@ -813,7 +813,7 @@ input:focus {
 .payment-col-left {
     flex: 1;
     min-width: 350px;
-    max-height: 85vh; /* Tăng từ 80vh lên 85vh để cân đối với cột phải */
+    max-height: 85vh;
     overflow-y: auto;
 }
 
@@ -913,7 +913,7 @@ input:focus {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    max-height: 85vh; /* Tăng từ 80vh lên 85vh để chứa danh sách dài hơn */
+    max-height: 85vh;
 }
 
 .payment-content-lable {
@@ -928,7 +928,7 @@ input:focus {
 }
 
 #list-order-payment {
-    max-height: 800px; 
+    max-height: 500px;
     overflow-y: auto;
     padding: 15px;
     background: #f8fafc;
@@ -978,11 +978,172 @@ input:focus {
     padding: 20px;
 }
 
+#list-order-payment .overview-btn {
+    background: linear-gradient(145deg, #4caf50, #2e7d32);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#list-order-payment .overview-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal tổng quát đơn hàng */
+.order-overview-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.order-overview-modal.active {
+    display: flex;
+    opacity: 1;
+}
+
+.order-overview-modal .modal-content {
+    width: 90%;
+    max-width: 600px;
+    background: linear-gradient(135deg, #ffffff, #f8fafc);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+.order-overview-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.order-overview-modal .modal-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2e7d32;
+    background: linear-gradient(to right, #2e7d32, #4caf50);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.order-overview-modal .modal-header .close-modal-btn {
+    font-size: 28px;
+    color: #555;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.order-overview-modal .modal-header .close-modal-btn:hover {
+    color: #d32f2f;
+    transform: scale(1.2);
+}
+
+.order-overview-modal .modal-body .order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: #f8fafc;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.order-overview-modal .modal-body .order-item .item-info {
+    flex: 1;
+}
+
+.order-overview-modal .modal-body .order-item .item-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2e7d32;
+}
+
+.order-overview-modal .modal-body .order-item .item-quantity {
+    font-size: 14px;
+    color: #666;
+}
+
+.order-overview-modal .modal-body .order-item .item-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #d32f2f;
+}
+
+.order-overview-modal .modal-body .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-top: 20px;
+    background: #e6f4ea;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.order-overview-modal .modal-body .order-total .text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.order-overview-modal .modal-body .order-total .price-final {
+    font-size: 24px;
+    font-weight: 700;
+    color: #d32f2f;
+}
+
+.order-overview-modal .modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.order-overview-modal .modal-footer .view-details-btn {
+    background: linear-gradient(145deg, #4caf50, #2e7d32);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order-overview-modal .modal-footer .view-details-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
 .bill-payment {
     padding: 15px 0;
     display: flex;
     flex-direction: column;
-    gap: 25px; /* Tăng gap để thoáng hơn */
+    gap: 25px;
 }
 
 .policy-note {
@@ -1077,7 +1238,7 @@ input:focus {
     .payment-col-right {
         width: 100%;
         max-width: none;
-        max-height: none; /* Bỏ giới hạn chiều cao trên mobile */
+        max-height: none;
     }
 
     .payment-col-right {
@@ -1111,6 +1272,28 @@ input:focus {
     .preview-checkout-btn,
     .complete-checkout-btn {
         width: 100%;
+    }
+
+    .order-overview-modal .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .order-overview-modal .modal-header h3 {
+        font-size: 20px;
+    }
+
+    .order-overview-modal .modal-body .order-total .text {
+        font-size: 18px;
+    }
+
+    .order-overview-modal .modal-body .order-total .price-final {
+        font-size: 20px;
+    }
+
+    .order-overview-modal .modal-footer .view-details-btn {
+        padding: 10px 20px;
+        font-size: 14px;
     }
 }
 
@@ -1158,6 +1341,27 @@ input:focus {
     .complete-checkout-btn {
         padding: 14px;
         font-size: 14px;
+    }
+
+    .order-overview-modal .modal-header h3 {
+        font-size: 18px;
+    }
+
+    .order-overview-modal .modal-body .order-item .item-name,
+    .order-overview-modal .modal-body .order-item .item-price {
+        font-size: 14px;
+    }
+
+    .order-overview-modal .modal-body .order-item .item-quantity {
+        font-size: 12px;
+    }
+
+    .order-overview-modal .modal-body .order-total .text {
+        font-size: 16px;
+    }
+
+    .order-overview-modal .modal-body .order-total .price-final {
+        font-size: 18px;
     }
 }
 

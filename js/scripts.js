@@ -1169,3 +1169,66 @@ function showPreviewOrder() {
       `Tổng tiền: ${totalPrice}`
   );
 }
+
+function openOrderOverviewModal() {
+  // Lấy modal
+  const modal = document.getElementById('order-overview-modal');
+  const modalBody = modal.querySelector('.modal-body');
+
+  // Xóa nội dung cũ trong modal-body
+  modalBody.innerHTML = '';
+
+  // Lấy danh sách sản phẩm từ #list-order-payment
+  const orderItems = document.querySelectorAll('#list-order-payment .cart-item');
+  if (orderItems.length === 0) {
+      modalBody.innerHTML = '<p class="empty-order">Không có sản phẩm nào trong giỏ hàng.</p>';
+  } else {
+      orderItems.forEach(item => {
+          const name = item.querySelector('.cart-name').textContent;
+          const quantity = item.querySelector('.cart-quantity').textContent;
+          // Giả sử giá sản phẩm được lưu trong data-price (cần thêm thuộc tính này trong HTML)
+          const price = item.getAttribute('data-price') || '0'; // Cần thêm data-price vào .cart-item
+
+          const orderItem = `
+              <div class="order-item">
+                  <div class="item-info">
+                      <p class="item-name">${name}</p>
+                      <p class="item-quantity">${quantity}</p>
+                  </div>
+                  <p class="item-price">${price}đ</p>
+              </div>
+          `;
+          modalBody.insertAdjacentHTML('beforeend', orderItem);
+      });
+
+      // Lấy tổng tiền từ #payment-cart-price-final
+      const totalPrice = document.getElementById('payment-cart-price-final').textContent;
+      const totalSection = `
+          <div class="order-total">
+              <p class="text">Tổng cộng</p>
+              <p class="price-final">${totalPrice}đ</p>
+          </div>
+      `;
+      modalBody.insertAdjacentHTML('beforeend', totalSection);
+  }
+
+  // Hiển thị modal
+  modal.classList.add('active');
+}
+
+function closeOrderOverviewModal() {
+  const modal = document.getElementById('order-overview-modal');
+  modal.classList.remove('active');
+}
+
+// Đóng modal khi nhấn vào backdrop
+document.getElementById('order-overview-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+      closeOrderOverviewModal();
+  }
+});
+
+function goToOrderDetails() {
+  // Chuyển hướng đến trang chi tiết đơn hàng
+  window.location.href = 'index.php?page=order-details'; // Thay đổi URL theo hệ thống của bạn
+}

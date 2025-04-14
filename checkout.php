@@ -1,6 +1,39 @@
 <div id="payment-modal">
     <a href="index.php?page=sanpham" class="back-to-products" title="Trở về trang sản phẩm">⟵</a>
     <div class="payment-container">
+        <!-- Modal tổng quát đơn hàng -->
+        <div class="order-overview-modal" id="order-overview-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Tổng quát đơn hàng</h3>
+                    <button class="close-modal-btn" onclick="closeOrderOverviewModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="order-item">
+                        <div class="item-info">
+                            <p class="item-name">Samsung Galaxy</p>
+                            <p class="item-quantity">Số lượng: 1</p>
+                        </div>
+                        <p class="item-price">$499</p>
+                    </div>
+                    <div class="order-item">
+                        <div class="item-info">
+                            <p class="item-name">iPhone 14</p>
+                            <p class="item-quantity">Số lượng: 2</p>
+                        </div>
+                        <p class="item-price">$1498</p>
+                    </div>
+                    <!-- Tổng tiền -->
+                    <div class="order-total">
+                        <p class="text">Tổng cộng</p>
+                        <p class="price-final">$1997</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="view-details-btn" onclick="goToOrderDetails()">Xem chi tiết</button>
+                </div>
+            </div>
+        </div>
         <div class="payment-col-left">
             <h2>THÔNG TIN NGƯỜI NHẬN</h2>
             <form action="" class="payment-form-left">
