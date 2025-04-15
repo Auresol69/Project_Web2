@@ -28,6 +28,7 @@
         <span class="user-icon"><i class="fa-solid fa-user"></i></span>
         <div id="open-form-log-in__dropdown" style="display: none;">
         <a href="#" id="open-form-log-in__info">Thông tin tài khoản</a>
+        <a href="#" id="open-form-log-in__invoices">Hóa đơn</a>
         <a href="#" id="open-form-log-in__logout">Đăng xuất</a>
         </div>
     </div>

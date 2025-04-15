@@ -161,7 +161,6 @@ try {
     $stmtPayBy->execute();
     $stmtPayBy->close();
 
-    // Sửa câu lệnh SQL: loại bỏ cột order_date
     $sqlOrder = "INSERT INTO `order` (maorder, magiohang, mauser, status) VALUES (?, ?, ?, 1)";
     $stmtOrder = $conn->prepare($sqlOrder);
     $stmtOrder->bind_param("sss", $orderId, $cartId, $userId);
@@ -217,7 +216,7 @@ try {
     $response['invoice'] = [
         'bill_id' => $billId,
         'order_id' => $orderId,
-        'order_date' => $orderDate, // Lấy từ biến $orderDate, sẽ được hiển thị trong modal
+        'order_date' => $orderDate,
         'receiver_name' => $receiverName,
         'phone_number' => $phoneNumber,
         'address' => $fullAddress,

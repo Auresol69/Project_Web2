@@ -2097,7 +2097,7 @@ input[type="submit"]:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(227, 247, 229);
+    background: rgb(232, 241, 231);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2144,4 +2144,91 @@ input[type="submit"]:hover {
     padding: 10px 20px;
     margin-left: 10px;
     cursor: pointer;
+}
+
+.invoices-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.invoices-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.invoices-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.invoices-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.invoices-table th, .invoices-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.invoices-table th {
+    background: #f4f4f4;
+}
+
+.invoices-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.invoices-actions button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.view-invoice-detail {
+    padding: 5px 10px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.view-invoice-detail:hover {
+    background: #0056b3;
+}
+
+#open-form-log-in__dropdown {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+#open-form-log-in__dropdown a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+}
+
+#open-form-log-in__dropdown a:hover {
+    background: #f0f0f0;
 }

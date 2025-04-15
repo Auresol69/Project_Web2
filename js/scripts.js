@@ -680,6 +680,103 @@ function LoadProducts(page) {
       console.error("Lỗi AJAX:", status, error);
     },
   });
+
+
+$("#open-form-log-in__invoices").on("click", function (event) {
+    event.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: "handle/auth.php",
+        data: { action: "check" },
+        dataType: "json",
+        success: function (response) {
+            if (response.loggedIn) {
+                $.ajax({
+                    type: "GET",
+                    url: "handle/get_invoices.php",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            let invoicesHtml = `
+                                <div class="invoices-modal">
+                                    <div class="invoices-content">
+                                        <h2>DANH SÁCH HÓA ĐƠN</h2>
+                                        <table class="invoices-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mã hóa đơn</th>
+                                                    <th>Mã đơn hàng</th>
+                                                    <th>Ngày đặt hàng</th>
+                                                    <th>Người nhận</th>
+                                                    <th>Số điện thoại</th>
+                                                    <th>Tổng tiền</th>
+                                                    <th>Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                            `;
+                            if (response.invoices.length === 0) {
+                                invoicesHtml += `
+                                    <tr>
+                                        <td colspan="7" style="text-align: center;">Bạn chưa có hóa đơn nào!</td>
+                                    </tr>
+                                `;
+                            } else {
+                                response.invoices.forEach(invoice => {
+                                    invoicesHtml += `
+                                        <tr>
+                                            <td>${invoice.bill_id}</td>
+                                            <td>${invoice.order_id}</td>
+                                            <td>${new Date(invoice.order_date).toLocaleString('vi-VN')}</td>
+                                            <td>${invoice.receiver_name}</td>
+                                            <td>${invoice.phone_number}</td>
+                                            <td>${Number(invoice.total_price).toLocaleString('vi-VN')}₫</td>
+                                            <td>
+                                                <button class="view-invoice-detail" data-invoice='${JSON.stringify(invoice)}'>Xem chi tiết</button>
+                                            </td>
+                                        </tr>
+                                    `;
+                                });
+                            }
+                            invoicesHtml += `
+                                            </tbody>
+                                        </table>
+                                        <div class="invoices-actions">
+                                            <button class="close-invoices">Đóng</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            $("body").append(invoicesHtml);
+                            $(".close-invoices").on("click", function () {
+                                $(".invoices-modal").fadeOut(300, function () {
+                                    $(this).remove();
+                                });
+                            });
+                            $(".view-invoice-detail").on("click", function () {
+                                const invoice = $(this).data("invoice");
+                                showInvoiceModal(invoice);
+                            });
+                        } else {
+                            alert("Lỗi: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi AJAX:", status, error);
+                        console.error("Phản hồi từ server:", xhr.responseText);
+                        alert("Lỗi khi lấy danh sách hóa đơn: " + (xhr.responseText || "Không có thông tin chi tiết."));
+                    }
+                });
+            } else {
+                $("#overlay").show();
+                alert("Vui lòng đăng nhập để xem hóa đơn!");
+            }
+        },
+        error: function () {
+            alert("Lỗi kiểm tra trạng thái đăng nhập!");
+        }
+    });
+  });
 }
 
 function updateCart(action, productId, successMessage = "") {
@@ -1305,12 +1402,14 @@ document.getElementById('order-overview-modal').addEventListener('click', functi
 
 function showInvoiceModal(invoice) {
   let addressDisplay = `${invoice.address.split(", ")[0]} (Chưa xác định quận/huyện, tỉnh/thành phố)`;
+
+  // Truy vấn để lấy tên tỉnh/thành phố và quận/huyện
   $.ajax({
       type: "GET",
       url: "handle/get_location.php",
       data: {
-          province_id: invoice.address.split(", ")[2], // province_id là phần tử cuối
-          district_id: invoice.address.split(", ")[1]  // district_id là phần tử giữa
+          province_id: invoice.address.split(", ")[2],
+          district_id: invoice.address.split(", ")[1]
       },
       dataType: "json",
       success: function (location) {
@@ -1325,7 +1424,6 @@ function showInvoiceModal(invoice) {
       }
   });
 }
-
 function renderInvoiceModal(invoice, addressDisplay) {
   let itemsHtml = invoice.items.map(item => `
       <tr>
@@ -1377,4 +1475,3 @@ function renderInvoiceModal(invoice, addressDisplay) {
       });
   });
 }
-
