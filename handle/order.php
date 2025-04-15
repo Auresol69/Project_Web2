@@ -29,7 +29,7 @@ try {
         throw new Exception('Vui lòng điền đầy đủ thông tin bắt buộc!');
     }
 
-    if (!preg_match('/^[0-9]{10,11}$/', $phoneNumber)) {
+    if (!preg_match('/^\d{10}$/', $phoneNumber)) {
         throw new Exception('Số điện thoại không hợp lệ!');
     }
 
@@ -42,7 +42,7 @@ try {
             throw new Exception('Vui lòng điền đầy đủ thông tin thẻ!');
         }
 
-        if (!preg_match('/^[0-9]{16}$/', $cardNumber)) {
+        if (!preg_match('/^[0-9]{6}$/', $cardNumber)) {
             throw new Exception('Số thẻ không hợp lệ!');
         }
 
@@ -147,7 +147,7 @@ try {
     $orderDate = date('Y-m-d H:i:s');
 
     $paymentDetails = ($paymentMethod === 'online') ? json_encode([
-        'card_number' => substr($cardNumber, -4), // Chỉ lưu 4 số cuối để bảo mật
+        'card_number' => substr($cardNumber, -4),
         'expiry_date' => $expiryDate,
         'cvv' => '***'
     ]) : '{}';
@@ -167,10 +167,11 @@ try {
     $stmtOrder->execute();
     $stmtOrder->close();
 
-    $sqlBill = "INSERT INTO bill (mabill, macustomer, maorder, mapayby, tongtien, bill_date) 
-                VALUES (?, ?, ?, ?, ?, ?)";
+    // Sửa câu lệnh INSERT để thêm receiver_name và phone_number vào bảng bill
+    $sqlBill = "INSERT INTO bill (mabill, macustomer, maorder, mapayby, receiver_name, phone_number, tongtien, bill_date) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     $stmtBill = $conn->prepare($sqlBill);
-    $stmtBill->bind_param("ssssis", $billId, $userId, $orderId, $payById, $totalPrice, $orderDate);
+    $stmtBill->bind_param("ssssssis", $billId, $userId, $orderId, $payById, $receiverName, $phoneNumber, $totalPrice, $orderDate);
     $stmtBill->execute();
     $stmtBill->close();
 
@@ -195,6 +196,7 @@ try {
     $stmtNewCart->execute();
     $stmtNewCart->close();
 
+    // Chỉ cập nhật thông tin khách hàng nếu người dùng chọn lưu địa chỉ mới
     if ($addressOption === 'new') {
         $sqlUpdateCustomer = "UPDATE customer 
                               SET name = ?, phone = ?, province_id = ?, district_id = ?, address_detail = ? 

@@ -682,7 +682,7 @@ function LoadProducts(page) {
   });
 
 
-$("#open-form-log-in__invoices").on("click", function (event) {
+  $(document).on("click", "#open-form-log-in__invoices", function (event) {
     event.preventDefault();
     $.ajax({
         type: "POST",
@@ -697,10 +697,14 @@ $("#open-form-log-in__invoices").on("click", function (event) {
                     dataType: "json",
                     success: function (response) {
                         if (response.status === "success") {
+                            let allInvoices = response.invoices;
                             let invoicesHtml = `
                                 <div class="invoices-modal">
                                     <div class="invoices-content">
                                         <h2>DANH SÁCH HÓA ĐƠN</h2>
+                                        <div class="search-invoice-container">
+                                            <input type="text" id="search-invoice" placeholder="Tìm kiếm hóa đơn (mã, người nhận, số điện thoại...)">
+                                        </div>
                                         <table class="invoices-table">
                                             <thead>
                                                 <tr>
@@ -713,16 +717,16 @@ $("#open-form-log-in__invoices").on("click", function (event) {
                                                     <th>Thao tác</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody id="invoices-table-body">
                             `;
-                            if (response.invoices.length === 0) {
+                            if (allInvoices.length === 0) {
                                 invoicesHtml += `
                                     <tr>
                                         <td colspan="7" style="text-align: center;">Bạn chưa có hóa đơn nào!</td>
                                     </tr>
                                 `;
                             } else {
-                                response.invoices.forEach(invoice => {
+                                allInvoices.forEach(invoice => {
                                     invoicesHtml += `
                                         <tr>
                                             <td>${invoice.bill_id}</td>
@@ -748,23 +752,31 @@ $("#open-form-log-in__invoices").on("click", function (event) {
                                 </div>
                             `;
                             $("body").append(invoicesHtml);
+
+                            // Xử lý tìm kiếm cơ bản
+                            $("#search-invoice").on("input", function () {
+                                let keyword = $(this).val().trim();
+                                searchInvoices(keyword, allInvoices, "#invoices-table-body");
+                            });
+
+                            // Xử lý đóng modal danh sách hóa đơn
                             $(".close-invoices").on("click", function () {
                                 $(".invoices-modal").fadeOut(300, function () {
                                     $(this).remove();
                                 });
                             });
+
+                            // Xử lý xem chi tiết hóa đơn
                             $(".view-invoice-detail").on("click", function () {
-                                const invoice = $(this).data("invoice");
+                                let invoice = $(this).data("invoice");
                                 showInvoiceModal(invoice);
                             });
                         } else {
                             alert("Lỗi: " + response.message);
                         }
                     },
-                    error: function (xhr, status, error) {
-                        console.error("Lỗi AJAX:", status, error);
-                        console.error("Phản hồi từ server:", xhr.responseText);
-                        alert("Lỗi khi lấy danh sách hóa đơn: " + (xhr.responseText || "Không có thông tin chi tiết."));
+                    error: function () {
+                        alert("Lỗi khi lấy danh sách hóa đơn!");
                     }
                 });
             } else {
@@ -776,7 +788,7 @@ $("#open-form-log-in__invoices").on("click", function (event) {
             alert("Lỗi kiểm tra trạng thái đăng nhập!");
         }
     });
-  });
+});
 }
 
 function updateCart(action, productId, successMessage = "") {
@@ -1440,7 +1452,7 @@ function renderInvoiceModal(invoice, addressDisplay) {
               <h2>HÓA ĐƠN THANH TOÁN</h2>
               <p><strong>Mã hóa đơn:</strong> ${invoice.bill_id}</p>
               <p><strong>Mã đơn hàng:</strong> ${invoice.order_id}</p>
-              <p><strong>Ngày đặt hàng:</strong> ${new Date(invoice.order_date).toLocaleString('vi-VN')}</p>
+              <p><strong>Ngày đặt hàng:</strong> ${new Date(invoice.order_date).toLocaleDateString('vi-VN')}</p>
               <p><strong>Tên người nhận:</strong> ${invoice.receiver_name}</p>
               <p><strong>Số điện thoại:</strong> ${invoice.phone_number}</p>
               <p><strong>Địa chỉ giao hàng:</strong> ${addressDisplay}</p>
@@ -1471,7 +1483,56 @@ function renderInvoiceModal(invoice, addressDisplay) {
   $(".close-invoice").on("click", function () {
       $(".invoice-modal").fadeOut(300, function() {
           $(this).remove();
-          window.location.href = "index.php?page=sanpham";
+          // Không chuyển hướng, chỉ đóng modal chi tiết
+          // Đảm bảo modal danh sách hóa đơn vẫn hiển thị
+          $(".invoices-modal").show();
       });
+  });
+}
+
+
+// Hàm tìm kiếm hóa đơn
+function searchInvoices(keyword, invoices, tbodySelector) {
+  let filteredInvoices = invoices.filter(invoice => {
+      return (
+          invoice.bill_id.toLowerCase().includes(keyword.toLowerCase()) ||
+          invoice.order_id.toLowerCase().includes(keyword.toLowerCase()) ||
+          invoice.receiver_name.toLowerCase().includes(keyword.toLowerCase()) ||
+          invoice.phone_number.includes(keyword.toLowerCase()) ||
+          new Date(invoice.order_date).toLocaleString('vi-VN').toLowerCase().includes(keyword.toLowerCase())
+      );
+  });
+
+  // Cập nhật bảng hóa đơn
+  let tbodyHtml = "";
+  if (filteredInvoices.length === 0) {
+      tbodyHtml = `
+          <tr>
+              <td colspan="7" style="text-align: center;">Không tìm thấy hóa đơn phù hợp!</td>
+          </tr>
+      `;
+  } else {
+      filteredInvoices.forEach(invoice => {
+          tbodyHtml += `
+              <tr>
+                  <td>${invoice.bill_id}</td>
+                  <td>${invoice.order_id}</td>
+                  <td>${new Date(invoice.order_date).toLocaleString('vi-VN')}</td>
+                  <td>${invoice.receiver_name}</td>
+                  <td>${invoice.phone_number}</td>
+                  <td>${Number(invoice.total_price).toLocaleString('vi-VN')}₫</td>
+                  <td>
+                      <button class="view-invoice-detail" data-invoice='${JSON.stringify(invoice)}'>Xem chi tiết</button>
+                  </td>
+              </tr>
+          `;
+      });
+  }
+  $(tbodySelector).html(tbodyHtml);
+
+  // Gắn lại sự kiện cho các nút "Xem chi tiết"
+  $(".view-invoice-detail").on("click", function () {
+      const invoice = $(this).data("invoice");
+      showInvoiceModal(invoice);
   });
 }

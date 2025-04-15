@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $response["errors"]["email"] = "Email không hợp lệ!";
             }
 
-            if (!kiem_tra($phone_number,"/^\d{1,12}$/")){
+            if (!kiem_tra($phone_number,"/^\d{10}$/")){
                 $response["errors"]["phone_number"] = "Số điện thoại không hợp lệ!";
             }
 

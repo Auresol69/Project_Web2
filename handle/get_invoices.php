@@ -12,26 +12,8 @@ try {
 
     $userId = $_SESSION['macustomer'];
 
-    // Lấy thông tin khách hàng từ bảng customer
-    $sqlCustomer = "SELECT name, phone FROM customer WHERE macustomer = ?";
-    $stmtCustomer = $conn->prepare($sqlCustomer);
-    if (!$stmtCustomer) {
-        throw new Exception('Lỗi chuẩn bị truy vấn customer: ' . $conn->error);
-    }
-    $stmtCustomer->bind_param("s", $userId);
-    if (!$stmtCustomer->execute()) {
-        throw new Exception('Lỗi thực thi truy vấn customer: ' . $stmtCustomer->error);
-    }
-    $resultCustomer = $stmtCustomer->get_result();
-    $customer = $resultCustomer->fetch_assoc();
-    $stmtCustomer->close();
-
-    // Gán giá trị mặc định nếu không có dữ liệu
-    $receiverName = $customer['name'] ?? 'Khách hàng';
-    $phoneNumber = $customer['phone'] ?? 'Không có số điện thoại';
-
     // Lấy danh sách hóa đơn của khách hàng
-    $sql = "SELECT b.mabill, b.maorder, b.tongtien, b.bill_date, p.paybyname, p.address
+    $sql = "SELECT b.mabill, b.maorder, b.tongtien, b.bill_date, b.receiver_name, b.phone_number, p.paybyname, p.address
             FROM bill b
             LEFT JOIN payby p ON b.mapayby = p.mapayby
             WHERE b.macustomer = ?";
@@ -77,8 +59,8 @@ try {
             'bill_id' => $bill['mabill'],
             'order_id' => $bill['maorder'],
             'order_date' => $bill['bill_date'],
-            'receiver_name' => $receiverName,
-            'phone_number' => $phoneNumber,
+            'receiver_name' => $bill['receiver_name'] ?? 'Khách hàng',
+            'phone_number' => $bill['phone_number'] ?? 'Không có số điện thoại',
             'address' => $bill['address'] ?? 'Không có thông tin địa chỉ',
             'total_price' => $bill['tongtien'],
             'items' => $items,
