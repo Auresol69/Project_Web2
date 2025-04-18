@@ -233,7 +233,7 @@ CREATE TRIGGER after_insert_detail_entry_form
 AFTER INSERT ON detail_entry_form
 FOR EACH ROW
 BEGIN
-    UPDATE product SET soluong = soluong + NEW.soluongnhap, where masp = NEW.masp;
+    UPDATE product SET soluong = soluong + NEW.soluongnhap where masp = NEW.masp;
 END$$
 
 CREATE TRIGGER after_update_cart
