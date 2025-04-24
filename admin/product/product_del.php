@@ -1,32 +1,39 @@
-<div class="main-content">
-    <h1>Xóa sản phẩm</h1>
-    <div id="content-box">
-        <?php
-        $error = false;
-        if (isset($_GET['id']) && !empty($_GET['id'])) {
-            require '../connect_db.php'; // Đảm bảo đường dẫn đến file này là chính xác.
+<?php
+require '../connect_db.php'; 
 
-            $db = new connect_db(); // Tạo đối tượng connect_db
+header('Content-Type: application/json'); // Thiết lập kiểu nội dung trả về là JSON
 
-            try {
-                // Sử dụng phương thức delete của lớp connect_db để xóa sản phẩm
-                $result = $db->delete('product', $_GET['id']);
+$response = ['success' => false, 'message' => '']; // Khởi tạo phản hồi mặc định
 
-                // Kiểm tra xem có bản ghi nào bị ảnh hưởng không
-                if ($result->rowCount() === 0) {
-                    $error = "Sản phẩm không tìm thấy hoặc đã được xóa.";
-                }
-            } catch (PDOException $e) {
-                $error = "Không thể xóa sản phẩm. Lỗi: " . $e->getMessage();
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $db = new connect_db(); // Tạo đối tượng connect_db
+
+    try {
+        // Kiểm tra số lượng sản phẩm trước khi xóa
+        $product = $db->getById('product', $_GET['id']);
+        if ($product === false) {
+            $response['message'] = 'Sản phẩm không tồn tại.';
+        } elseif ($product['soluong'] == 0) {
+            // Nếu số lượng bằng 0, không xóa mà trả về thông báo đã bán hết
+            // Removed restriction to allow deletion of sold-out products
+            // Proceed to delete product
+            $result = $db->delete('product', $_GET['id']);
+            
+            // Kiểm tra xem có bản ghi nào bị ảnh hưởng không
+            if ($result->rowCount() > 0) {
+                $response['success'] = true;
+                $response['message'] = 'Đã xóa sản phẩm thành công.';
+            } else {
+                $response['message'] = 'Sản phẩm không tìm thấy hoặc đã được xóa.';
             }
-        ?>
-            <div id="<?= $error ? 'error-notify' : 'success-notify' ?>" class="box-content">
-                <h2><?= $error ? 'Thông báo' : 'Xóa sản phẩm thành công' ?></h2>
-                <h4><?= $error ? $error : '' ?></h4>
-                <a href="../header.php?page=sanpham">Danh sách sản phẩm</a>
-            </div>
-        <?php
         }
-        ?>
-    </div>
-</div>
+    } catch (PDOException $e) {
+        $response['message'] = "Không thể xóa sản phẩm. Lỗi: " . $e->getMessage();
+    }
+} else {
+    $response['message'] = 'ID không hợp lệ.';
+}
+
+// Trả về phản hồi JSON
+echo json_encode($response);
+?>
