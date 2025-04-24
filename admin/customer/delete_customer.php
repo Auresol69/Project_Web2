@@ -7,9 +7,9 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
     
     // Kiểm tra ID có tồn tại không
-    $customer = $db->getById("users", $id);
+    $customer = $db->getById("customer", $id);
     if ($customer) {
-        $db->delete("users", $id);
+        $db->delete("customer", $id);
     }
 }
 
