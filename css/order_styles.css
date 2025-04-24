@@ -1,0 +1,156 @@
+/* Order Management Styles - Matching Product List */
+body, h1, p, ul {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.main-content h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #2c3e50;
+}
+
+.listing-items {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.buttons {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.buttons a {
+    background: #006ADD;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.buttons a:hover {
+    background: #2980b9;
+}
+
+.listing-search {
+    margin-bottom: 20px;
+}
+
+.listing-search input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.listing-item-heading {
+    background: #eaeaea;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.listing-prop {
+    display: inline-block;
+    width: 14%;
+    padding: 10px;
+    text-align: center;
+}
+
+.listing-button {
+    width: 25%;
+    text-align: center;
+}
+
+.listing-button a {
+    display: inline-block;
+    background: #3498db;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0 2px;
+    min-width: 70px;
+}
+
+.listing-button a.update-status {
+    background: #f39c12;
+}
+
+.listing-button a.update-status:hover {
+    background: #e67e22;
+}
+
+.listing-button a:hover {
+    background: #2980b9;
+}
+
+.listing-time {
+    color: #7f8c8d;
+}
+
+.clear-both {
+    clear: both;
+}
+
+.total-items {
+    text-align: center;
+    margin: 20px 0;
+    font-style: italic;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 5px;
+    background: #006ADD;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.pagination a:hover {
+    background: #2980b9;
+}
+
+/* Order specific styles */
+.order-status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-pending {
+    background-color: #f39c12;
+}
+
+.status-confirmed {
+    background-color: #3498db;
+}
+
+.status-completed {
+    background-color: #2ecc71;
+}
+
+.status-cancelled {
+    background-color: #e74c3c;
+}
