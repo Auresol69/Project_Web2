@@ -1,0 +1,121 @@
+/* Styles cho trang entry_form.php */
+
+
+
+.main-content h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #2c3e50;
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #006ADD;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: #004a99;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+table th, table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.total-amount {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 15px;
+    text-align: right;
+}
+
+/* Style cho nút chi tiết và tạo phiếu nhập mới */
+.entry-form-button {
+    display: inline-block;
+    background-color: #006ADD;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 5px 2px;
+    font-weight: bold;
+    min-width: 90px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.entry-form-button:hover {
+    background-color: #004a99;
+}
+
+/* Style bổ sung cho nút chi tiết */
+.entry-form-button.detail-button {
+    background-color: #28a745;
+}
+
+.entry-form-button.detail-button:hover {
+    background-color: #218838;
+}
+
+/* Style bổ sung cho nút tạo phiếu nhập mới */
+.entry-form-button.create-button {
+    background-color: #007bff;
+}
+
+.entry-form-button.create-button:hover {
+    background-color: #0056b3;
+}
+
+.entry-form-button1 {
+    float: right;
+}
