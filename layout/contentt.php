@@ -85,30 +85,32 @@
     
 </div>
 
+
 <!-- Modal chi tiết sản phẩm -->
 <div id="productModal" class="modal">
     <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-
+        <span class="close" onclick="closeModal()">×</span>
         <div class="modal-layout">
             <div class="modal-left">
                 <img id="modal-img" src="" alt="Ảnh sản phẩm">
             </div>
-            
             <div class="modal-right">
                 <h1 id="modal-title" class="sanpham-ten">Tên sản phẩm</h1>
                 <p id="modal-code" class="product-code">Mã sản phẩm</p>
                 <p id="modal-quantity" class="product-quantity">Số lượng: 0</p>
                 <p id="modal-price" class="sanpham-gia">0.000₫</p>
                 <p id="modal-description">Mô tả sản phẩm...</p>
-
+                <!-- Thêm trường nhập số lượng -->
+                <div class="quantity-input">
+                    <label for="buy-now-quantity">Số lượng:</label>
+                    <input type="number" id="buy-now-quantity" min="1" value="1">
+                </div>
                 <div class="button-group">
                     <div class="cart-icon-sp" id="modal-cart-icon">
                         <i class="fa fa-shopping-cart"></i>
                     </div>
                     <button class="btn-muanhanh">Mua ngay</button>
                 </div>
-
             </div>
         </div>
     </div>

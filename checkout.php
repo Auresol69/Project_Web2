@@ -39,6 +39,34 @@
                         <option value="">-- Chọn quận/huyện --</option>
                     </select>
                 </div>
+                <div class="payment-method">
+                    <p class="payment-method-label">Phương thức thanh toán <span class="required">*</span></p>
+                    <div class="payment-method-options">
+                        <label>
+                            <input type="radio" name="payment_method" value="cod" checked>
+                            Thanh toán khi nhận hàng (COD)
+                        </label>
+                        <label>
+                            <input type="radio" name="payment_method" value="online">
+                            Thanh toán trực tuyến
+                        </label>
+                        <div class="online-payment-form" style="display: none;">
+                            <p>Nhập thông tin thẻ:</p>
+                            <div class="form-group">
+                                <label for="so-the">Số Thẻ: <span class="required">*</span></label>
+                                <input type="text" id="so-the" name="so-the" placeholder="Nhập số thẻ" maxlength="16" pattern="[0-9]{16}" title="Số thẻ phải có 16 chữ số" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ngay-het-han">Ngày Hết Hạn: <span class="required">*</span></label>
+                                <input type="month" id="ngay-het-han" name="ngay-het-han" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV: <span class="required">*</span></label>
+                                <input type="password" id="cvv" name="cvv" placeholder="Nhập CVV" maxlength="3" pattern="[0-9]{3}" title="CVV phải có 3 chữ số" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="payment-col-right">
@@ -55,7 +83,6 @@
                     </div>
                 </div>
                 <div class="button-group">
-                    <button type="button" class="preview-checkout-btn" onclick="showPreviewOrder();">Xem tổng quát đơn hàng</button>
                     <button type="submit" class="complete-checkout-btn" onclick="placeOrder();">Đặt hàng</button>
                 </div>
             </div>
