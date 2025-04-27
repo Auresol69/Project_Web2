@@ -361,11 +361,9 @@ input:focus {
 
 .policy-container {
     max-width: 800px;
-    margin-top: 80px;
-    margin-left: 300px;
-    margin-bottom: 20px;
-    background: white;
+    margin: 80px auto 20px;
     padding: 20px;
+    background: white;
     border-radius: 10px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
@@ -374,6 +372,7 @@ input:focus {
     text-align: center;
     color: #2c662d;
     margin-bottom: 20px;
+    font-size: 32px;
 }
 
 .policy {
@@ -389,6 +388,7 @@ input:focus {
     border-bottom: 2px solid #ddd;
     padding-bottom: 5px;
     margin-bottom: 10px;
+    font-size: 24px;
 }
 
 .policy ul {
@@ -397,6 +397,7 @@ input:focus {
 
 .policy ul li {
     margin: 5px 0;
+    font-size: 16px;
 }
 
 
@@ -2175,8 +2176,11 @@ input[type="submit"]:hover {
 
 
 .img_trangchu {
+    
     width: 100%;
     z-index: 99;
+    height: auto; 
+    object-fit: cover; 
 }
 
 .promo-section {
@@ -2308,7 +2312,77 @@ input[type="submit"]:hover {
 
 /* Màn hình dưới 768px */
 @media screen and (max-width: 768px) {
-    /* Header */
+    .img_trangchu {
+        margin-top: 50px;
+        max-height: 300px; 
+    }
+    .promo-section {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .promo-item {
+        font-size: 16px;
+        gap: 8px;
+    }
+
+    .promo-item i {
+        font-size: 26px;
+    }
+    .category-list {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .category-item img {
+        width: 120px;
+        height: 120px;
+    }
+    .best-sellers {
+        padding: 15px;
+    }
+
+    .product-list {
+        gap: 30px;
+    }
+
+    .product-group {
+        flex-direction: column;
+        width: 90%;
+        gap: 20px;
+    }
+
+    .product-item img {
+        width: 100px;
+        height: 100px;
+    }
+    .why-choose-us {
+        padding: 30px 0;
+    }
+
+    .why-choose-us h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .features {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .feature {
+        width: 90%;
+        margin: 0 auto 20px;
+    }
+
+    .feature i {
+        font-size: 2.5em;
+    }
+
+    .feature h3 {
+        font-size: 20px;
+    }
     .header {
         padding: 10px 15px;
         font-size: 18px;
@@ -2718,11 +2792,151 @@ input[type="submit"]:hover {
         font-size: 18px;
         margin-right: 5px;
     }
+    .modal {
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .modal-layout {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .modal-left img {
+        width: 100%;
+        max-width: 250px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .modal-right {
+        text-align: center;
+    }
+
+    .modal-right h2 {
+        font-size: 22px;
+    }
+
+    .product-code, .product-quantity {
+        font-size: 13px;
+    }
+
+    .sanpham-gia {
+        font-size: 18px;
+    }
+
+    .modal-right p {
+        font-size: 14px;
+    }
+
+    .quantity-input {
+        justify-content: center;
+        margin: 10px 0;
+    }
+
+    .quantity-input label {
+        font-size: 14px;
+    }
+
+    .quantity-input input[type="number"] {
+        width: 60px;
+        font-size: 14px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-muanhanh, .cart-icon-sp {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+    .trangchu-footer {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px 20px;
+        text-align: center;
+    }
+
+    .trangchu-footer-content {
+        width: 100%;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 22px;
+    }
+
+    .promo-item-footer {
+        font-size: 18px;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .promo-item-footer i {
+        font-size: 18px;
+        margin-right: 5px;
+    }
 }
 
 /* Màn hình dưới 360px */
 @media screen and (max-width: 360px) {
-    /* Header */
+    .img_trangchu {
+        margin-top: 40px;
+        max-height: 250px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+    .why-choose-us {
+        padding: 25px 0;
+    }
+
+    .why-choose-us h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .features {
+        gap: 15px;
+    }
+
+    .feature {
+        width: 95%;
+    }
+
+    .feature i {
+        font-size: 2em;
+    }
+
+    .feature h3 {
+        font-size: 18px;
+    }
+    .promo-section {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .promo-item {
+        font-size: 14px;
+        gap: 6px;
+    }
+
+    .promo-item i {
+        font-size: 24px;
+    }
+    .category-list {
+        gap: 12px;
+    }
+
+    .category-item img {
+        width: 100px;
+        height: 100px;
+    }
     .header {
         padding: 8px 12px;
         font-size: 16px;
@@ -2999,11 +3213,137 @@ input[type="submit"]:hover {
     .promo-item-footer i {
         font-size: 16px;
     }
+    .modal {
+        padding-top: 50px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 12px;
+    }
+
+    .modal-left img {
+        max-width: 200px;
+    }
+
+    .modal-right h2 {
+        font-size: 20px;
+    }
+
+    .product-code, .product-quantity {
+        font-size: 12px;
+    }
+
+    .sanpham-gia {
+        font-size: 16px;
+    }
+
+    .modal-right p {
+        font-size: 13px;
+    }
+
+    .quantity-input label {
+        font-size: 13px;
+    }
+
+    .quantity-input input[type="number"] {
+        width: 50px;
+        font-size: 13px;
+    }
+
+    .btn-muanhanh, .cart-icon-sp {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+
+    .close {
+        font-size: 24px;
+        top: 8px;
+        right: 12px;
+    }
+    .trangchu-footer {
+        padding: 12px 15px;
+        gap: 15px;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 20px;
+    }
+
+    .promo-item-footer {
+        font-size: 16px;
+        gap: 6px;
+    }
+
+    .promo-item-footer i {
+        font-size: 16px;
+    }
+    .best-sellers {
+        padding: 12px;
+    }
+
+    .product-list {
+        gap: 25px;
+    }
+
+    .product-group {
+        width: 95%;
+        gap: 15px;
+    }
+
+    .product-item img {
+        width: 90px;
+        height: 90px;
+    }
 }
 
 /* Màn hình dưới 320px */
 @media screen and (max-width: 320px) {
-    /* Header */
+    .content__input-img img {
+        display: none;
+    }
+    .img_trangchu {
+        margin-top: 30px;
+        max-height: 200px;
+    }
+    .promo-section {
+        padding: 10px;
+        gap: 10px;
+    }
+
+    .promo-item {
+        font-size: 13px;
+        gap: 5px;
+    }
+
+    .promo-item i {
+        font-size: 22px;
+    }
+    .category-list {
+        gap: 10px;
+    }
+
+    .category-item img {
+        width: 90px;
+        height: 90px;
+    }
+    .best-sellers {
+        padding: 10px;
+    }
+
+    .product-list {
+        gap: 20px;
+    }
+
+    .product-group {
+        width: 98%;
+        gap: 12px;
+    }
+
+    .product-item img {
+        width: 80px;
+        height: 80px;
+    }
     .header {
         padding: 8px 10px;
         font-size: 14px;
@@ -3273,5 +3613,1076 @@ input[type="submit"]:hover {
 
     .promo-item-footer i {
         font-size: 14px;
+    }
+    .modal {
+        padding-top: 40px;
+    }
+
+    .modal-content {
+        width: 98%;
+        padding: 10px;
+    }
+
+    .modal-left img {
+        max-width: 180px;
+    }
+
+    .modal-right h2 {
+        font-size: 18px;
+    }
+
+    .product-code, .product-quantity {
+        font-size: 11px;
+    }
+
+    .sanpham-gia {
+        font-size: 14px;
+    }
+
+    .modal-right p {
+        font-size: 12px;
+    }
+
+    .quantity-input label {
+        font-size: 12px;
+    }
+
+    .quantity-input input[type="number"] {
+        width: 45px;
+        font-size: 12px;
+    }
+
+    .btn-muanhanh, .cart-icon-sp {
+        padding: 5px 8px;
+        font-size: 13px;
+    }
+
+    .close {
+        font-size: 22px;
+        top: 6px;
+        right: 10px;
+    }
+    .trangchu-footer {
+        padding: 10px 12px;
+        gap: 12px;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 18px;
+    }
+
+    .promo-item-footer {
+        font-size: 14px;
+        gap: 5px;
+    }
+
+    .promo-item-footer i {
+        font-size: 14px;
+    }
+    .why-choose-us {
+        padding: 20px 0;
+    }
+
+    .why-choose-us h2 {
+        font-size: 22px;
+        margin-bottom: 12px;
+    }
+
+    .features {
+        gap: 12px;
+    }
+
+    .feature {
+        width: 98%;
+    }
+
+    .feature i {
+        font-size: 1.8em;
+    }
+
+    .feature h3 {
+        font-size: 16px;
+    }
+}
+
+
+/* Dưới 414px (iPhone XR, Galaxy S20 Ultra, iPhone SE) */
+@media screen and (max-width: 414px) {
+    .category-list {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .category-item img {
+        width: 100px;
+        height: 100px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .content__input-img img {
+        display: none;
+    }
+    .category-list {
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .category-item {
+        flex: 0 0 45%;
+    }
+
+    .category-item img {
+        width: 120px;
+        height: 120px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .category-list {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .category-item {
+        flex: 0 0 30%;
+    }
+
+    .category-item img {
+        width: 140px;
+        height: 140px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+
+
+@media screen and (max-width: 414px) {
+    .best-sellers {
+        padding: 12px;
+    }
+
+    .product-list {
+        gap: 25px;
+    }
+
+    .product-group {
+        flex-direction: column;
+        width: 95%;
+        gap: 15px;
+    }
+
+    .product-item img {
+        width: 90px;
+        height: 90px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .best-sellers {
+        padding: 15px;
+    }
+
+    .product-list {
+        gap: 30px;
+    }
+
+    .product-group {
+        flex-direction: column;
+        width: 90%;
+        gap: 20px;
+    }
+
+    .product-item img {
+        width: 100px;
+        height: 100px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .best-sellers {
+        padding: 18px;
+    }
+
+    .product-list {
+        gap: 40px;
+    }
+
+    .product-group {
+        width: 80%;
+        gap: 25px;
+    }
+
+    .product-item img {
+        width: 110px;
+        height: 110px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .why-choose-us {
+        padding: 25px 0;
+    }
+
+    .why-choose-us h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .features {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .feature {
+        width: 95%;
+    }
+
+    .feature i {
+        font-size: 2em;
+    }
+
+    .feature h3 {
+        font-size: 18px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .why-choose-us {
+        padding: 30px 0;
+    }
+
+    .why-choose-us h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .features {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .feature {
+        width: 90%;
+        margin: 0 auto 20px;
+    }
+
+    .feature i {
+        font-size: 2.5em;
+    }
+
+    .feature h3 {
+        font-size: 20px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .why-choose-us {
+        padding: 35px 0;
+    }
+
+    .why-choose-us h2 {
+        font-size: 30px;
+    }
+
+    .feature {
+        width: 28%;
+    }
+
+    .feature i {
+        font-size: 2.8em;
+    }
+
+    .feature h3 {
+        font-size: 22px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+
+@media screen and (max-width: 414px) {
+    .trangchu-footer {
+        padding: 12px 15px;
+        gap: 15px;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 20px;
+    }
+
+    .promo-item-footer {
+        font-size: 16px;
+        gap: 6px;
+    }
+
+    .promo-item-footer i {
+        font-size: 16px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .trangchu-footer {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px 20px;
+        text-align: center;
+    }
+
+    .trangchu-footer-content {
+        width: 100%;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 22px;
+    }
+
+    .promo-item-footer {
+        font-size: 18px;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .promo-item-footer i {
+        font-size: 18px;
+        margin-right: 5px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .trangchu-footer {
+        padding: 18px 8%;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 24px;
+    }
+
+    .promo-item-footer {
+        font-size: 19px;
+    }
+
+    .promo-item-footer i {
+        font-size: 19px;
+    }
+    .content__input-img img {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .invoices-modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .invoices-content {
+        max-width: 98%;
+        max-height: 90%;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .invoices-content h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .invoices-table {
+        display: block; /* Chuyển bảng thành dạng block để cuộn ngang */
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 15px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 100px; /* Đảm bảo cột không quá hẹp */
+    }
+
+    .invoices-table th {
+        font-size: 13px;
+    }
+
+    .invoices-actions {
+        text-align: center;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    #search-invoice {
+        padding: 8px;
+        padding-right: 25px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        right: 8px;
+        font-size: 14px;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .invoices-modal {
+        padding: 15px;
+    }
+
+    .invoices-content {
+        max-width: 95%;
+        max-height: 85%;
+        padding: 15px;
+    }
+
+    .invoices-content h2 {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    .invoices-table {
+        overflow-x: auto;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 8px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .invoices-table th {
+        font-size: 15px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    #search-invoice {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .search-icon {
+        font-size: 16px;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .invoices-content {
+        max-width: 90%;
+        padding: 18px;
+    }
+
+    .invoices-content h2 {
+        font-size: 26px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 9px;
+        font-size: 15px;
+    }
+
+    .invoices-table th {
+        font-size: 16px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}
+
+
+/* Dưới 414px (iPhone XR, Galaxy S20 Ultra, iPhone SE) */
+@media screen and (max-width: 414px) {
+    .invoice-modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .invoice-content {
+        width: 98%;
+        max-height: 90vh;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .invoice-content h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .invoice-table {
+        display: block;
+        overflow-x: auto;
+        margin: 15px 0;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+
+    .invoice-table th {
+        font-size: 13px;
+    }
+
+    .invoice-actions {
+        text-align: center;
+    }
+
+    .invoice-actions button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .invoice-modal {
+        padding: 15px;
+    }
+
+    .invoice-content {
+        width: 95%;
+        max-height: 85vh;
+        padding: 15px;
+    }
+
+    .invoice-content h2 {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    .invoice-table {
+        overflow-x: auto;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 8px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .invoice-table th {
+        font-size: 15px;
+    }
+
+    .invoice-actions button {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .invoice-content {
+        width: 90%;
+        padding: 18px;
+    }
+
+    .invoice-content h2 {
+        font-size: 26px;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 9px;
+        font-size: 15px;
+    }
+
+    .invoice-table th {
+        font-size: 16px;
+    }
+
+    .invoice-actions button {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}
+
+
+@media screen and (max-width: 414px) {
+    .invoices-modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .invoices-content {
+        max-width: 98%;
+        max-height: 90%;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .invoices-content h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .invoices-table {
+        display: block; /* Chuyển bảng thành dạng block để cuộn ngang */
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 15px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 100px; /* Đảm bảo cột không quá hẹp */
+    }
+
+    .invoices-table th {
+        font-size: 13px;
+    }
+
+    .invoices-actions {
+        text-align: center;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    #search-invoice {
+        padding: 8px;
+        padding-right: 25px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        right: 8px;
+        font-size: 14px;
+    }
+}
+
+/* Dưới 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    .invoices-modal {
+        padding: 15px;
+    }
+
+    .invoices-content {
+        max-width: 95%;
+        max-height: 85%;
+        padding: 15px;
+    }
+
+    .invoices-content h2 {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    .invoices-table {
+        overflow-x: auto;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 8px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .invoices-table th {
+        font-size: 15px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    #search-invoice {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .search-icon {
+        font-size: 16px;
+    }
+}
+
+/* Dưới 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    .invoices-content {
+        max-width: 90%;
+        padding: 18px;
+    }
+
+    .invoices-content h2 {
+        font-size: 26px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 9px;
+        font-size: 15px;
+    }
+
+    .invoices-table th {
+        font-size: 16px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}
+
+
+@media screen and (max-width: 414px) {
+    /* Danh sách hóa đơn */
+    .invoices-modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .invoices-content {
+        max-width: 98%;
+        max-height: 90%;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .invoices-content h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .invoices-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 15px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+
+    .invoices-table th {
+        font-size: 13px;
+    }
+
+    .invoices-actions {
+        text-align: center;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    #search-invoice {
+        padding: 8px;
+        padding-right: 25px;
+        font-size: 14px;
+    }
+
+    .search-icon {
+        right: 8px;
+        font-size: 14px;
+    }
+
+    /* Chi tiết hóa đơn */
+    .invoice-modal {
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .invoice-content {
+        width: 98%;
+        max-height: 90vh;
+        padding: 12px;
+        border-radius: 6px;
+    }
+
+    .invoice-content h2 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .invoice-table {
+        display: block;
+        overflow-x: auto;
+        margin: 15px 0;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 6px;
+        font-size: 12px;
+        min-width: 100px;
+    }
+
+    .invoice-table th {
+        font-size: 13px;
+    }
+
+    .invoice-actions {
+        text-align: center;
+    }
+
+    .invoice-actions button {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}
+
+/* Từ 415px đến 768px (iPad Mini portrait, iPad Air portrait) */
+@media screen and (max-width: 768px) and (min-width: 415px) {
+    /* Danh sách hóa đơn */
+    .invoices-modal {
+        padding: 15px;
+    }
+
+    .invoices-content {
+        max-width: 95%;
+        max-height: 85%;
+        padding: 15px;
+    }
+
+    .invoices-content h2 {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    .invoices-table {
+        overflow-x: auto;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 8px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .invoices-table th {
+        font-size: 15px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+
+    #search-invoice {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .search-icon {
+        font-size: 16px;
+    }
+
+    /* Chi tiết hóa đơn */
+    .invoice-modal {
+        padding: 15px;
+    }
+
+    .invoice-content {
+        width: 95%;
+        max-height: 85vh;
+        padding: 15px;
+    }
+
+    .invoice-content h2 {
+        font-size: 24px;
+        margin-bottom: 18px;
+    }
+
+    .invoice-table {
+        overflow-x: auto;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 8px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .invoice-table th {
+        font-size: 15px;
+    }
+
+    .invoice-actions button {
+        padding: 10px 18px;
+        font-size: 14px;
+    }
+}
+
+/* Từ 769px đến 1024px (iPad Mini landscape, iPad Air landscape) */
+@media screen and (max-width: 1024px) and (min-width: 769px) {
+    /* Danh sách hóa đơn */
+    .invoices-content {
+        max-width: 90%;
+        padding: 18px;
+    }
+
+    .invoices-content h2 {
+        font-size: 26px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 9px;
+        font-size: 15px;
+    }
+
+    .invoices-table th {
+        font-size: 16px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+
+    /* Chi tiết hóa đơn */
+    .invoice-content {
+        width: 90%;
+        padding: 18px;
+    }
+
+    .invoice-content h2 {
+        font-size: 26px;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 9px;
+        font-size: 15px;
+    }
+
+    .invoice-table th {
+        font-size: 16px;
+    }
+
+    .invoice-actions button {
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+}
+
+/* Trên 1024px (Surface Pro 7 landscape, các thiết bị lớn) */
+@media screen and (min-width: 1025px) {
+    /* Danh sách hóa đơn */
+    .invoices-content {
+        max-width: 80%;
+        padding: 20px;
+    }
+
+    .invoices-content h2 {
+        font-size: 28px;
+    }
+
+    .invoices-table th,
+    .invoices-table td {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .invoices-table th {
+        font-size: 17px;
+    }
+
+    .close-invoices,
+    .view-invoice-detail {
+        padding: 12px 22px;
+        font-size: 16px;
+    }
+
+    /* Chi tiết hóa đơn */
+    .invoice-content {
+        max-width: 700px;
+        padding: 20px;
+    }
+
+    .invoice-content h2 {
+        font-size: 28px;
+    }
+
+    .invoice-table th,
+    .invoice-table td {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .invoice-table th {
+        font-size: 17px;
+    }
+
+    .invoice-actions button {
+        padding: 12px 22px;
+        font-size: 16px;
     }
 }

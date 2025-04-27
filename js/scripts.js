@@ -1220,10 +1220,79 @@ function placeOrder() {
   const addressOption = $('input[name="address_option"]:checked').val();
   const paymentMethod = $('input[name="payment_method"]:checked').val();
 
-  if (!receiverName || !phoneNumber || !addressDetail || !cityId || !districtId) {
-      alert("Vui lòng điền đầy đủ thông tin giao hàng!");
+  if (!receiverName) {
+    alert("Vui lòng nhập tên người nhận!");
+    $("#receiver_name").focus();
+    return;
+  }
+  if (!phoneNumber) {
+    alert("Vui lòng nhập số điện thoại!");
+    $("#phone_number").focus();
+    return;
+  }
+
+  // Kiểm tra định dạng số điện thoại (10 chữ số)
+  const phoneRegex = /^\d{10}$/;
+  if (!phoneRegex.test(phoneNumber)) {
+      alert("Số điện thoại không hợp lệ! Vui lòng nhập 10 chữ số.");
+      $("#phone_number").focus();
       return;
   }
+
+  if (!addressDetail) {
+      alert("Vui lòng nhập địa chỉ chi tiết!");
+      $("#address_detail").focus();
+      return;
+  }
+  if (!cityId) {
+    alert("Vui lòng chọn tỉnh/thành phố!");
+    $("#city").focus();
+    return;
+  }
+
+  if (!districtId) {
+      alert("Vui lòng chọn quận/huyện!");
+      $("#district").focus();
+      return;
+  }
+  let cardNumber, expiryDate, cvv;
+    if (paymentMethod === "online") {
+        cardNumber = $("#so-the").val().trim();
+        expiryDate = $("#ngay-het-han").val().trim();
+        cvv = $("#cvv").val().trim();
+
+        if (!cardNumber) {
+            alert("Vui lòng nhập số thẻ!");
+            $("#so-the").focus();
+            return;
+        }
+
+        const cardRegex = /^[0-9]{6}$/;
+        if (!cardRegex.test(cardNumber)) {
+            alert("Số thẻ không hợp lệ! Vui lòng nhập 6 chữ số.");
+            $("#so-the").focus();
+            return;
+        }
+
+        if (!expiryDate) {
+            alert("Vui lòng nhập ngày hết hạn!");
+            $("#ngay-het-han").focus();
+            return;
+        }
+
+        if (!cvv) {
+            alert("Vui lòng nhập mã CVV!");
+            $("#cvv").focus();
+            return;
+        }
+
+        const cvvRegex = /^[0-9]{3}$/;
+        if (!cvvRegex.test(cvv)) {
+            alert("Mã CVV không hợp lệ! Vui lòng nhập 3 chữ số.");
+            $("#cvv").focus();
+            return;
+        }
+    }
 
   const data = {
       receiver_name: receiverName,
@@ -1259,7 +1328,7 @@ function placeOrder() {
           if (response.status === "success") {
               alert("Đặt hàng thành công!");
               $("#payment-modal").css("display", "none");
-              showInvoiceModal(response.invoice);
+              showInvoiceModal(response.invoice, true); // Truyền fromCheckout: true
           } else {
               alert("Lỗi khi đặt hàng: " + response.message);
           }
@@ -1270,6 +1339,7 @@ function placeOrder() {
       }
   });
 }
+
 function showPreviewOrder() {
   let addressOption = $('input[name="address_option"]:checked').val();
   let receiverName = $("#receiver_name").val().trim();
@@ -1413,9 +1483,10 @@ function closeOrderOverviewModal() {
 }
 
 // Đóng modal khi nhấn vào backdrop
-document.getElementById('order-overview-modal').addEventListener('click', function(e) {
-  if (e.target === this) {
-      closeOrderOverviewModal();
+document.addEventListener('click', function(e) {
+  const modal = document.getElementById('order-overview-modal');
+  if (modal && e.target === modal) {
+    closeOrderOverviewModal();
   }
 });
 
@@ -1423,7 +1494,8 @@ document.getElementById('order-overview-modal').addEventListener('click', functi
 function showInvoiceModal(invoice, fromCheckout = false) {
   let addressDisplay = `${invoice.address.split(", ")[0]} (Chưa xác định quận/huyện, tỉnh/thành phố)`;
 
-  // Truy vấn để lấy tên tỉnh/thành phố và quận/huyện
+  console.log("showInvoiceModal called with fromCheckout:", fromCheckout);
+
   $.ajax({
       type: "GET",
       url: "handle/get_location.php",
@@ -1444,7 +1516,8 @@ function showInvoiceModal(invoice, fromCheckout = false) {
       }
   });
 }
-function renderInvoiceModal(invoice, addressDisplay) {
+
+function renderInvoiceModal(invoice, addressDisplay, fromCheckout) {
   let itemsHtml = invoice.items.map(item => `
       <tr>
           <td>${item.tensp}</td>
@@ -1487,25 +1560,24 @@ function renderInvoiceModal(invoice, addressDisplay) {
   `;
 
   $("body").append(invoiceHtml);
-    // Đóng invoices-modal nếu nó đang hiển thị (tránh chồng modal)
-  if ($(".invoices-modal").length) {
-    $(".invoices-modal").hide();
-  }
-  $(".close-invoice").on("click", function () {
-    $(".invoice-modal").fadeOut(300, function() {
-        $(this).remove();
-        if (fromCheckout) {
-            // Chuyển hướng về trang sản phẩm nếu từ thanh toán
-            window.location.href = "index.php?page=sanpham";
-        } else if ($(".invoices-modal").length) {
-            // Hiển thị lại danh sách hóa đơn nếu từ danh sách hóa đơn
-            $(".invoices-modal").fadeIn(300);
-        }
-    });
-});
+
+  // Gắn sự kiện đóng modal hóa đơn
+  $(".close-invoice").on("click", function (event) {
+      event.stopPropagation();
+      console.log("Close invoice clicked, fromCheckout:", fromCheckout);
+      console.log("Current page:", new URLSearchParams(window.location.search).get('page'));
+      $(".invoice-modal").fadeOut(300, function() {
+          $(this).remove();
+          if (fromCheckout) {
+              console.log("Redirecting to index.php?page=sanpham");
+              window.location.href = "index.php?page=sanpham";
+          } else {
+              console.log("Staying on current page (hoadon)");
+              // Không chuyển hướng, giữ nguyên trang hoadon
+          }
+      });
+  });
 }
-
-
 // Hàm tìm kiếm hóa đơn
 function searchInvoices(keyword, invoices, tbodySelector) {
   let filteredInvoices = invoices.filter(invoice => {
@@ -1552,19 +1624,107 @@ function searchInvoices(keyword, invoices, tbodySelector) {
   });
 }
 
-// //hamburger menu
-// window.onload = function() {
-//   var hamburger = document.getElementById("hamburger-menu");
-//   var mobileMenu = document.getElementById("mobile-menu");
-//   var closeMenu = document.getElementById("close-menu");
 
-//   if (hamburger && mobileMenu && closeMenu) {
-//       hamburger.addEventListener("click", function() {
-//           mobileMenu.style.display = "flex";
-//       });
 
-//       closeMenu.addEventListener("click", function() {
-//           mobileMenu.style.display = "none";
-//       });
-//   }
-// };
+$(document).ready(function() {
+  // Mở modal giỏ hàng từ menu mobile
+  $(document).ready(function() {
+    // Mở modal giỏ hàng từ menu mobile
+    $("#mobile-menu .mobile-menu-content a[href='index.php?page=giohang']").on("click", function(e) {
+        e.preventDefault();
+        console.log("Nhấn vào mục GIỎ HÀNG trong menu mobile.");
+        if ($("#modal-cart").length) {
+            console.log("Modal #modal-cart tồn tại, hiển thị...");
+            $("#modal-cart").fadeIn(300).css("display", "block");
+            $("#mobile-menu").fadeOut(300);
+            renderCart(true);
+        } else {
+            console.error("Modal #modal-cart không tồn tại, thử tải giohang.php...");
+            $.get("giohang.php", function(data) {
+                console.log("giohang.php tải thành công, thêm vào DOM.");
+                $("body").append(data);
+                if ($("#modal-cart").length) {
+                    $("#modal-cart").fadeIn(300).css("display", "block");
+                    $("#mobile-menu").fadeOut(300);
+                    renderCart(true);
+                } else {
+                    console.error("giohang.php không chứa #modal-cart!");
+                    alert("Lỗi: Không thể hiển thị giỏ hàng. Vui lòng kiểm tra console.");
+                }
+            }).fail(function(xhr, status, error) {
+                console.error("Lỗi tải giohang.php:", status, error, xhr.responseText);
+                alert("Lỗi: Không thể tải giỏ hàng! Vui lòng kiểm tra console.");
+            });
+        }
+    });
+
+    // Mở menu mobile
+    $("#hamburger-menu").on("click", function() {
+        $("#mobile-menu").fadeIn(300).css("display", "flex");
+    });
+
+    // Đóng menu mobile
+    $("#close-menu").on("click", function() {
+        $("#mobile-menu").fadeOut(300);
+    });
+
+    // Đóng menu mobile khi nhấn liên kết
+    $(".mobile-menu-content a").on("click", function() {
+        $("#mobile-menu").fadeOut(300);
+    });
+  });
+});
+
+
+$(document).ready(function() {
+  // Tải trước giohang.php để đảm bảo #modal-cart tồn tại
+  if ($("#modal-cart").length === 0) {
+      console.log("Tải trước giohang.php...");
+      $.get("giohang.php", function(data) {
+          $("body").append(data);
+          console.log("giohang.php đã được tải vào DOM.");
+      }).fail(function(xhr, status, error) {
+          console.error("Lỗi tải giohang.php:", status, error, xhr.responseText);
+          alert("Lỗi: Không thể tải giỏ hàng! Vui lòng kiểm tra console.");
+      });
+  }
+
+  // Xử lý hamburger menu
+  if ($("#hamburger-menu").length && $("#mobile-menu").length && $("#close-menu").length) {
+      $("#hamburger-menu").on("click", function() {
+          $("#mobile-menu").fadeIn(300).css("display", "flex");
+      });
+
+      $("#close-menu").on("click", function() {
+          $("#mobile-menu").fadeOut(300);
+      });
+  } else {
+      console.warn("Một hoặc nhiều phần tử hamburger-menu, mobile-menu, close-menu không tồn tại trong DOM.");
+  }
+
+  // Mở modal giỏ hàng từ menu mobile
+  $("#mobile-menu .mobile-menu-content a[href='index.php?page=giohang']").on("click", function(e) {
+    e.preventDefault();
+    console.log("Nhấn vào mục GIỎ HÀNG trong menu mobile.");
+    if ($("#modal-cart").length) {
+        $("#modal-cart").fadeIn(300).css("display", "block");
+        $("#mobile-menu").fadeOut(300);
+        renderCart(true);
+    } else {
+        $.get("giohang.php", function(data) {
+            $("body").append(data);
+            if ($("#modal-cart").length) {
+                $("#modal-cart").fadeIn(300).css("display", "block");
+                $("#mobile-menu").fadeOut(300);
+                renderCart(true);
+            }
+        });
+    }
+});
+
+  // Đóng menu mobile khi nhấn vào bất kỳ liên kết nào
+  $(".mobile-menu-content a").on("click", function() {
+      $("#mobile-menu").fadeOut(300);
+  });
+
+});
