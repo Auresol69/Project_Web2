@@ -967,46 +967,54 @@ function closeModal() {
   document.getElementById("productModal").style.display = "none";
 }
 
-// Tìm kiếm theo tên sản phẩm
-function liveSearch(keyword) {
-    if (keyword.trim() === "") {
-        document.getElementById("searchResult").style.display = "none";
-        return;
-    }
+function liveSearch(keyword, type = 'desktop') {
+  if (keyword.trim() === "") {
+      // Ẩn kết quả tìm kiếm nếu không có từ khóa
+      if (type === 'desktop') {
+          document.getElementById("searchResult").style.display = "none";
+      } else if (type === 'mobile') {
+          document.getElementById("mobile-search-result").style.display = "none";
+      }
+      return;
+  }
 
-    fetch("handle/search.php", {
-        method: "POST",
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: "keyword=" + encodeURIComponent(keyword)
-    })
-    .then(res => res.json())
-    .then(data => {
-        const resultBox = document.getElementById("searchResult");
-        if (data.products.length > 0) {
-            let html = "";
-            data.products.forEach(item => {
-                html += `
-                    <div class="search-item" onclick='openModal(${JSON.stringify(item)})'>
-                        <img src="${item.image}" alt="">
-                        <div class="info">
-                            <div>${item.name}</div>
-                            <div class="price">${Number(item.price).toLocaleString("vi-VN")}₫</div>
-                        </div>
-                    </div>
-                `;
-            });
+  fetch("handle/search.php", {
+      method: "POST",
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: "keyword=" + encodeURIComponent(keyword)
+  })
+  .then(res => res.json())
+  .then(data => {
+      let resultBox;
+      // Xác định nơi hiển thị kết quả
+      if (type === 'desktop') {
+          resultBox = document.getElementById("searchResult");
+      } else if (type === 'mobile') {
+          resultBox = document.getElementById("mobile-search-result");
+      }
 
-            resultBox.innerHTML = html;
-            resultBox.style.display = "block";
-        } else {
-            resultBox.innerHTML = "<div style='padding: 10px'>Không tìm thấy sản phẩm</div>";
-            resultBox.style.display = "block";
-        }
-    });
+      if (data.products.length > 0) {
+          let html = "";
+          data.products.forEach(item => {
+              html += `
+                  <div class="search-item" onclick='openModal(${JSON.stringify(item)})'>
+                      <img src="${item.image}" alt="">
+                      <div class="info">
+                          <div>${item.name}</div>
+                          <div class="price">${Number(item.price).toLocaleString("vi-VN")}₫</div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          resultBox.innerHTML = html;
+          resultBox.style.display = "block";
+      } else {
+          resultBox.innerHTML = "<div style='padding: 10px'>Không tìm thấy sản phẩm</div>";
+          resultBox.style.display = "block";
+      }
+  });
 }
-
-
-
 
 // Khởi tạo modal thanh toán
 let allDistricts = []; // Biến toàn cục để lưu trữ danh sách quận/huyện
@@ -1536,3 +1544,20 @@ function searchInvoices(keyword, invoices, tbodySelector) {
       showInvoiceModal(invoice);
   });
 }
+
+// //hamburger menu
+// window.onload = function() {
+//   var hamburger = document.getElementById("hamburger-menu");
+//   var mobileMenu = document.getElementById("mobile-menu");
+//   var closeMenu = document.getElementById("close-menu");
+
+//   if (hamburger && mobileMenu && closeMenu) {
+//       hamburger.addEventListener("click", function() {
+//           mobileMenu.style.display = "flex";
+//       });
+
+//       closeMenu.addEventListener("click", function() {
+//           mobileMenu.style.display = "none";
+//       });
+//   }
+// };
