@@ -4,7 +4,7 @@
         private $db_user = "root";
         private $db_name = "treeshop";
         private $db_pass = "";
-        private $db_port = 3306;
+        private $db_port = 3307;
         private $conn;
 
         public function __construct(){

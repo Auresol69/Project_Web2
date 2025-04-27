@@ -56,7 +56,7 @@
         <a href="index.php?page=trangchu">TRANG CHỦ</a>
         <a href="index.php?page=sanpham">SẢN PHẨM</a>
         <a href="index.php?page=chinhsach">CHÍNH SÁCH</a>
-        <a href="index.php?page=giohang">GIỎ HÀNG</a>
+        <a href="index.php?page=giohang" >GIỎ HÀNG</a>
     </div>
 
     <!-- Nút Đóng -->
@@ -83,3 +83,4 @@ window.onload = function() {
   }
 };
 </script>
+

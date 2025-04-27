@@ -1420,7 +1420,7 @@ document.getElementById('order-overview-modal').addEventListener('click', functi
 });
 
 
-function showInvoiceModal(invoice) {
+function showInvoiceModal(invoice, fromCheckout = false) {
   let addressDisplay = `${invoice.address.split(", ")[0]} (Chưa xác định quận/huyện, tỉnh/thành phố)`;
 
   // Truy vấn để lấy tên tỉnh/thành phố và quận/huyện
@@ -1436,11 +1436,11 @@ function showInvoiceModal(invoice) {
           if (location.status === "success") {
               addressDisplay = `${invoice.address.split(", ")[0]}, ${location.district_name}, ${location.province_name}`;
           }
-          renderInvoiceModal(invoice, addressDisplay);
+          renderInvoiceModal(invoice, addressDisplay, fromCheckout);
       },
       error: function () {
           console.error("Lỗi khi lấy thông tin địa chỉ, sử dụng địa chỉ mặc định.");
-          renderInvoiceModal(invoice, addressDisplay);
+          renderInvoiceModal(invoice, addressDisplay, fromCheckout);
       }
   });
 }
@@ -1487,15 +1487,22 @@ function renderInvoiceModal(invoice, addressDisplay) {
   `;
 
   $("body").append(invoiceHtml);
-
+    // Đóng invoices-modal nếu nó đang hiển thị (tránh chồng modal)
+  if ($(".invoices-modal").length) {
+    $(".invoices-modal").hide();
+  }
   $(".close-invoice").on("click", function () {
-      $(".invoice-modal").fadeOut(300, function() {
-          $(this).remove();
-          // Không chuyển hướng, chỉ đóng modal chi tiết
-          // Đảm bảo modal danh sách hóa đơn vẫn hiển thị
-          $(".invoices-modal").show();
-      });
-  });
+    $(".invoice-modal").fadeOut(300, function() {
+        $(this).remove();
+        if (fromCheckout) {
+            // Chuyển hướng về trang sản phẩm nếu từ thanh toán
+            window.location.href = "index.php?page=sanpham";
+        } else if ($(".invoices-modal").length) {
+            // Hiển thị lại danh sách hóa đơn nếu từ danh sách hóa đơn
+            $(".invoices-modal").fadeIn(300);
+        }
+    });
+});
 }
 
 

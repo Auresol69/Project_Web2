@@ -702,49 +702,7 @@ input:focus {
     }
 }
 
-/* Responsive cho giỏ hàng */
-@media (max-width: 768px) {
-    #container-cart {
-        width: 95%;
-        padding: 20px;
-    }
 
-    .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .cart-item img {
-        width: 70px;
-        height: 70px;
-    }
-
-    .cart-info {
-        margin-left: 0;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-    }
-
-    .cart-name,
-    .cart-price,
-    .cart-quantity,
-    .remove-cart {
-        text-align: left;
-        flex: none;
-    }
-
-    .button-cart {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .checkout,
-    .continue-shopping {
-        width: 100%;
-    }
-}
 
 .fa-user,
 .fa-bars {
@@ -1346,218 +1304,8 @@ input:focus {
     border-color: #4caf50;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .payment-col-left .payment-method {
-        padding: 12px;
-        margin-top: 15px;
-    }
 
-    .payment-col-left .payment-method-label {
-        font-size: 15px;
-    }
 
-    .payment-col-left .payment-method-options label {
-        padding: 8px;
-        font-size: 14px;
-    }
-
-    .payment-col-left .online-payment-form {
-        padding: 12px;
-    }
-
-    .payment-col-left .online-payment-form p {
-        font-size: 14px;
-    }
-
-    .payment-col-left .online-payment-form .form-group label {
-        font-size: 13px;
-    }
-
-    .payment-col-left .online-payment-form .form-group input {
-        height: 44px;
-        font-size: 14px;
-    }
-
-    .payment-col-left .online-payment-form .form-group input[type="month"] {
-        width: 180px;
-    }
-
-    .payment-col-left .online-payment-form .form-group input[type="password"] {
-        width: 100px;
-    }
-}
-
-@media (max-width: 480px) {
-    .payment-col-left .payment-method {
-        padding: 10px;
-    }
-
-    .payment-col-left .payment-method-label {
-        font-size: 14px;
-    }
-
-    .payment-col-left .payment-method-options label {
-        font-size: 13px;
-    }
-
-    .payment-col-left .payment-method-options input[type="radio"] {
-        width: 16px;
-        height: 16px;
-    }
-
-    .payment-col-left .online-payment-form .form-group input {
-        height: 40px;
-        font-size: 13px;
-    }
-
-    .payment-col-left .online-payment-form .form-group input[type="month"] {
-        width: 160px;
-    }
-
-    .payment-col-left .online-payment-form .form-group input[type="password"] {
-        width: 80px;
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .payment-container {
-        flex-direction: column;
-        padding: 30px;
-        gap: 30px;
-    }
-
-    .payment-col-left,
-    .payment-col-right {
-        width: 100%;
-        max-width: none;
-        max-height: none;
-    }
-
-    .payment-col-right {
-        margin-top: 20px;
-    }
-
-    .payment-col-left h2,
-    .payment-content-lable {
-        font-size: 26px;
-    }
-
-    .payment-form-group input,
-    .payment-form-group select {
-        height: 48px;
-        font-size: 15px;
-    }
-
-    .total-payment .text {
-        font-size: 18px;
-    }
-
-    .total-payment .price-final {
-        font-size: 22px;
-    }
-
-    .button-group {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .preview-checkout-btn,
-    .complete-checkout-btn {
-        width: 100%;
-    }
-
-    .order-overview-modal .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    .order-overview-modal .modal-header h3 {
-        font-size: 20px;
-    }
-
-    .order-overview-modal .modal-body .order-total .text {
-        font-size: 18px;
-    }
-
-    .order-overview-modal .modal-body .order-total .price-final {
-        font-size: 20px;
-    }
-
-    .order-overview-modal .modal-footer .view-details-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-    .payment-container {
-        padding: 20px;
-    }
-
-    .payment-col-left h2,
-    .payment-content-lable {
-        font-size: 22px;
-    }
-
-    .payment-form-group label {
-        font-size: 14px;
-    }
-
-    .payment-form-group input,
-    .payment-form-group select {
-        height: 44px;
-        font-size: 14px;
-    }
-
-    .payment-col-left-radio-btn {
-        padding: 10px;
-    }
-
-    .payment-col-left-radio-btn label {
-        font-size: 14px;
-    }
-
-    .total-payment {
-        padding: 15px;
-    }
-
-    .total-payment .text {
-        font-size: 16px;
-    }
-
-    .total-payment .price-final {
-        font-size: 20px;
-    }
-
-    .preview-checkout-btn,
-    .complete-checkout-btn {
-        padding: 14px;
-        font-size: 14px;
-    }
-
-    .order-overview-modal .modal-header h3 {
-        font-size: 18px;
-    }
-
-    .order-overview-modal .modal-body .order-item .item-name,
-    .order-overview-modal .modal-body .order-item .item-price {
-        font-size: 14px;
-    }
-
-    .order-overview-modal .modal-body .order-item .item-quantity {
-        font-size: 12px;
-    }
-
-    .order-overview-modal .modal-body .order-total .text {
-        font-size: 16px;
-    }
-
-    .order-overview-modal .modal-body .order-total .price-final {
-        font-size: 18px;
-    }
-}
 
 
 /* log in/ log out */
@@ -2423,3 +2171,1107 @@ input[type="submit"]:hover {
         display: block;
     }
 } 
+
+
+
+.img_trangchu {
+    width: 100%;
+    z-index: 99;
+}
+
+.promo-section {
+    display: flex;
+    justify-content: space-around;
+    background: #f4f4f4;
+    padding: 20px;
+    text-align: center;
+}
+
+.promo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.promo-item i {
+    font-size: 30px;
+    color: green;
+}
+
+.categories {
+    text-align: center;
+    padding: 20px;
+}
+
+.category-list {
+    display: flex;
+    justify-content: space-around;
+}
+
+.category-item {
+    text-align: center;
+}
+
+.category-item img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+}
+
+.best-sellers {
+    text-align: center;
+    padding: 20px;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;/
+}
+
+.product-group {
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    margin: auto;
+}
+
+.product-item img {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+}
+
+.trangchu-footer {
+    background-color: #66bd9f;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10%;
+
+}
+
+.promo-item-footer {
+    font-size: 20px;
+    gap: 5px;
+}
+
+.promo-item-footer i {
+    gap: 10px;
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+.trangchu-footer-content-header {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.trangchu-footer-content {
+    width: 45%;
+    margin: 0;
+}
+
+.why-choose-us {
+    background-color: #f8f8f8;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.why-choose-us h2 {
+    margin-bottom: 30px;
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.feature {
+    width: 30%;
+    margin-bottom: 20px;
+}
+
+.feature i {
+    font-size: 3em;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.feature h3 {
+    margin-bottom: 10px;
+}
+
+
+
+/* Màn hình dưới 768px */
+@media screen and (max-width: 768px) {
+    /* Header */
+    .header {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+
+    .header__name {
+        margin: 0 10px;
+        font-size: 18px;
+    }
+
+    .header__menu, .header__icons .live-search-wrapper, .header__icons .cart-icon {
+        display: none;
+    }
+
+    .header__icons {
+        gap: 12px;
+    }
+
+    #open-form-log-in {
+        gap: 8px;
+    }
+
+    #user-greeting {
+        font-size: 13px;
+        max-width: 150px;
+    }
+
+    #open-form-log-in__dropdown {
+        min-width: 130px;
+        padding: 8px;
+        left: auto;
+        right: 0;
+    }
+
+    #open-form-log-in__dropdown a {
+        font-size: 13px;
+        padding: 4px 8px;
+    }
+
+    #hamburger-menu {
+        display: block;
+        font-size: 22px;
+        margin-left: 10px;
+    }
+
+    #mobile-menu {
+        padding: 15px;
+    }
+
+    .mobile-menu-content a {
+        font-size: 20px;
+        margin: 8px 0;
+    }
+
+    .mobile-menu-search input {
+        width: 200px;
+        padding: 8px 35px 8px 10px;
+        font-size: 14px;
+    }
+
+    .mobile-menu-search i {
+        right: 10px;
+        font-size: 16px;
+    }
+
+    #close-menu {
+        font-size: 26px;
+        top: 15px;
+        right: 15px;
+    }
+
+    /* Content */
+    .content {
+        padding-top: 80px;
+    }
+
+    .content__input {
+        height: auto;
+        text-align: center;
+    }
+
+    .content__input-img img {
+        display: none;
+    }
+
+    .content__input__main {
+        display: none; /* Ẩn thanh tìm kiếm trên màn hình nhỏ */
+    }
+
+    .content__input h1 {
+        font-size: 28px;
+        padding-top: 10px;
+        line-height: 1.3;
+    }
+
+    .content__slogan {
+        font-size: 16px;
+    }
+
+    /* Product Category */
+    .product-category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 0 15px 15px;
+    }
+
+    .category-card img {
+        height: 180px;
+    }
+
+    .category-label {
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+
+    /* Giỏ hàng */
+    #modal-cart {
+        padding: 15px;
+        align-items: flex-start;
+    }
+
+    #container-cart {
+        width: 95%;
+        max-width: 600px;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 20px auto;
+    }
+
+    #modal-cart h2 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    #cart-items {
+        max-height: 300px;
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+        font-size: 14px;
+        gap: 10px;
+    }
+
+    .cart-item img {
+        width: 70px;
+        height: 70px;
+        border-radius: 8px;
+    }
+
+    .cart-info {
+        flex-direction: column;
+        gap: 8px;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .cart-name, .cart-price, .cart-quantity, .remove-cart {
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .cart-quantity input {
+        width: 60px;
+        font-size: 14px;
+    }
+
+    .cart-quantity button {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+    .remove-cart {
+        font-size: 18px;
+    }
+
+    .total-letter {
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    .total-price {
+        font-size: 16px;
+    }
+
+    .button-cart {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .continue-shopping, .checkout {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .empty-cart {
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .empty-cart i {
+        font-size: 100px;
+    }
+
+    /* Chính sách */
+    .policy-container {
+        max-width: 100%;
+        margin: 80px auto 20px;
+        padding: 15px;
+    }
+
+    .policy-container h1 {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .policy {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+
+    .policy h2 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .policy ul {
+        margin-left: 15px;
+    }
+
+    .policy ul li {
+        font-size: 14px;
+        margin: 4px 0;
+    }
+
+    /* Thanh toán */
+    #payment-modal {
+        padding: 15px;
+        align-items: flex-start;
+    }
+
+    .payment-container {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+        border-radius: 12px;
+        max-height: 100vh;
+    }
+
+    .payment-col-left,
+    .payment-col-right {
+        min-width: 100%;
+        padding: 15px;
+        max-height: none;
+    }
+
+    .payment-col-left h2,
+    .payment-col-right .payment-content-lable {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .payment-form-group {
+        margin-bottom: 15px;
+    }
+
+    .payment-form-group input,
+    .payment-form-group select {
+        height: 45px;
+        font-size: 14px;
+        padding: 0 12px;
+    }
+
+    .payment-col-left-radio-btn {
+        padding: 8px;
+    }
+
+    .payment-col-left-radio-btn label {
+        font-size: 14px;
+    }
+
+    .payment-method-label {
+        font-size: 14px;
+    }
+
+    .payment-method-options label {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .online-payment-form {
+        padding: 10px;
+    }
+
+    .online-payment-form .form-group {
+        margin-bottom: 10px;
+    }
+
+    .online-payment-form .form-group input {
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .online-payment-form .form-group input[type="month"] {
+        width: 160px;
+    }
+
+    .online-payment-form .form-group input[type="password"] {
+        width: 90px;
+    }
+
+    #list-order-payment {
+        max-height: 300px;
+        padding: 10px;
+    }
+
+    #list-order-payment .cart-item {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .total-payment {
+        padding: 12px;
+    }
+
+    .total-payment .text {
+        font-size: 16px;
+    }
+
+    .total-payment .price-final {
+        font-size: 18px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .preview-checkout-btn, .complete-checkout-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .back-to-products {
+        font-size: 24px;
+        top: 10px;
+        left: 10px;
+    }
+
+    /* Footer */
+    .footer {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px 20px;
+        text-align: center;
+    }
+
+    .footer__contact,
+    .footer__address {
+        width: 100%;
+        gap: 15px;
+    }
+
+    .footer__contact__icon {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .footer__contact__icon i {
+        width: 18px;
+        height: 18px;
+        font-size: 16px;
+        padding: 8px;
+    }
+
+    .footer__contact p,
+    .footer__address p {
+        font-size: 14px;
+    }
+
+    .trangchu-footer {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px 20px;
+        text-align: center;
+    }
+
+    .trangchu-footer-content {
+        width: 100%;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 22px;
+    }
+
+    .promo-item-footer {
+        font-size: 18px;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .promo-item-footer i {
+        font-size: 18px;
+        margin-right: 5px;
+    }
+}
+
+/* Màn hình dưới 360px */
+@media screen and (max-width: 360px) {
+    /* Header */
+    .header {
+        padding: 8px 12px;
+        font-size: 16px;
+    }
+
+    .header__name {
+        margin: 0 8px;
+        font-size: 16px;
+    }
+
+    .header__icons {
+        gap: 10px;
+    }
+
+    #user-greeting {
+        font-size: 12px;
+        max-width: 120px;
+    }
+
+    #open-form-log-in__dropdown {
+        min-width: 120px;
+        padding: 6px;
+    }
+
+    #open-form-log-in__dropdown a {
+        font-size: 12px;
+        padding: 3px 6px;
+    }
+
+    #hamburger-menu {
+        font-size: 20px;
+    }
+
+    .mobile-menu-content a {
+        font-size: 18px;
+        margin: 6px 0;
+    }
+
+    .mobile-menu-search input {
+        width: 180px;
+        font-size: 13px;
+    }
+
+    .mobile-menu-search i {
+        font-size: 14px;
+    }
+
+    #close-menu {
+        font-size: 24px;
+    }
+
+    /* Content */
+    .content__input h1 {
+        font-size: 24px;
+    }
+
+    .content__slogan {
+        font-size: 14px;
+    }
+
+    /* Product Category */
+    .product-category-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 10px 12px;
+    }
+
+    .category-card img {
+        height: 160px;
+    }
+
+    .category-label {
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+
+    /* Giỏ hàng */
+    #container-cart {
+        width: 98%;
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    #modal-cart h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    #cart-items {
+        max-height: 250px;
+    }
+
+    .cart-item {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .cart-item img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .cart-info {
+        gap: 6px;
+    }
+
+    .cart-name, .cart-price, .cart-quantity, .remove-cart {
+        font-size: 13px;
+    }
+
+    .cart-quantity input {
+        width: 50px;
+        font-size: 13px;
+    }
+
+    .cart-quantity button {
+        padding: 4px 8px;
+        font-size: 13px;
+    }
+
+    .remove-cart {
+        font-size: 16px;
+    }
+
+    .total-letter {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .total-price {
+        font-size: 14px;
+    }
+
+    .continue-shopping, .checkout {
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+
+    .empty-cart {
+        font-size: 13px;
+        margin-top: 12px;
+    }
+
+    .empty-cart i {
+        font-size: 80px;
+    }
+
+    /* Chính sách */
+    .policy-container {
+        padding: 12px;
+        margin: 60px auto 15px;
+    }
+
+    .policy-container h1 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .policy {
+        padding: 8px;
+        margin-bottom: 12px;
+    }
+
+    .policy h2 {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+
+    .policy ul {
+        margin-left: 12px;
+    }
+
+    .policy ul li {
+        font-size: 13px;
+        margin: 3px 0;
+    }
+
+    /* Thanh toán */
+    .payment-container {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .payment-col-left h2,
+    .payment-col-right .payment-content-lable {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .payment-form-group input,
+    .payment-form-group select {
+        height: 40px;
+        font-size: 13px;
+    }
+
+    .payment-col-left-radio-btn label {
+        font-size: 13px;
+    }
+
+    .payment-method-options label {
+        font-size: 13px;
+    }
+
+    .online-payment-form .form-group input {
+        height: 38px;
+        font-size: 13px;
+    }
+
+    .online-payment-form .form-group input[type="month"] {
+        width: 140px;
+    }
+
+    .online-payment-form .form-group input[type="password"] {
+        width: 80px;
+    }
+
+    #list-order-payment .cart-item {
+        font-size: 13px;
+    }
+
+    .total-payment .text {
+        font-size: 14px;
+    }
+
+    .total-payment .price-final {
+        font-size: 16px;
+    }
+
+    .preview-checkout-btn, .complete-checkout-btn {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .back-to-products {
+        font-size: 20px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 12px 15px;
+        gap: 12px;
+    }
+
+    .footer__contact p,
+    .footer__address p {
+        font-size: 13px;
+    }
+
+    .footer__contact__icon {
+        gap: 12px;
+    }
+
+    .footer__contact__icon i {
+        width: 16px;
+        height: 16px;
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    .trangchu-footer {
+        padding: 12px 15px;
+        gap: 15px;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 20px;
+    }
+
+    .promo-item-footer {
+        font-size: 16px;
+        gap: 6px;
+    }
+
+    .promo-item-footer i {
+        font-size: 16px;
+    }
+}
+
+/* Màn hình dưới 320px */
+@media screen and (max-width: 320px) {
+    /* Header */
+    .header {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .header__name {
+        margin: 0 6px;
+        font-size: 14px;
+    }
+
+    .header__icons {
+        gap: 8px;
+    }
+
+    #user-greeting {
+        font-size: 11px;
+        max-width: 100px;
+    }
+
+    #open-form-log-in__dropdown {
+        min-width: 110px;
+        padding: 5px;
+    }
+
+    #open-form-log-in__dropdown a {
+        font-size: 11px;
+        padding: 2px 5px;
+    }
+
+    #hamburger-menu {
+        font-size: 18px;
+    }
+
+    .mobile-menu-content a {
+        font-size: 16px;
+        margin: 5px 0;
+    }
+
+    .mobile-menu-search input {
+        width: 160px;
+        font-size: 12px;
+    }
+
+    .mobile-menu-search i {
+        font-size: 13px;
+    }
+
+    #close-menu {
+        font-size: 22px;
+    }
+
+    /* Content */
+    .content__input h1 {
+        font-size: 22px;
+    }
+
+    .content__slogan {
+        font-size: 13px;
+    }
+
+    /* Product Category */
+    .category-card img {
+        height: 140px;
+    }
+
+    .category-label {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+
+    /* Giỏ hàng */
+    #container-cart {
+        width: 98%;
+        padding: 12px;
+        margin: 10px auto;
+    }
+
+    #modal-cart h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    #cart-items {
+        max-height: 200px;
+    }
+
+    .cart-item {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .cart-item img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .cart-info {
+        gap: 5px;
+    }
+
+    .cart-name, .cart-price, .cart-quantity, .remove-cart {
+        font-size: 12px;
+    }
+
+    .cart-quantity input {
+        width: 45px;
+        font-size: 12px;
+    }
+
+    .cart-quantity button {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+    .remove-cart {
+        font-size: 14px;
+    }
+
+    .total-letter {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .total-price {
+        font-size: 13px;
+    }
+
+    .continue-shopping, .checkout {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .empty-cart {
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    .empty-cart i {
+        font-size: 60px;
+    }
+
+    /* Chính sách */
+    .policy-container {
+        padding: 10px;
+        margin: 50px auto 10px;
+    }
+
+    .policy-container h1 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .policy {
+        padding: 6px;
+        margin-bottom: 10px;
+    }
+
+    .policy h2 {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .policy ul {
+        margin-left: 10px;
+    }
+
+    .policy ul li {
+        font-size: 12px;
+        margin: 2px 0;
+    }
+
+    /* Thanh toán */
+    .payment-container {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .payment-col-left h2,
+    .payment-col-right .payment-content-lable {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .payment-form-group input,
+    .payment-form-group select {
+        height: 38px;
+        font-size: 12px;
+    }
+
+    .payment-col-left-radio-btn label {
+        font-size: 12px;
+    }
+
+    .payment-method-options label {
+        font-size: 12px;
+    }
+
+    .online-payment-form .form-group input {
+        height: 36px;
+        font-size: 12px;
+    }
+
+    .online-payment-form .form-group input[type="month"] {
+        width: 130px;
+    }
+
+    .online-payment-form .form-group input[type="password"] {
+        width: 70px;
+    }
+
+    #list-order-payment .cart-item {
+        font-size: 12px;
+    }
+
+    .total-payment .text {
+        font-size: 13px;
+    }
+
+    .total-payment .price-final {
+        font-size: 14px;
+    }
+
+    .preview-checkout-btn, .complete-checkout-btn {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    .back-to-products {
+        font-size: 18px;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .footer__contact p,
+    .footer__address p {
+        font-size: 12px;
+    }
+
+    .footer__contact__icon {
+        gap: 10px;
+    }
+
+    .footer__contact__icon i {
+        width: 14px;
+        height: 14px;
+        font-size: 12px;
+        padding: 5px;
+    }
+
+    .trangchu-footer {
+        padding: 10px 12px;
+        gap: 12px;
+    }
+
+    .trangchu-footer-content-header {
+        font-size: 18px;
+    }
+
+    .promo-item-footer {
+        font-size: 14px;
+        gap: 5px;
+    }
+
+    .promo-item-footer i {
+        font-size: 14px;
+    }
+}

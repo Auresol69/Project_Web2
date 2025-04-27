@@ -78,8 +78,10 @@ CREATE TABLE `bill` (
   `macustomer` varchar(20) NOT NULL,
   `maorder` varchar(20) NOT NULL,
   `mapayby` varchar(20) NOT NULL,
-  `ngaymua` datetime(6) DEFAULT current_timestamp(6),
-  `tongtien` int(11) NOT NULL
+  `bill_date` datetime(6) DEFAULT current_timestamp(6),
+  `tongtien` int(11) NOT NULL,
+  `receiver_name` VARCHAR(255) DEFAULT NULL,
+  `phone_number` VARCHAR(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -642,10 +644,7 @@ ALTER TABLE `staff`
   ADD CONSTRAINT `fk_staff_powergroup` FOREIGN KEY (`powergroupid`) REFERENCES `powergroup` (`powergroupid`) ON DELETE SET NULL;
 COMMIT;
 
-ALTER TABLE bill CHANGE ngaymua bill_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6);
-ALTER TABLE bill
-ADD COLUMN receiver_name VARCHAR(255) DEFAULT NULL;
-ADD COLUMN phone_number VARCHAR(20) DEFAULT NULL;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
