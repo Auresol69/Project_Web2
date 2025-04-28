@@ -23,6 +23,8 @@
 
     // Thực thi truy vấn
     $customers = $db->query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+
+    $powergroups = $db->query("SELECT * FROM powergroup")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -55,7 +57,9 @@
                 <th>ID</th>
                 <th>Họ và Tên</th>
                 <th>Email</th>
+                <th>Nhóm quyền</th>
                 <th>Số điện thoại</th>
+                <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
@@ -83,6 +87,13 @@
             <label for="edit-email">Email</label>
             <input type="email" id="edit-email" name="email" required>
 
+            <label for="edit-powergroupid">Nhóm quyền</label>
+            <select id="edit-powergroupid" name="powergroupid" required>
+                <?php foreach($powergroups as $powergroup) :?>
+                <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
+                <?php endforeach; ?>
+            </select>
+            
             <label for="edit-phone">Số điện thoại</label>
             <input type="text" id="edit-phone" name="phone" required>
 
@@ -103,6 +114,13 @@
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
 
+            <label for="powergroupid">Nhóm quyền</label>
+            <select id="powergroupid" name="powergroupid" required>
+                <?php foreach($powergroups as $powergroup) :?>
+                <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
+                <?php endforeach; ?>
+            </select>
+            
             <label for="phone">Số điện thoại</label>
             <input type="text" id="phone" name="phone" required>
 
