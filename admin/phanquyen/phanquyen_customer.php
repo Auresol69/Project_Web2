@@ -76,15 +76,16 @@
                 <td><?= $powergroup['created_time']; ?></td>
                 <td><?= $powergroup['last_updated']; ?></td>
                 <td>
-                    <a href="#" class="btn btn-warning btn-sm edit-btn"
+                    <button class="btn btn-warning btn-sm edit-btn"
                         data-powergroupid="<?= $powergroup['powergroupid']; ?>"
                         data-powergroupname="<?= $powergroup['powergroupname']; ?>"
                         data-mapping="<?= htmlspecialchars(json_encode($powergroup['permission_func_map']), ENT_QUOTES, 'UTF-8'); ?>">
                         Sửa
-                    </a>
+                    </button>
 
-                    <a href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
-                        class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
+                    <button href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</button>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -93,7 +94,7 @@
 </div>
 
 <!-- Modal thêm nhóm quyền -->
-<div class="modal" id="addModal">
+<div class="modal" id="addModal" style="display:none;">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h3>Thêm nhóm quyền</h3>
@@ -107,7 +108,7 @@
 </div>
 
 <!-- Modal chỉnh sửa -->
-<div class="modal" id="editModal">
+<div class="modal" id="editModal" style="display:none;">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h3>Chỉnh sửa Nhóm quyền</h3>
@@ -146,40 +147,47 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    initEventListeners();
+});
+
+function initEventListeners() {
+
     let addModal = document.getElementById("addModal");
     let editModal = document.getElementById("editModal");
-
-    addModal.style.display = "none";
-    editModal.style.display = "none";
-
 
     let openAddModalBtn = document.getElementById("openAddModal");
     let editButtons = document.querySelectorAll(".edit-btn");
 
     let closeButtons = document.querySelectorAll(".close-btn");
 
-    openAddModalBtn.addEventListener("click", function() {
-        addModal.style.display = "block";
+    // Mở modal thêm nhóm quyền
+    openAddModalBtn.addEventListener("click", function(event) {
+        event.preventDefault(); // Ngừng hành vi mặc định của trình duyệt
+        // addModal.style.display = "block";
+        $('#addModal').show();
     });
 
+    // Đóng các modal
     closeButtons.forEach(button => {
         button.addEventListener("click", function() {
             this.closest(".modal").style.display = "none";
         });
     });
 
+    // Chỉnh sửa nhóm quyền
     editButtons.forEach(button => {
         button.addEventListener("click", function(event) {
-            event.preventDefault();
-
+            event.preventDefault(); // Ngừng hành vi mặc định của trình duyệt
 
             document.getElementById("edit-id").value = this.dataset.powergroupid;
-
             document.getElementById("edit-name").value = this.dataset.powergroupname;
 
-            editModal.style.display = "block";
+            // editModal.style.display = "block";
+            $('#editModal').show();
 
             // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
             let mappingJSON = this.dataset.mapping;
@@ -199,10 +207,11 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
+    // Đóng modal nếu click ngoài vùng modal
     window.addEventListener("click", function(event) {
         if (event.target.classList.contains("modal")) {
             event.target.style.display = "none";
         }
     });
-});
+}
 </script>
