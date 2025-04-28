@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $db = new connect_db();
 
     // Nhận dữ liệu từ form
-    $ho_ten = trim($_POST['ho_ten']);
+    $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $powergroupid = trim($_POST['powergroupid']);
     $so_dien_thoai = trim($_POST['so_dien_thoai']);
@@ -15,14 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // $vai_tro = trim($_POST['vai_tro']); // Lấy vai trò từ form
 
     // Kiểm tra email đã tồn tại chưa
-    $existingCustomer = $db->query("SELECT id FROM users WHERE email = ?", [$email])->fetch();
+    $existingCustomer = $db->query("SELECT macustomer FROM customer WHERE email = ?", [$email])->fetch();
     if ($existingCustomer) {
         die("Email đã tồn tại! Vui lòng chọn email khác.");
     }
 
     // Chuẩn bị dữ liệu để thêm vào database
     $customerData = [
-        'ho_ten' => $ho_ten,
+        'name' => $name,
         'email' => $email,
         'powergroupid' => $powergroupid,
         'so_dien_thoai' => $so_dien_thoai,
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ];
 
     // Thêm khách hàng
-    if ($db->insert("users", $customerData)) {
+    if ($db->insert("customer", $customerData)) {
         // Chuyển hướng về danh sách khách hàng
         header("Location: ../index.php?page=customer");
         exit();

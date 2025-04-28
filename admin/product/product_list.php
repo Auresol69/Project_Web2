@@ -1,75 +1,64 @@
 <?php
 session_start();
-include 'connect_db.php'; // Bao gồm lớp kết nối CSDL
-include 'phantrang.php'; // Nếu có lớp phân trang
+include __DIR__ . '/../connect_db.php';
+include 'phantrang.php';
 
 $config_name = "product";
 $config_title = "sản phẩm";
 
-// Kết nối cơ sở dữ liệu
-$db = new connect_db(); // Tạo đối tượng kết nối
+$db = new connect_db();
 
-// Xử lý tìm kiếm
-if (!empty($_GET['action']) && $_GET['action'] == 'search' && !empty($_POST)) {
-    $_SESSION[$config_name . '_filter'] = $_POST;
-    header('Location: ' . $config_name . '_listing.php');
-    exit;
-}
-
-// Xây dựng điều kiện WHERE
-$where = "";
-$params = [];
-if (!empty($_SESSION[$config_name . '_filter'])) {
-    foreach ($_SESSION[$config_name . '_filter'] as $field => $value) {
-        if (!empty($value)) {
-            $where .= (!empty($where) ? " AND " : " WHERE ") . "`" . $field . "` LIKE :$field";
-            $params[$field] = "%$value%"; // Thêm tham số vào mảng params
-        }
+function buildSearchWhereClause(&$params) {
+    $where = "";
+    if (!empty($_GET['id'])) {
+        $where .= (!empty($where) ? " AND " : " WHERE ") . "`masp` LIKE :id";
+        $params['id'] = "%" . $_GET['id'] . "%";
     }
+    if (!empty($_GET['name'])) {
+        $where .= (!empty($where) ? " AND " : " WHERE ") . "`tensp` LIKE :name";
+        $params['name'] = "%" . $_GET['name'] . "%";
+    }
+    return $where;
 }
 
-// Thiết lập phân trang
-$item_per_page = (!empty($_GET['per_page'])) ? (int)$_GET['per_page'] : 15;
-$current_page = max(1, (!empty($_GET['page'])) ? (int)$_GET['page'] : 1);
+$item_per_page = (!empty($_GET['per_page'])) ? (int)$_GET['per_page'] : 5;
+$current_page = max(1, (!empty($_GET['pages'])) ? (int)$_GET['pages'] : 1);
+
+$params = [];
+$where = buildSearchWhereClause($params);
 
 $offset = ($current_page - 1) * $item_per_page;
 
-// Truy vấn tổng số bản ghi
 $totalQuery = "SELECT COUNT(*) FROM `product`" . $where;
 $totalStmt = $db->query($totalQuery, $params);
 $totalRecordsCount = $totalStmt->fetchColumn();
 
-// Khởi tạo đối tượng phân trang
 $pagination = new Pagination($current_page, $totalRecordsCount, $item_per_page);
 
-// Truy vấn sản phẩm
-$productQuery = "SELECT * FROM `product`" . $where . " ORDER BY `id` DESC LIMIT $offset, $item_per_page";
+$productQuery = "SELECT p.*, p.tensp AS name, pt.tenloaisp FROM `product` p LEFT JOIN producttype pt ON p.maloaisp = pt.maloaisp" . $where . " ORDER BY p.`masp` DESC LIMIT $offset, $item_per_page";
 $productStmt = $db->query($productQuery, $params);
 $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
-<!-- HTML và CSS cho trang -->
 <style>
-        body, h1, p, ul {
+    body, h1, p, ul {
         margin: 0;
         padding: 0;
     }
 
-    /* Thiết lập phông chữ và màu nền cho toàn bộ trang */
     body {
         font-family: Arial, sans-serif;
         background-color: #f4f4f4;
         color: #333;
     }
 
-    /* Kiểu cho tiêu đề chính */
     .main-content h1 {
         text-align: center;
         margin: 20px 0;
         color: #2c3e50;
     }
 
-    /* Kiểu cho các mục trong danh sách */
     .listing-items {
         max-width: 800px;
         margin: 0 auto;
@@ -79,7 +68,6 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    /* Kiểu cho các nút bấm */
     .buttons {
         text-align: right;
         margin-bottom: 20px;
@@ -97,7 +85,6 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         background: #2980b9;
     }
 
-    /* Kiểu cho phần tìm kiếm */
     .listing-search {
         margin-bottom: 20px;
     }
@@ -109,7 +96,6 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         border-radius: 4px;
     }
 
-    /* Kiểu cho danh sách sản phẩm */
     ul {
         list-style-type: none;
     }
@@ -122,7 +108,7 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
 
     .listing-prop {
         display: inline-block;
-        width: 14%;
+        width: 12%;
         padding: 10px;
         text-align: center;
     }
@@ -146,24 +132,20 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
         background: #c0392b;
     }
 
-    /* Kiểu cho thông tin ngày */
     .listing-time {
         color: #7f8c8d;
     }
 
-    /* Clearfix cho các phần tử */
     .clear-both {
         clear: both;
     }
 
-    /* Kiểu cho thông tin tổng số sản phẩm */
     .total-items {
         text-align: center;
         margin: 20px 0;
         font-style: italic;
     }
 
-        /* Kiểu cho phân trang */
     .pagination {
         text-align: center;
         margin-top: 20px;
@@ -191,43 +173,47 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
             <a href="./product/<?= htmlspecialchars($config_name) ?>_edit.php">Thêm <?= htmlspecialchars($config_title) ?></a>
         </div>
         <div class="listing-search">
-            <form id="<?= htmlspecialchars($config_name) ?>-search-form" action="<?= htmlspecialchars($config_name) ?>_listing.php?action=search" method="POST">
+            <form id="<?= htmlspecialchars($config_name) ?>-search-form" onsubmit="return searchProducts();">
                 <fieldset>
                     <legend>Tìm kiếm <?= htmlspecialchars($config_title) ?>:</legend>
-                    ID: <input type="text" name="id" value="<?= !empty($_SESSION[$config_name . '_filter']['id']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['id']) : "" ?>" />
-                    Tên <?= htmlspecialchars($config_title) ?>: <input type="text" name="name" value="<?= !empty($_SESSION[$config_name . '_filter']['name']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['name']) : "" ?>" />
+                    ID: <input type="text" name="id" id="search-id" value="<?= !empty($_SESSION[$config_name . '_filter']['id']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['id']) : "" ?>" />
+                    Tên <?= htmlspecialchars($config_title) ?>: <input type="text" name="name" id="search-name" value="<?= !empty($_SESSION[$config_name . '_filter']['name']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['name']) : "" ?>" />
                     <input type="submit" value="Tìm" />
+                    <input type="button" value="Xóa bộ lọc" onclick="clearFilters()" />
                 </fieldset>
             </form>
         </div>
         <div class="total-items">
             <span>Có tất cả <strong><?= htmlspecialchars($totalRecordsCount) ?></strong> <?= htmlspecialchars($config_title) ?> trên <strong><?= htmlspecialchars($pagination->total_pages) ?></strong> trang</span>
         </div>
-        <ul>
+        <ul id="product-list">
             <li class="listing-item-heading">
                 <div class="listing-prop listing-img">Ảnh</div>
                 <div class="listing-prop listing-name">Tên <?= htmlspecialchars($config_title) ?></div>
+                <div class="listing-prop">Loại sản phẩm</div>
                 <div class="listing-prop listing-button">Xóa</div>
                 <div class="listing-prop listing-button">Sửa</div>
-                <div class="listing-prop listing-button">Copy</div>
+                <div class="listing-prop listing-button">Ghi chú</div>
                 <div class="listing-prop listing-time">Ngày tạo</div>
                 <div class="listing-prop listing-time">Ngày cập nhật</div>
                 <div class="clear-both"></div>
             </li>
             <?php foreach ($products as $row) { ?>
-                <li>
+            <li id="product-<?= htmlspecialchars($row['masp']) ?>"> 
                     <div class="listing-prop listing-img">
-                        <img src="./<?= htmlspecialchars($row['image']) ?>" alt="<?= htmlspecialchars($row['name']) ?>" title="<?= htmlspecialchars($row['name']) ?>" />
+                        <img src="./<?= htmlspecialchars($row['image'] ?? '') ?>" alt="<?= htmlspecialchars($row['name'] ?? '') ?>" title="<?= htmlspecialchars($row['name'] ?? '') ?>" />
                     </div>
-                    <div class="listing-prop listing-name"><?= htmlspecialchars($row['name']) ?></div>
+                    <div class="listing-prop listing-name"><?= htmlspecialchars($row['name'] ?? '') ?></div>
+                    <div class="listing-prop"><?= htmlspecialchars($row['tenloaisp'] ?? '') ?></div>
                     <div class="listing-prop listing-button">
-                        <a href="./product/<?= htmlspecialchars($config_name) ?>_del.php?id=<?= htmlspecialchars($row['id']) ?>">Xóa</a>
+                        <?php if ($row['soluong'] == 0) { ?>
+                            <span style="color: red; font-weight: bold;">Đã bán hết</span>
+                        <?php } else { ?>
+                <a href="javascript:void(0);" onclick="removeRow('<?= htmlspecialchars($row['masp']) ?>', './product/ajax.php?action=delete')">Xóa</a> <!-- Giữ lại chỉ 1 liên kết xóa -->
+                        <?php } ?>
                     </div>
                     <div class="listing-prop listing-button">
-                        <a href="./product/<?= htmlspecialchars($config_name) ?>_edit.php?id=<?= htmlspecialchars($row['id']) ?>">Sửa</a>
-                    </div>
-                    <div class="listing-prop listing-button">
-                        <a href="./<?= htmlspecialchars($config_name) ?>_editing.php?id=<?= htmlspecialchars($row['id']) ?>&task=copy">Copy</a>
+                        <a href="./product/<?= htmlspecialchars($config_name) ?>_edit.php?id=<?= htmlspecialchars($row['masp']) ?>">Sửa</a>
                     </div>
                     <div class="listing-prop listing-time"><?= date('d/m/Y H:i', strtotime($row['created_time'])) ?></div>
                     <div class="listing-prop listing-time"><?= date('d/m/Y H:i', strtotime($row['last_updated'])) ?></div>
@@ -235,9 +221,160 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
                 </li>
             <?php } ?>
         </ul>
-        <?php if ($pagination->total_pages > 1) { ?>
-            <div class="pagination"><?= $pagination->render(); ?></div>
-        <?php } ?>
+
+        <!-- Phần phân trang -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination links will be inserted here by JavaScript -->
+        </div>
+        <div id="loading" style="display:none; text-align:center;">
+            <img src="../img/loading.gif" alt="Loading..." />
+        </div>
+
         <div class="clear-both"></div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+function removeRow(id, url) {
+    if (confirm('Bạn có chắc không?')) {
+        $.ajax({
+            url: url,
+            data: { id: id },
+            method: 'GET',
+            dataType: 'JSON',
+            success: function (res) {
+                console.log(res);
+                if (res.success) { 
+                    // Xóa phần tử tương ứng khỏi giao diện
+                    $('#product-' + id).remove(); // Mỗi dòng có một ID là product-[id]
+                    // Reload product list to update total count and pagination
+                    loadProducts(currentPage);
+                } else {
+                    alert('Xóa không thành công, vui lòng thử lại!');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.error("Error details: ", textStatus, errorThrown);
+                alert('Đã xảy ra lỗi: ' + textStatus);
+            }
+        });
+    }
+}
+
+var currentPage = 1; // Current page
+var currentFilters = {}; // Current filters
+
+function searchProducts() {
+    currentFilters.id = document.getElementById('search-id').value;
+    currentFilters.name = document.getElementById('search-name').value;
+    currentPage = 1;
+    loadProducts(currentPage);
+    return false;
+}
+
+function clearFilters() {
+    document.getElementById('search-id').value = '';
+    document.getElementById('search-name').value = '';
+    currentFilters = {};
+    currentPage = 1;
+    loadProducts(currentPage);
+}
+
+function loadProducts(page) {
+    currentPage = page;
+    $.ajax({
+        url:'./product/ajax.php?action=pagination',
+        method: 'GET',
+        data: {
+            page: page,
+            per_page: 5,
+            id: currentFilters.id || '',
+            name: currentFilters.name || ''
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                updateProductList(response.products);
+                updatePagination(page, response.totalPages);
+                // Update total product count display
+                $('.total-items span').html(`Có tất cả <strong>${response.totalRecordsCount}</strong> <?= htmlspecialchars($config_title) ?> trên <strong>${response.totalPages}</strong> trang`);
+            } else {
+                alert('No products found.');
+                $('#product-list').html('');
+                $('#pagination').html('');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("AJAX error loading products:", textStatus, errorThrown, jqXHR.responseText);
+            alert('Error loading products. Check console for details.');
+        }
+    });
+}
+
+var config_name = "product";
+
+function updateProductList(products) {
+    const productList = document.getElementById('product-list');
+    const productTitle = "<?= htmlspecialchars($config_title) ?>";
+    const header = `
+        <ul id="product-list">
+            <li class="listing-item-heading">
+                <div class="listing-prop listing-img">Ảnh</div>
+                <div class="listing-prop listing-name">Tên <?= htmlspecialchars($config_title) ?></div>
+                <div class="listing-prop">Loại sản phẩm</div>
+                <div class="listing-prop listing-button">Xóa</div>
+                <div class="listing-prop listing-button">Sửa</div>
+                <div class="listing-prop listing-button">Ghi chú</div>
+                <div class="listing-prop listing-time">Ngày tạo</div>
+                <div class="listing-prop listing-time">Ngày cập nhật</div>
+                <div class="clear-both"></div>
+            </li>
+    `;
+    productList.innerHTML = header;
+    products.forEach(row => {
+        const li = document.createElement('li');
+        li.id = "product-" + row.masp;
+        li.innerHTML = `
+            <div class="listing-prop listing-img">
+                <img src="./${row.image}" alt="${row.name}" title="${row.name}" />
+            </div>
+            <div class="listing-prop listing-name">${row.name}</div>
+            <div class="listing-prop listing-type">${row.tenloaisp || ''}</div>
+            <div class="listing-prop listing-button">
+                <a href="javascript:void(0);" onclick="removeRow('${row.masp}', './product/ajax.php?action=delete')">Xóa</a>
+            </div>
+            <div class="listing-prop listing-button">
+                <a href="./product/${config_name}_edit.php?id=${row.masp}">Sửa</a>
+            </div>
+            <div class="listing-prop listing-button">
+                ${row.soluong == 0 ? '<span style="color: red; font-weight: bold;">Đã bán hết</span>' : ''}
+            </div>
+            <div class="listing-prop listing-time">${new Date(row.created_time).toLocaleString()}</div>
+            <div class="listing-prop listing-time">${new Date(row.last_updated).toLocaleString()}</div>
+            <div class="clear-both"></div>
+        `;
+        productList.appendChild(li);
+    });
+}
+
+function updatePagination(currentPage, totalPages) {
+    $('#pagination').html('');
+    for (let i = 1; i <= totalPages; i++) {
+        const pageLink = `<a href="javascript:void(0);" onclick="loadProducts(${i});">${i}</a>`;
+        if (i === currentPage) {
+            $('#pagination').append(`<strong>${i}</strong>`);
+        } else {
+            $('#pagination').append(pageLink);
+        }
+    }
+}
+
+$(document).ready(function() {
+    loadProducts(1);
+});
+
+
+</script>

@@ -1,0 +1,56 @@
+/* Dashboard Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-title {
+    text-align: center;
+    margin: 20px 0;
+    color: #2c3e50;
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    flex: 1 1 30%;
+    margin: 10px;
+    padding: 20px;
+    background: #eaeaea;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 16px;
+    color: #555;
+}
+
+.top-products-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.top-products-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}

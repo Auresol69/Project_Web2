@@ -8,16 +8,16 @@
     $name = $_POST['name'] ?? '';
 
     // Xây dựng truy vấn tìm kiếm
-    $sql = "SELECT * FROM users WHERE 1=1";
+    $sql = "SELECT * FROM customer WHERE 1=1";
     $params = [];
 
     if (!empty($id)) {
-        $sql .= " AND id = :id";
+        $sql .= " AND macustomer = :id";
         $params['id'] = $id;
     }
 
     if (!empty($name)) {
-        $sql .= " AND ho_ten LIKE :name";
+        $sql .= " AND name LIKE :name";
         $params['name'] = "%$name%";
     }
 
@@ -35,16 +35,17 @@
     <h1>Danh sách người dùng</h1>
 
     <div class="buttons">
-        <a id="openAddModal">Thêm người dùng</a>
+        <a id="openAddModal" type="button" class="btn btn-primary btn-sm">Thêm người dùng</a>
     </div>
 
     <div class="listing-search">
-        <form method="POST">
+        <form id="customer-search-form" onsubmit="return searchCustomers();">
             <fieldset>
                 <legend>Tìm kiếm người dùng:</legend>
-                ID: <input type="text" name="id">
-                Tên người dùng: <input type="text" name="name">
+                ID: <input type="text" name="id" id="search-id">
+                Tên người dùng: <input type="text" name="name" id="search-name">
                 <input type="submit" value="Tìm">
+                <input type="button" value="Xóa bộ lọc" onclick="clearFilters()">
             </fieldset>
         </form>
     </div>
@@ -56,9 +57,7 @@
                 <th>ID</th>
                 <th>Họ và Tên</th>
                 <th>Email</th>
-                <th>Nhóm quyền</th>
                 <th>Số điện thoại</th>
-                <th>Trạng thái</th>
                 <th>Thao tác</th>
             </tr>
         </thead>
@@ -90,18 +89,21 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+    <div class="pagination" id="pagination">
+
+    </div>
 </div>
 
 <!-- Modal chỉnh sửa -->
-<div class="modal" id="editModal">
+<div class="modal" id="editModal" style="display:none;">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h3>Chỉnh sửa khách hàng</h3>
-        <form action="customer/update_customer.php" method="POST">
+        <form id="editCustomerForm">
             <input type="hidden" id="edit-id" name="id">
 
             <label for="edit-name">Họ và Tên</label>
-            <input type="text" id="edit-name" name="ho_ten" required>
+            <input type="text" id="edit-name" name="name" required>
 
             <label for="edit-email">Email</label>
             <input type="email" id="edit-email" name="email" required>
@@ -132,13 +134,13 @@
 </div>
 
 <!-- Modal thêm khách hàng -->
-<div id="addModal" class="modal">
+<div id="addModal" class="modal" style="display:none;">
     <div class="modal-content">
         <span class="close-btn">&times;</span>
         <h3>Thêm khách hàng</h3>
         <form action="customer/add_customer.php" method="POST">
-            <label for="ho_ten">Họ và Tên</label>
-            <input type="text" id="ho_ten" name="ho_ten" required>
+            <label for="name">Họ và Tên</label>
+            <input type="text" id="name" name="name" required>
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
@@ -169,6 +171,7 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Lấy các modal
@@ -217,11 +220,35 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Đóng modal khi bấm ra ngoài
-    window.addEventListener("click", function(event) {
-        if (event.target.classList.contains("modal")) {
-            event.target.style.display = "none";
-        }
+    // Handle edit customer form submission
+    $('#editCustomerForm').submit(function(e) {
+        e.preventDefault();
+        const formData = {
+            id: $('#edit-id').val(),
+            name: $('#edit-name').val(),
+            email: $('#edit-email').val(),
+            phone: $('#edit-phone').val(),
+            password: $('#edit-password').val()
+        };
+        $.ajax({
+            url: './customer/ajax.php?action=edit',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    alert('Cập nhật người dùng thành công');
+                    $('#editModal').hide();
+                    loadCustomers(currentPage);
+                } else {
+                    alert('Cập nhật người dùng thất bại: ' + res.message);
+                }
+            },
+            error: function() {
+                alert('Lỗi khi cập nhật người dùng');
+            }
+        });
     });
 });
 </script>

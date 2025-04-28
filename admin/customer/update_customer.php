@@ -5,28 +5,27 @@ $db = new connect_db();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = $_POST['id'];
-    $ho_ten = $_POST['ho_ten'];
+    $name = $_POST['name'];
     $email = $_POST['email'];
-    $so_dien_thoai = $_POST['so_dien_thoai'];
-    $trang_thai = $_POST['trang_thai'];
+    $phone = $_POST['phone'];
+    // $trang_thai = $_POST['trang_thai']; // Not used as no such column
     // $vai_tro = $_POST['vai_tro'];
-    $mat_khau = $_POST['mat_khau']; // Mật khẩu mới (nếu có)
+    $password = $_POST['password'] ?? ''; // Mật khẩu mới (nếu có)
 
-    if (!empty($mat_khau)) {
-        $mat_khau = password_hash($mat_khau, PASSWORD_DEFAULT);
+    if (!empty($password)) {
+        $password = password_hash($password, PASSWORD_DEFAULT);
     } else {
         // Nếu không có mật khẩu mới, giữ nguyên mật khẩu cũ
-        $mat_khau = $db->getById("users", $id)['mat_khau'];
+        $password = $db->getById("customer", $id)['password'];
     }
 
     // Cập nhật thông tin khách hàng
-    $db->update("users", [
-        "ho_ten" => $ho_ten,
+    $db->update("customer", [
+        "name" => $name,
         "email" => $email,
-        "so_dien_thoai" => $so_dien_thoai,
-        "trang_thai" => $trang_thai,
+        "phone" => $phone,
         // "vai_tro" => $vai_tro,
-        "mat_khau" => $mat_khau
+        "password" => $password
     ], $id);
 
     // Chuyển hướng về danh sách khách hàng
