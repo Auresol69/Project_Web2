@@ -210,7 +210,6 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("edit-id").value = this.dataset.id;
             document.getElementById("edit-name").value = this.dataset.name;
             document.getElementById("edit-email").value = this.dataset.email;
-            document.getElementById("edit-powergroupid").value = this.dataset.powergroupid;
             document.getElementById("edit-phone").value = this.dataset.phone;
             // document.getElementById("edit-vaitro").value = this.dataset.vaitro;
             document.getElementById("edit-trangthai").value = this.dataset.trangthai;
