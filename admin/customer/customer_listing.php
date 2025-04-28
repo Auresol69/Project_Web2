@@ -23,8 +23,6 @@
 
     // Thực thi truy vấn
     $customers = $db->query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
-
-    $powergroups = $db->query("SELECT * FROM powergroup")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -62,31 +60,8 @@
             </tr>
         </thead>
 
-        <tbody>
-            <?php foreach ($customers as $customer) : ?>
-            <tr>
-                <td><?= $customer['id']; ?></td>
-                <td><?= $customer['ho_ten']; ?></td>
-                <td><?= $customer['email']; ?></td>
-                <td><?= isset($customer['powergroupid']) ? htmlspecialchars($customer['powergroupid']) :'Chưa cấp'; ?>
-                </td>
-                <td><?= $customer['so_dien_thoai']; ?></td>
-                <td><?= $customer['trang_thai']; ?></td>
-                <td>
-                    <!-- Nút "Sửa" có thêm class edit-btn và data attributes -->
-                    <a href="#" class="btn btn-warning btn-sm edit-btn" data-id="<?= $customer['id']; ?>"
-                        data-name="<?= $customer['ho_ten']; ?>" data-email="<?= $customer['email']; ?>"
-                        data-powergroupid="<?= isset($customer['powergroupid']) ? htmlspecialchars($customer['powergroupid']) : ''; ?>"
-                        data-phone="<?= $customer['so_dien_thoai']; ?>"
-                        data-trangthai="<?= $customer['trang_thai']; ?>">
-                        Sửa
-                    </a>
-
-                    <a href="customer/delete_customer.php?id=<?= $customer['id']; ?>" class="btn btn-danger btn-sm"
-                        onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
+        <tbody id="customer-list">
+            <!-- Customer rows will be loaded here by AJAX -->
         </tbody>
     </table>
     <div class="pagination" id="pagination">
@@ -108,25 +83,8 @@
             <label for="edit-email">Email</label>
             <input type="email" id="edit-email" name="email" required>
 
-            <label for="edit-powergroupid">Nhóm quyền</label>
-            <select id="edit-powergroupid" name="powergroupid" required>
-                <?php foreach($powergroups as $powergroup) :?>
-                <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
-                <?php endforeach; ?>
-            </select>
-
             <label for="edit-phone">Số điện thoại</label>
-            <input type="text" id="edit-phone" name="so_dien_thoai" required>
-            </select>
-
-            <label for="edit-trangthai">Trạng thái</label>
-            <select id="edit-trangthai" name="trang_thai" required>
-                <option value="Hoạt động">Hoạt động</option>
-                <option value="Bị khóa">Bị khóa</option>
-            </select>
-
-            <label for="edit-password">Mật khẩu mới</label>
-            <input type="password" id="edit-password" name="mat_khau" placeholder="Để trống nếu không đổi mật khẩu">
+            <input type="text" id="edit-phone" name="phone" required>
 
             <button type="submit" class="save-btn">Cập nhật</button>
         </form>
@@ -145,26 +103,11 @@
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
 
-            <label for="powergroupid">Nhóm quyền</label>
-            <select id="powergroupid" name="powergroupid" required>
-                <?php foreach($powergroups as $powergroup) :?>
-                <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
-                <?php endforeach; ?>
-            </select>
+            <label for="phone">Số điện thoại</label>
+            <input type="text" id="phone" name="phone" required>
 
-            <label for="so_dien_thoai">Số điện thoại</label>
-            <input type="text" id="so_dien_thoai" name="so_dien_thoai" required>
-
-            <label for="mat_khau">Mật khẩu</label>
-            <input type="password" id="mat_khau" name="mat_khau" required>
-
-            </select>
-
-            <label for="trang_thai">Trạng thái</label>
-            <select id="trang_thai" name="trang_thai" required>
-                <option value="Hoạt động">Hoạt động</option>
-                <option value="Bị khóa">Bị khóa</option>
-            </select>
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" required>
 
             <button type="submit" class="save-btn">Thêm</button>
         </form>
@@ -173,49 +116,171 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Lấy các modal
-    let addModal = document.getElementById("addModal");
-    let editModal = document.getElementById("editModal");
+var currentPage = 1;
+var currentFilters = {};
 
-    // Lấy các nút mở modal
-    let openAddModalBtn = document.getElementById("openAddModal");
-    let editButtons = document.querySelectorAll(".edit-btn");
+function searchCustomers() {
+    currentFilters.id = $('#search-id').val();
+    currentFilters.name = $('#search-name').val();
+    currentPage = 1;
+    loadCustomers(currentPage);
+    return false;
+}
 
-    // Lấy tất cả các nút đóng modal
-    let closeButtons = document.querySelectorAll(".close-btn");
+function clearFilters() {
+    $('#search-id').val('');
+    $('#search-name').val('');
+    currentFilters = {};
+    currentPage = 1;
+    loadCustomers(currentPage);
+}
 
-    // Đảm bảo modal luôn ẩn khi tải lại trang
-    addModal.style.display = "none";
-    editModal.style.display = "none";
+function loadCustomers(page) {
+    currentPage = page;
+    $.ajax({
+        url: './customer/ajax.php?action=pagination',
+        method: 'GET',
+        data: {
+            page: page,
+            per_page: 5,
+            id: currentFilters.id || '',
+            name: currentFilters.name || ''
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.success) {
+                updateCustomerList(response.customers);
+                updatePagination(page, response.totalPages);
+                $('.total-items span').html(`Có tất cả <strong>${response.totalRecordsCount}</strong> người dùng trên <strong>${response.totalPages}</strong> trang`);
+            } else {
+                alert('Không tìm thấy người dùng.');
+                $('#customer-list').html('');
+                $('#pagination').html('');
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Lỗi tải danh sách người dùng:", textStatus, errorThrown, jqXHR.responseText);
+            alert('Lỗi khi tải danh sách người dùng. Vui lòng kiểm tra console để biết chi tiết.');
+        }
+    });
+}
 
-    // Mở modal thêm khách hàng
-    openAddModalBtn.addEventListener("click", function() {
-        addModal.style.display = "block";
+function updateCustomerList(customers) {
+    const customerList = $('#customer-list');
+    customerList.empty();
+    customers.forEach(customer => {
+        const row = `
+            <tr id="customer-${customer.macustomer}">
+                <td>${customer.macustomer}</td>
+                <td>${customer.name}</td>
+                <td>${customer.email}</td>
+                <td>${customer.phone}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm edit-btn" data-id="${customer.macustomer}" data-name="${customer.name}" data-email="${customer.email}" data-phone="${customer.phone}">Sửa</button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-id="${customer.macustomer}">Xóa</button>
+                </td>
+            </tr>
+        `;
+        customerList.append(row);
     });
 
-    // Đóng modal khi nhấn nút "X"
-    closeButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            this.closest(".modal").style.display = "none";
-        });
+    // Attach event listeners for edit and delete buttons
+    $('.edit-btn').click(function() {
+        const id = $(this).data('id');
+        const name = $(this).data('name');
+        const email = $(this).data('email');
+        const phone = $(this).data('phone');
+
+        $('#edit-id').val(id);
+        $('#edit-name').val(name);
+        $('#edit-email').val(email);
+        $('#edit-phone').val(phone);
+
+        $('#editModal').show();
     });
 
-    // Mở modal chỉnh sửa khi nhấn vào nút "Sửa"
-    editButtons.forEach(button => {
-        button.addEventListener("click", function(event) {
-            event.preventDefault(); // Ngăn chuyển trang
+    $('.delete-btn').click(function() {
+        const id = $(this).data('id');
+        if (confirm('Bạn có chắc muốn xóa người dùng này?')) {
+            $.ajax({
+                url: './customer/ajax.php?action=delete',
+                method: 'GET',
+                data: { id: id },
+                dataType: 'json',
+                success: function(res) {
+                    if (res.success) {
+                        $('#customer-' + id).remove();
+                        loadCustomers(currentPage);
+                    } else {
+                        alert('Xóa không thành công, vui lòng thử lại!');
+                    }
+                },
+                error: function() {
+                    alert('Đã xảy ra lỗi khi xóa người dùng.');
+                }
+            });
+        }
+    });
+}
 
-            // Lấy dữ liệu từ data-attributes của nút
-            document.getElementById("edit-id").value = this.dataset.id;
-            document.getElementById("edit-name").value = this.dataset.name;
-            document.getElementById("edit-email").value = this.dataset.email;
-            document.getElementById("edit-phone").value = this.dataset.phone;
-            // document.getElementById("edit-vaitro").value = this.dataset.vaitro;
-            document.getElementById("edit-trangthai").value = this.dataset.trangthai;
+function updatePagination(currentPage, totalPages) {
+    $('#pagination').html('');
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === currentPage) {
+            $('#pagination').append(`<strong>${i}</strong>`);
+        } else {
+            $('#pagination').append(`<a href="javascript:void(0);" onclick="loadCustomers(${i});">${i}</a>`);
+        }
+    }
+}
 
-            // Hiện modal chỉnh sửa
-            editModal.style.display = "block";
+$(document).ready(function() {
+    loadCustomers(1);
+
+    // Open add modal
+    $('#openAddModal').click(function() {
+        $('#addModal').show();
+    });
+
+    // Close modals
+    $('.close-btn').click(function() {
+        $(this).closest('.modal').hide();
+    });
+
+    // Close modal on outside click
+    $(window).click(function(event) {
+        if ($(event.target).hasClass('modal')) {
+            $(event.target).hide();
+        }
+    });
+
+    // Handle add customer form submission
+    $('#addCustomerForm').submit(function(e) {
+        e.preventDefault();
+        const formData = {
+            name: $('#add-name').val(),
+            email: $('#add-email').val(),
+            phone: $('#add-phone').val(),
+            password: $('#add-password').val()
+        };
+        $.ajax({
+            url: './customer/ajax.php?action=add',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            dataType: 'json',
+            success: function(res) {
+                if (res.success) {
+                    alert('Thêm người dùng thành công');
+                    $('#addModal').hide();
+                    loadCustomers(currentPage);
+                } else {
+                    alert('Thêm người dùng thất bại: ' + res.message);
+                }
+            },
+            error: function() {
+                alert('Lỗi khi thêm người dùng');
+            }
         });
     });
 

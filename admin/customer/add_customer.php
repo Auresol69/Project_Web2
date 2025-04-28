@@ -8,11 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Nhận dữ liệu từ form
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
-    $powergroupid = trim($_POST['powergroupid']);
-    $so_dien_thoai = trim($_POST['so_dien_thoai']);
-    $mat_khau = password_hash($_POST['mat_khau'], PASSWORD_DEFAULT);
-    $trang_thai = 'Hoạt động';
-    // $vai_tro = trim($_POST['vai_tro']); // Lấy vai trò từ form
+    $phone = trim($_POST['phone']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     // Kiểm tra email đã tồn tại chưa
     $existingCustomer = $db->query("SELECT macustomer FROM customer WHERE email = ?", [$email])->fetch();
@@ -24,11 +21,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $customerData = [
         'name' => $name,
         'email' => $email,
-        'powergroupid' => $powergroupid,
-        'so_dien_thoai' => $so_dien_thoai,
-        'mat_khau' => $mat_khau,
-        'trang_thai' => $trang_thai
-        // 'vai_tro' => $vai_tro
+        'phone' => $phone,
+        'password' => $password
     ];
 
     // Thêm khách hàng
