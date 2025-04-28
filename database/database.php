@@ -1,5 +1,5 @@
 <?php 
-    $db_name = "treeshop";
+    $db_name = "treeshopfix";
     $db_user = "root";
     $db_pass = "";
     $db_port = 3306;

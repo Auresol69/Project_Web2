@@ -59,9 +59,9 @@
                 "id" => $row["masp"],
                 "name" => $row["tensp"],
                 "price" => $row["dongiasanpham"],
-                "image" => $row["img"],
+                "image" => $row["image"],
                 "soluong" => $row["soluong"],
-                "mota" => $row["mota"]
+                "mota" => $row["content"],
             ];
         }
         $response["total"] = $TotalPage;

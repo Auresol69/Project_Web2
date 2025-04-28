@@ -29,6 +29,11 @@ if (!$userId) {
 if ($action === 'add') {
     $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -41,6 +46,11 @@ if ($action === 'add') {
         $cartId = 'CART' . uniqid();
         $insertCart = "INSERT INTO cart (magiohang, mauser) VALUES (?, ?)";
         $stmt = $conn->prepare($insertCart);
+        if (!$stmt) {
+            $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+            echo json_encode($response);
+            exit;
+        }
         $stmt->bind_param("ss", $cartId, $userId);
         if (!$stmt->execute()) {
             $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -54,6 +64,11 @@ if ($action === 'add') {
 
     $checkProduct = "SELECT soluong FROM product_cart WHERE magiohang = ? AND masp = ?";
     $stmt = $conn->prepare($checkProduct);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("ss", $cartId, $productId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -67,6 +82,11 @@ if ($action === 'add') {
         $newQuantity = $row['soluong'] + 1;
         $updateProduct = "UPDATE product_cart SET soluong = ? WHERE magiohang = ? AND masp = ?";
         $stmt = $conn->prepare($updateProduct);
+        if (!$stmt) {
+            $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+            echo json_encode($response);
+            exit;
+        }
         $stmt->bind_param("iss", $newQuantity, $cartId, $productId);
         if (!$stmt->execute()) {
             $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -74,8 +94,12 @@ if ($action === 'add') {
             exit;
         }
     } else {
-        // Kiểm tra trước khi thêm vào product_cart
         $checkProduct = $conn->prepare("SELECT 1 FROM product WHERE masp = ?");
+        if (!$checkProduct) {
+            $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+            echo json_encode($response);
+            exit;
+        }
         $checkProduct->bind_param("s", $productId);
         $checkProduct->execute();
         $result = $checkProduct->get_result();
@@ -86,9 +110,13 @@ if ($action === 'add') {
             exit;
         }
     
-        // Nếu tồn tại, thêm vào giỏ
         $insertProduct = "INSERT INTO product_cart (masp, magiohang, soluong) VALUES (?, ?, 1)";
         $stmt = $conn->prepare($insertProduct);
+        if (!$stmt) {
+            $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+            echo json_encode($response);
+            exit;
+        }
         $stmt->bind_param("ss", $productId, $cartId);
     
         error_log("Giá trị masp (productId): " . $productId);
@@ -105,12 +133,17 @@ if ($action === 'add') {
 }
 
 if ($action === 'get') {
-    $cartQuery = "SELECT p.masp, p.tensp, p.dongiasanpham, p.img, pc.soluong 
+    $cartQuery = "SELECT p.masp, p.tensp, p.dongiasanpham, p.image, pc.soluong 
                   FROM product_cart pc 
                   JOIN product p ON pc.masp = p.masp 
                   JOIN cart c ON pc.magiohang = c.magiohang 
                   WHERE c.mauser = ? AND c.maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -125,7 +158,7 @@ if ($action === 'get') {
             'ProductID' => $row['masp'],
             'ProductName' => $row['tensp'],
             'Price' => $row['dongiasanpham'],
-            'ProductImage' => $row['img'],
+            'ProductImage' => $row['image'],
             'Quantity' => $row['soluong']
         ];
     }
@@ -137,6 +170,11 @@ if ($action === 'get') {
 if ($action === 'increase') {
     $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -148,6 +186,11 @@ if ($action === 'increase') {
 
     $updateQuery = "UPDATE product_cart SET soluong = soluong + 1 WHERE magiohang = ? AND masp = ?";
     $stmt = $conn->prepare($updateQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("ss", $cartId, $productId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -162,6 +205,11 @@ if ($action === 'increase') {
 if ($action === 'decrease') {
     $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -173,6 +221,11 @@ if ($action === 'decrease') {
 
     $checkQuery = "SELECT soluong FROM product_cart WHERE magiohang = ? AND masp = ?";
     $stmt = $conn->prepare($checkQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("ss", $cartId, $productId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -185,6 +238,11 @@ if ($action === 'decrease') {
     if ($row['soluong'] > 1) {
         $updateQuery = "UPDATE product_cart SET soluong = soluong - 1 WHERE magiohang = ? AND masp = ?";
         $stmt = $conn->prepare($updateQuery);
+        if (!$stmt) {
+            $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+            echo json_encode($response);
+            exit;
+        }
         $stmt->bind_param("ss", $cartId, $productId);
         if (!$stmt->execute()) {
             $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -201,6 +259,11 @@ if ($action === 'decrease') {
 if ($action === 'remove') {
     $cartQuery = "SELECT magiohang FROM cart WHERE mauser = ? AND maorder IS NULL";
     $stmt = $conn->prepare($cartQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("s", $userId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;
@@ -212,6 +275,11 @@ if ($action === 'remove') {
 
     $deleteQuery = "DELETE FROM product_cart WHERE magiohang = ? AND masp = ?";
     $stmt = $conn->prepare($deleteQuery);
+    if (!$stmt) {
+        $response['message'] = 'Lỗi chuẩn bị câu truy vấn: ' . $conn->error;
+        echo json_encode($response);
+        exit;
+    }
     $stmt->bind_param("ss", $cartId, $productId);
     if (!$stmt->execute()) {
         $response['message'] = 'Lỗi truy vấn SQL: ' . $stmt->error;

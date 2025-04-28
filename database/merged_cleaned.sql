@@ -274,7 +274,7 @@ DELIMITER ;
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`macustomer`, `username`, `password`, `address`, `phone`, `name`, `email`) VALUES
+INSERT INTO `customer` (`macustomer`, `username`, `password`, `default_address_id`, `phone`, `name`, `email`) VALUES
 ('CUS001', 'roy', '$2y$10$oGWPsYCkoaIU464iq2pZmO.sW/5A8Zk.YzzCeBa67Q9RHH.vFEpM6', NULL, '1234567884', 'roy', 'quocbao96@gmail.com');
 
 --

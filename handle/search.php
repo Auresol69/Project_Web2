@@ -4,7 +4,7 @@ header("Content-Type: application/json");
 
 $keyword = $_POST['keyword'] ?? '';
 
-$sql = "SELECT masp, tensp, dongiasanpham, img, soluong, mota FROM product 
+$sql = "SELECT masp, tensp, dongiasanpham, image, soluong, content FROM product 
         WHERE tensp LIKE '%$keyword%'";
 
 $result = $conn->query($sql);
@@ -15,9 +15,9 @@ while ($row = mysqli_fetch_assoc($result)) {
         "id" => $row["masp"],
         "name" => $row["tensp"],
         "price" => $row["dongiasanpham"],
-        "image" => $row["img"],
+        "image" => $row["image"],
         "soluong" => $row["soluong"],
-        "mota" => $row["mota"]
+        "mota" => $row["content"],
     ];
 }
 
