@@ -23,6 +23,8 @@
 
     // Thực thi truy vấn
     $customers = $db->query($sql, $params)->fetchAll(PDO::FETCH_ASSOC);
+
+    $powergroups = $db->query("SELECT * FROM powergroup")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -67,13 +69,15 @@
                 <td><?= $customer['id']; ?></td>
                 <td><?= $customer['ho_ten']; ?></td>
                 <td><?= $customer['email']; ?></td>
-                <td><?= $customer['powergroupid']; ?></td>
+                <td><?= isset($customer['powergroupid']) ? htmlspecialchars($customer['powergroupid']) :'Chưa cấp'; ?>
+                </td>
                 <td><?= $customer['so_dien_thoai']; ?></td>
                 <td><?= $customer['trang_thai']; ?></td>
                 <td>
                     <!-- Nút "Sửa" có thêm class edit-btn và data attributes -->
                     <a href="#" class="btn btn-warning btn-sm edit-btn" data-id="<?= $customer['id']; ?>"
                         data-name="<?= $customer['ho_ten']; ?>" data-email="<?= $customer['email']; ?>"
+                        data-powergroupid="<?= isset($customer['powergroupid']) ? htmlspecialchars($customer['powergroupid']) : ''; ?>"
                         data-phone="<?= $customer['so_dien_thoai']; ?>"
                         data-trangthai="<?= $customer['trang_thai']; ?>">
                         Sửa
@@ -101,6 +105,13 @@
 
             <label for="edit-email">Email</label>
             <input type="email" id="edit-email" name="email" required>
+
+            <label for="edit-powergroupid">Nhóm quyền</label>
+            <select id="edit-powergroupid" name="powergroupid" required>
+                <?php foreach($powergroups as $powergroup) :?>
+                <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
+                <?php endforeach; ?>
+            </select>
 
             <label for="edit-phone">Số điện thoại</label>
             <input type="text" id="edit-phone" name="so_dien_thoai" required>
@@ -131,6 +142,13 @@
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required>
+
+            <label for="powergroupid">Nhóm quyền</label>
+            <select id="powergroupid" name="powergroupid" required>
+                <?php foreach($powergroups as $powergroup) :?>
+                <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
+                <?php endforeach; ?>
+            </select>
 
             <label for="so_dien_thoai">Số điện thoại</label>
             <input type="text" id="so_dien_thoai" name="so_dien_thoai" required>
@@ -189,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("edit-id").value = this.dataset.id;
             document.getElementById("edit-name").value = this.dataset.name;
             document.getElementById("edit-email").value = this.dataset.email;
+            document.getElementById("edit-powergroupid").value = this.dataset.powergroupid;
             document.getElementById("edit-phone").value = this.dataset.phone;
             // document.getElementById("edit-vaitro").value = this.dataset.vaitro;
             document.getElementById("edit-trangthai").value = this.dataset.trangthai;

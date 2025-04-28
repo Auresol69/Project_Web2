@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Nhận dữ liệu từ form
     $ho_ten = trim($_POST['ho_ten']);
     $email = trim($_POST['email']);
+    $powergroupid = trim($_POST['powergroupid']);
     $so_dien_thoai = trim($_POST['so_dien_thoai']);
     $mat_khau = password_hash($_POST['mat_khau'], PASSWORD_DEFAULT);
     $trang_thai = 'Hoạt động';
@@ -23,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $customerData = [
         'ho_ten' => $ho_ten,
         'email' => $email,
+        'powergroupid' => $powergroupid,
         'so_dien_thoai' => $so_dien_thoai,
         'mat_khau' => $mat_khau,
         'trang_thai' => $trang_thai

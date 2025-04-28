@@ -24,14 +24,14 @@
                 'status' => $row['status'],
                 'created_time' => $row['created_time'],
                 'last_updated' => $row['last_updated'],
-                'funcs' => [],
-                'permissions' => []
+                'permission_func_map' => []
             ];
         }
-        if (!empty($row['funcid']))
-        {
-            $powergroups[$id]['funcs'][]=$row['funcid'];
-            $powergroups[$id]['permissions'][]=$row['permissionid'];
+        if (!empty($row['funcid']) && !empty($row['permissionid'])) {
+            $powergroups[$id]['permission_func_map'][] = [
+                'permission' => $row['permissionid'],
+                'func' => $row['funcid']
+            ];
         }
     }
 
@@ -79,8 +79,7 @@
                     <a href="#" class="btn btn-warning btn-sm edit-btn"
                         data-powergroupid="<?= $powergroup['powergroupid']; ?>"
                         data-powergroupname="<?= $powergroup['powergroupname']; ?>"
-                        data-funcs="<?= htmlspecialchars(json_encode($powergroup['funcs']));?>"
-                        data-permissions="<?= htmlspecialchars(json_encode($powergroup['permissions']));?>">
+                        data-mapping="<?= htmlspecialchars(json_encode($powergroup['permission_func_map']), ENT_QUOTES, 'UTF-8'); ?>">
                         Sửa
                     </a>
 
@@ -183,26 +182,19 @@ document.addEventListener("DOMContentLoaded", function() {
             editModal.style.display = "block";
 
             // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
-            let funcsJSON = this.dataset.funcs;
-
-            let permissionsJSON = this.dataset.permissions;
-
-            let funcs = JSON.parse(funcsJSON);
-
-            let permissions = JSON.parse(permissionsJSON);
+            let mappingJSON = this.dataset.mapping;
+            let mapping = JSON.parse(mappingJSON);
 
             document.querySelectorAll('input[name="permission_func_map[]"]').forEach(cb => {
                 cb.checked = false;
             });
 
-            permissions.forEach(permission => {
-                funcs.forEach(func => {
-                    let checkbox = document.querySelector(
-                        `input[type="checkbox"][value="${permission}_${func}"]`
-                    );
-                    if (checkbox)
-                        checkbox.checked = true;
-                });
+            mapping.forEach(pair => {
+                let checkbox = document.querySelector(
+                    `input[type="checkbox"][value="${pair.permission}_${pair.func}"]`
+                );
+                if (checkbox)
+                    checkbox.checked = true;
             });
         });
     });
