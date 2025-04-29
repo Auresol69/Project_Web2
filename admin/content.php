@@ -60,6 +60,12 @@ $(document).ready(function() {
                 $('#main-content').html(data);
                 // Optionally update URL without reloading
                 history.pushState(null, '', '?page=' + page);
+
+                if (page === 'banquyen') {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 100); // Delay 100ms cho chắc
+                }
             },
             error: function() {
                 $('#main-content').html('<p>Đã xảy ra lỗi khi tải nội dung.</p>');

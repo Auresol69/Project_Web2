@@ -166,28 +166,25 @@ function initEventListeners() {
 
     // Mở modal thêm nhóm quyền
     openAddModalBtn.addEventListener("click", function(event) {
-        event.preventDefault(); // Ngừng hành vi mặc định của trình duyệt
         // addModal.style.display = "block";
-        $('#addModal').show();
+        $('#addModal').fadeIn(200);
     });
 
     // Đóng các modal
     closeButtons.forEach(button => {
         button.addEventListener("click", function() {
-            this.closest(".modal").style.display = "none";
+            $(this).closest(".modal").fadeOut(200);
         });
     });
 
     // Chỉnh sửa nhóm quyền
     editButtons.forEach(button => {
         button.addEventListener("click", function(event) {
-            event.preventDefault(); // Ngừng hành vi mặc định của trình duyệt
 
             document.getElementById("edit-id").value = this.dataset.powergroupid;
             document.getElementById("edit-name").value = this.dataset.powergroupname;
 
-            // editModal.style.display = "block";
-            $('#editModal').show();
+            $('#editModal').fadeIn(200);
 
             // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
             let mappingJSON = this.dataset.mapping;
@@ -208,6 +205,12 @@ function initEventListeners() {
     });
 
     // Đóng modal nếu click ngoài vùng modal
+    document.querySelectorAll('.modal-content').forEach(modalContent => {
+        modalContent.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    });
+
     window.addEventListener("click", function(event) {
         if (event.target.classList.contains("modal")) {
             event.target.style.display = "none";
