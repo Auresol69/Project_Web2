@@ -350,9 +350,12 @@ CREATE TABLE `permission` (
 -- Table structure for table `powergroup`
 --
 
-CREATE TABLE `powergroup` (
-  `powergroupid` varchar(20) NOT NULL,
-  `powergroupname` varchar(50) NOT NULL
+CREATE TABLE powergroup (
+    powergroupid INT PRIMARY KEY AUTO_INCREMENT,
+    powergroupname VARCHAR(255),
+    status INT DEFAULT 1,
+    created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
