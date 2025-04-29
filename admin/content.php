@@ -47,10 +47,9 @@ $(document).ready(function() {
     $('.ajax-link').click(function(e) {
         e.preventDefault();
         var page = $(this).attr('href').split('page=')[1];
-var projectBasePath = window.location.pathname.split('/').slice(0,3).join('/'); // e.g. /1/Project_Web2
 
 $.ajax({
-    url: projectBasePath + '/admin/ajax_content.php',
+    url:'ajax_content.php',
     method: 'GET',
     data: { page: page },
     success: function(data) {
