@@ -1,20 +1,20 @@
 <div id="content-wrapper">
-            <div class="container">
-                <div class="left-menu">
-                    <div class="menu-heading">Admin Menu</div>
-                    <div class="menu-items">
-                        <ul>
-                            <li><a href="?page=home" class="ajax-link">Thông tin hệ thống</a></li>
-                            <li><a href="?page=danhmuc" class="ajax-link">Danh mục</a></li>
-                            <li><a href="?page=sanpham" class="ajax-link">Sản phẩm</a></li>
-                            <li><a href="?page=donhang" class="ajax-link">Đơn hàng</a></li>
-                            <li><a href="?page=customer" class="ajax-link">Quản lý tài khoản</a></li>
-                            <li><a href="?page=phanquyen" class="ajax-link">Phân quyền</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="main-contaniner" id="main-content">
-                <?php
+    <div class="container">
+        <div class="left-menu">
+            <div class="menu-heading">Admin Menu</div>
+            <div class="menu-items">
+                <ul>
+                    <li><a href="?page=home" class="ajax-link">Thông tin hệ thống</a></li>
+                    <li><a href="?page=danhmuc" class="ajax-link">Danh mục</a></li>
+                    <li><a href="?page=sanpham" class="ajax-link">Sản phẩm</a></li>
+                    <li><a href="?page=donhang" class="ajax-link">Đơn hàng</a></li>
+                    <li><a href="?page=customer" class="ajax-link">Quản lý tài khoản</a></li>
+                    <li><a href="?page=banquyen" class="ajax-link">Phân quyền</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="main-contaniner" id="main-content">
+            <?php
                     $page= isset( $_GET['page'] ) ? $_GET['page'] :'home';
                     switch ( $page ) {
                         case'danhmuc':
@@ -29,7 +29,7 @@
                         case'customer':
                             include 'customer/customer_listing.php';
                             break;
-                        case 'phanquyen':
+                        case 'banquyen':
                             include 'phanquyen/phanquyen_customer.php';
                             break;                           
                         default:
@@ -37,9 +37,9 @@
                             break;
                     }
                 ?>
-                </div>
-            </div>
         </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -67,11 +67,14 @@ $.ajax({
     window.onpopstate = function() {
         var params = new URLSearchParams(window.location.search);
         var page = params.get('page') || 'home';
-        var projectBasePath = window.location.pathname.split('/').slice(0,3).join('/'); // e.g. /1/Project_Web2
+        var projectBasePath = window.location.pathname.split('/').slice(0, 3).join(
+            '/'); // e.g. /1/Project_Web2
         $.ajax({
             url: projectBasePath + '/admin/ajax_content.php',
             method: 'GET',
-            data: { page: page },
+            data: {
+                page: page
+            },
             success: function(data) {
                 $('#main-content').html(data);
             },

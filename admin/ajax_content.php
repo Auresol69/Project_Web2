@@ -17,6 +17,9 @@ switch ($page) {
     case 'customer':
         include __DIR__ . '/customer/customer_listing.php';
         break;
+    case 'banquyen':
+        include __DIR__ . '/phanquyen/phanquyen_customer.php';
+        break;
     default:
         // For system dashboard, include only the main content part
         include __DIR__ . '/admin/system_dashboard.php';
