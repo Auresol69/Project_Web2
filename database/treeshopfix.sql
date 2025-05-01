@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2025 at 10:30 AM
+-- Generation Time: May 01, 2025 at 03:02 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,31 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `treeshopfix`
+-- Database: `treeshop`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `address`
---
-
-CREATE TABLE `address` (
-  `address_id` varchar(20) NOT NULL,
-  `macustomer` varchar(20) NOT NULL,
-  `city` varchar(50) NOT NULL,
-  `district` varchar(50) NOT NULL,
-  `street_address` varchar(100) NOT NULL,
-  `is_default` tinyint(1) DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `address`
---
-
-INSERT INTO `address` (`address_id`, `macustomer`, `city`, `district`, `street_address`, `is_default`) VALUES
-('ADDR001', 'CUS001', 'Hà Nội', 'Ba Đình', '123 Phố Cây', 1),
-('ADDR002', 'CUS002', 'Hồ Chí Minh', 'Quận 1', '456 Đường Hoa', 1);
 
 -- --------------------------------------------------------
 
@@ -85,8 +62,7 @@ CREATE TABLE `cart` (
 
 INSERT INTO `cart` (`magiohang`, `mauser`, `maorder`) VALUES
 ('CART001', 'CUS001', 'ORD001'),
-('CART002', 'CUS002', 'ORD002'),
-('CART680f31417e277', 'CUS019', NULL);
+('CART002', 'CUS002', 'ORD002');
 
 --
 -- Triggers `cart`
@@ -140,33 +116,34 @@ CREATE TABLE `customer` (
   `phone` varchar(11) DEFAULT NULL,
   `name` varchar(25) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `default_address_id` varchar(20) DEFAULT NULL
+  `province_id` varchar(10) DEFAULT NULL,
+  `district_id` varchar(10) DEFAULT NULL,
+  `address_detail` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`macustomer`, `username`, `password`, `phone`, `name`, `email`, `default_address_id`) VALUES
-('CUS001', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS002', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS003', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS004', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS005', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS006', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS007', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS008', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS009', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS010', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS011', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS012', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS013', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS014', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS015', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS016', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS017', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', 'ADDR001'),
-('CUS018', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', 'ADDR002'),
-('CUS019', 'ngocphuong', '$2y$10$.FBnlfgPcAkjD1fLrHLEse5Xh1y3uQfpKfoPVcgkXSYyoFSf1i276', '0775855922', 'Ngoc Phuong Le', 'lengocphuong6205@gmail.com', NULL);
+INSERT INTO `customer` (`macustomer`, `username`, `password`, `phone`, `name`, `email`, `province_id`, `district_id`, `address_detail`) VALUES
+('CUS001', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS002', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS003', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS004', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS005', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS006', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS007', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS008', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS009', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS010', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS011', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS012', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS013', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS014', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS015', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS016', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL),
+('CUS017', 'nguyen_van_a', 'password_hash', '0123456789', 'Nguyễn Văn A', 'a@example.com', NULL, NULL, NULL),
+('CUS018', 'tran_thi_b', 'password_hash', '0987654321', 'Trần Thị B', 'b@example.com', NULL, NULL, NULL);
 
 --
 -- Triggers `customer`
@@ -222,6 +199,40 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `districts`
+--
+
+CREATE TABLE `districts` (
+  `district_id` varchar(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `province_id` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `districts`
+--
+
+INSERT INTO `districts` (`district_id`, `name`, `province_id`) VALUES
+('001', 'Quận 1', '01'),
+('002', 'Quận 3', '01'),
+('003', 'Quận 7', '01'),
+('004', 'Quận 10', '01'),
+('005', 'Quận 5', '01'),
+('006', 'Huyện Bình Chánh', '01'),
+('007', 'Huyện Nhà Bè', '01'),
+('008', 'Huyện Cần Giờ', '01'),
+('009', 'Quận Hải Châu', '02'),
+('010', 'Quận Thanh Khê', '02'),
+('011', 'Quận Liên Chiểu', '02'),
+('012', 'Huyện Hòa Vang', '02'),
+('013', 'Quận Ba Đình', '03'),
+('014', 'Quận Hoàn Kiếm', '03'),
+('015', 'Quận Đống Đa', '03'),
+('016', 'Huyện Đông Anh', '03');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `entry_form`
 --
 
@@ -230,20 +241,85 @@ CREATE TABLE `entry_form` (
   `ngaynhap` datetime(6) DEFAULT NULL,
   `mancc` varchar(20) NOT NULL,
   `mastaff` varchar(20) NOT NULL,
-  `loinhuan` int(11) NOT NULL DEFAULT 0
+  `loinhuan` int(11) NOT NULL DEFAULT 0,
+  `status` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `entry_form`
 --
 
-INSERT INTO `entry_form` (`maphieunhap`, `ngaynhap`, `mancc`, `mastaff`, `loinhuan`) VALUES
-('EFO001', '2025-04-26 00:41:05.000000', 'SUP001', 'STAFF001', 0),
-('EFO002', '2025-04-26 00:41:16.000000', 'SUP001', 'STAFF001', 20);
+INSERT INTO `entry_form` (`maphieunhap`, `ngaynhap`, `mancc`, `mastaff`, `loinhuan`, `status`) VALUES
+('EFO001', '2025-04-26 00:41:05.000000', 'SUP001', 'STAFF001', 0, 1),
+('EFO002', '2025-04-26 00:41:16.000000', 'SUP001', 'STAFF001', 20, 1);
 
 --
 -- Triggers `entry_form`
 --
+DELIMITER $$
+CREATE TRIGGER `after_update_entry_form` AFTER UPDATE ON `entry_form` FOR EACH ROW BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE masp_input INT;
+    DECLARE soluong_input INT;
+    DECLARE current_stock INT;
+    DECLARE out_of_stock BOOLEAN DEFAULT FALSE;
+
+    DECLARE cur CURSOR FOR
+        SELECT masp, soluongnhap
+        FROM detail_entry_form
+        WHERE maphieunhap = NEW.maphieunhap;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    -- Chỉ xử lý khi chuyển trạng thái từ 1 -> 0 (hủy phiếu)
+    IF OLD.status = 1 AND NEW.status = 0 THEN
+        OPEN cur;
+
+        read_loop: LOOP
+            FETCH cur INTO masp_input, soluong_input;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
+
+            -- Kiểm tra tồn kho hiện tại
+            SELECT soluong INTO current_stock
+            FROM product
+            WHERE masp = masp_input;
+
+            -- Nếu không đủ hàng thì đánh dấu lỗi
+            IF current_stock < soluong_input THEN
+                SET out_of_stock = TRUE;
+            END IF;
+        END LOOP;
+
+        CLOSE cur;
+
+        -- Nếu có lỗi tồn kho thì báo lỗi
+        IF out_of_stock THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Không đủ hàng trong kho để hủy phiếu nhập.';
+        ELSE
+            -- Nếu đủ tồn kho, tiến hành trừ kho
+            SET done = FALSE; -- Reset lại biến done để duyệt lại
+            OPEN cur;
+
+            read_loop_update:LOOP
+                FETCH cur INTO masp_input, soluong_input;
+                IF done THEN
+                    LEAVE read_loop_update;
+                END IF;
+
+                UPDATE product
+                SET soluong = soluong - soluong_input
+                WHERE masp = masp_input;
+            END LOOP;
+
+            CLOSE cur;
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `before_insert_entry_form` BEFORE INSERT ON `entry_form` FOR EACH ROW BEGIN
     DECLARE new_id INT;
@@ -269,8 +345,10 @@ CREATE TABLE `func` (
 --
 
 INSERT INTO `func` (`funcid`, `funcname`) VALUES
-('FUNC001', 'Quản lý sản phẩm'),
-('FUNC002', 'Quản lý đơn hàng');
+('sua', 'Sửa'),
+('them', 'Thêm'),
+('xem', 'Xem'),
+('xoa', 'Xóa');
 
 -- --------------------------------------------------------
 
@@ -344,6 +422,17 @@ CREATE TABLE `permission` (
   `permissionname` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `permission`
+--
+
+INSERT INTO `permission` (`permissionid`, `permissionname`) VALUES
+('DANHMUC', 'Danh mục'),
+('DONHANG', 'Đơn hàng'),
+('PHANQUYEN', 'Phân quyền'),
+('SANPHAM', 'sản phẩm'),
+('TAIKHOAN', 'Quản lý tài khoản');
+
 -- --------------------------------------------------------
 
 --
@@ -352,15 +441,18 @@ CREATE TABLE `permission` (
 
 CREATE TABLE `powergroup` (
   `powergroupid` varchar(20) NOT NULL,
-  `powergroupname` varchar(50) NOT NULL
+  `powergroupname` varchar(50) NOT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `created_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `last_updated` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `powergroup`
 --
 
-INSERT INTO `powergroup` (`powergroupid`, `powergroupname`) VALUES
-('GRP001', 'Quản trị viên');
+INSERT INTO `powergroup` (`powergroupid`, `powergroupname`, `status`, `created_time`, `last_updated`) VALUES
+('GRP001', 'Quản trị viên', 1, '2025-04-28 12:48:39', '2025-04-29 03:16:11');
 
 --
 -- Triggers `powergroup`
@@ -380,25 +472,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `powergroup_func`
---
-
-CREATE TABLE `powergroup_func` (
-  `powergroupid` varchar(20) NOT NULL,
-  `funcid` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `powergroup_func`
---
-
-INSERT INTO `powergroup_func` (`powergroupid`, `funcid`) VALUES
-('PG001', 'FUNC001'),
-('PG001', 'FUNC002');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `powergroup_func_permission`
 --
 
@@ -407,6 +480,16 @@ CREATE TABLE `powergroup_func_permission` (
   `funcid` varchar(20) NOT NULL,
   `permissionid` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `powergroup_func_permission`
+--
+
+INSERT INTO `powergroup_func_permission` (`powergroupid`, `funcid`, `permissionid`) VALUES
+('GRP001', 'sua', 'DANHMUC'),
+('GRP001', 'them', 'DANHMUC'),
+('GRP001', 'xem', 'DANHMUC'),
+('GRP001', 'sua', 'DONHANG');
 
 -- --------------------------------------------------------
 
@@ -432,35 +515,35 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`masp`, `tensp`, `image`, `dongiasanpham`, `soluong`, `content`, `created_time`, `last_updated`, `maloaisp`, `mancc`) VALUES
-('PRO001', 'Cây cà phê', 'img/caycafe.jpg', 150000, 99, 'Cafe cũng là dòng cây trồng trong nhà mới được yêu thích trong thời gian gần đây. Trái ngược với những cây cafe công nghiệp phục vụ mục đích thu hoạch có kích thước lớn, dòng cây dùng làm cảnh có thể đặt vừa trong một chiếc ly. Lá cây xanh đậm, dày dặn, tạo cảm giác rất xanh tốt. Vào khoảng tháng 11 đến tháng 4 là mùa cafe ra hoa. Nếu chăm sóc tốt, bạn có thể ngắm loài hoa cafe trắng muốt với hương thơm toả nhẹ vô cùng dễ chịu.', 1745223237, 1745223237, 'TYP001', 'SUP001'),
-('PRO002', 'Cây cam họ quýt', 'img/caycamquytchanh.jpg', 180000, 150, 'Không chỉ mang yếu tố may mắn theo quan niệm Á đông, các dòng cây cam quýt còn đẹp mắt và dễ trồng; rất thích hợp làm cây trồng trong nhà. Cây cam quýt có mùi thơm nhẹ nhàng và dễ chịu, giúp không gian nhà luôn sảng khoái, tươi mới. Trong ẩm thực Việt, lá cây cũng rất hữu ích. Đây là loại cây được các bà các mẹ ưa chuộng trồng từ lâu trong đời sống người Việt.', 1745223237, 1745223237, 'TYP006', 'SUP002'),
-('PRO003', 'Cây cọ cảnh', 'img/caycocanh.jpg', 300000, 200, 'Nếu bạn tìm loại cây cao để đặt ở loggia, góc phòng, chân cầu thang,…thì cọ cảnh sẽ là lựa chọn số 1. Loài cây này mang vẻ đẹp đặc trưng của xứ nhiệt đới với lá nhọn và cành dài. Cọ cảnh thích hợp cho mọi phong cách nội thất, đặc biệt là phong cách tối giản và Scandinavia.', 1745223237, 1745223237, 'TYP002', 'SUP003'),
-('PRO004', 'Cây dây nhện', 'img/caydaynhen.jpg', 120000, 180, 'Tuy có cái tên không được “lãng mạn” nhưng cây dây nhện lại có vẻ đẹp khá ấn tượng với những lá dài màu gân lá nổi bật. Cây dây nhện có khả năng quang hợp mạnh mẽ trong tình trạng ánh sáng tối thiểu. Bởi vậy, đây là loại cây rất thích hợp trồng trong nhà. Bên cạnh đó, khả năng lọc không khí của cây được đánh giá cao. Một chậu cây cỡ trung bình là đủ cho căn phòng 200m2.', 1745223360, 1745223360, 'TYP001', 'SUP004'),
-('PRO005', 'Cây dương xỉ', 'img/cayduongxi.jpg', 130000, 120, 'Những năm gần đây, xương xỉ đã dần trở thành một loại cây cảnh được ưa thích. Vốn là loại cây mọc dại, dương xỉ không cần đất hay nhiều ánh sáng. Chỉ cần có độ ẩm đủ cao là cây có thể phát triển xanh tốt. Đặc biệt, đây là loại cây có kích thước khá nhỏ, thích hợp để bàn làm việc. Dương xỉ cũng nằm trong nhóm những loại cây có chức năng lọc độc trong không khí. Điển hình nhất là loại bỏ thuỷ ngân và asen.', 1745223360, 1745223360, 'TYP001', 'SUP005'),
-('PRO006', 'Cây lan ý', 'img/caylany.jpg', 250000, 250, 'Lan ý là một trong những dòng cây ra hoa hiếm hoi làm cây trồng trong nhà. Hoa lan ý có màu trắng, căng phồng lên tựa như một cánh buồm. Lá cây xanh mướt rất đẹp mắt. Đây còn là dòng cây có khả năng lọc khí độc cực tốt, giúp loại bỏ formaldehyde, benzen và trichloroethylene, CO2, ammoniac,…có trong không khí nhà bạn.', 1745223360, 1745223360, 'TYP005', 'SUP006'),
-('PRO007', 'Cây sim', 'img/caysim.jpg', 170000, 140, 'Cây sim là loại cây thân gỗ nhỏ, thường mọc thành bụi, hoa màu tím đẹp mắt và có quả chín ăn được. Ngoài giá trị cảnh quan, cây sim còn có ý nghĩa phong thủy mang lại sự bền bỉ, mạnh mẽ và sức sống dồi dào.', 1745223383, 1745223383, 'TYP003', 'SUP007'),
-('PRO008', 'Cây thường xuân', 'img/caythuongxuan.jpg', 180000, 160, 'Được mệnh danh là cỗ máy lọc không khí hoàn hảo. Trong 06 tiếng, cây sẽ loại bỏ 58% phân tử nấm mốc và 60% các chất độc xung quanh. Bản chất thường xuân là một dòng dây leo nên nó phù hợp nhất cho các vị trí cạnh cửa sổ hoặc ngoài ban công. Bạn có thể dễ dàng nhận ra dòng cây này bởi sự phổ biến của nó.', 1745223383, 1745223383, 'TYP002', 'SUP008'),
-('PRO009', 'Cây tuyến tùng', 'img/caytuyettung.jpg', 220000, 130, 'Cây tuyết tùng xuất phát từ Nhật Bản, mang ý nghĩa vô cùng thiêng liêng. Người Nhật Bản cho rằng trong mỗi cây tuyết tùng đều ẩn chứa một vị thần phù hộ cho gia chủ. Về mặt thẩm mỹ, đây là một dòng cây bonsai cỡ nhỏ vô cùng xinh xắn, thích hợp làm cây trồng trong nhà.', 1745223383, 1745223383, 'TYP003', 'SUP009'),
-('PRO010', 'Cây vạn niên thanh', 'img/cayvannienthanh.jpg', 230000, 110, 'Cây vạn niên thanh là loại cây cảnh rất dễ trồng trong nhà với nhiều kích thước lựa chọn. Đây là loại cây ưa bóng râm và cần ít ẩm; nên mỗi tuần bạn chỉ nên tưới nước từ 1 đến 2 lần. Lá cây có màu trắng ở gân lá, chuyển xanh dần ra phần viền lá rất đẹp mắt.', 1745223426, 1745223426, 'TYP003', 'SUP010'),
-('PRO011', 'Cẩm tú cầu', 'img/camtucau.png', NULL, NULL, 'Cây cẩm tú cầu nổi bật với những cụm hoa tròn lớn, nhiều màu sắc như hồng, xanh, tím... Cây tượng trưng cho sự biết ơn và lòng chân thành, thích hợp làm cây trang trí sân vườn hoặc ban công.', 1745223426, 1745223426, 'TYP004', 'SUP001'),
-('PRO012', 'Cây kim ngân', 'img/caykimngan.jpg', 400000, 200, 'Cây kim ngân là loại cây thân dẻo được ưa chuộng làm cây trồng trong nhà. Cây thường được trồng thành cụm. Các thân cây đan vào nhau mà vươn lên như tết tóc khá lạ mắt. Lá cây xoè ra 5 nhánh, tượng trưng cho ngũ hành: Kim – Mộc – Thuỷ – Hoả – Thổ. Do vậy, kim ngân mang ý nghĩa mọi điều đều thuận lợi, tốt đẹp.', 1745223426, 1745223426, 'TYP003', 'SUP002'),
-('PRO013', 'Cây kim tiền', 'img/caykimtien.jpg', 300000, 170, 'Cây kim tiền là loại cây phong thủy rất được ưa chuộng bởi tên gọi và dáng cây mang lại cảm giác giàu sang, phú quý. Cây có thân to, mọng nước, lá xanh bóng tượng trưng cho tiền tài và tài lộc.', 1745223477, 1745223477, 'TYP003', 'SUP003'),
-('PRO014', 'Cây lưỡi hổ', 'img/cayluoiho.jpg', 220000, 210, 'Trái ngược với đa số cây xanh trên thế giới, cây lưỡi hổ hấp thụ khí CO2 và thải O2 vào ban đêm. Điều này giúp nó trở thành loại cây cực kỳ thích hợp cho phòng ngủ. Không ngạc nhiên khi đây là cây trồng trong nhà được dùng nhiều nhất hiện nay.', 1745223477, 1745223477, 'TYP001', 'SUP004'),
-('PRO015', 'Cây phát tài', 'img/cayphattai.jpg', 450000, 220, 'Cây phát tài có hình dáng đặc biệt với phần thân thường được uốn cong hoặc tết bím. Cây có ý nghĩa mang đến tài lộc, may mắn và thịnh vượng cho gia chủ, thường được trưng bày trong nhà hoặc văn phòng.', 1745223477, 1745223477, 'TYP003', 'SUP005'),
-('PRO016', 'Cây sen đá', 'img/caysenda.jpg', 80000, 140, 'Cây sen đá có hình dáng nhỏ gọn, lá mọng nước và sắp xếp như hoa sen. Cây tượng trưng cho sự bền vững và trường tồn, rất dễ chăm sóc, phù hợp làm cây để bàn hoặc quà tặng phong thủy.', 1745223586, 1745223586, 'TYP004', 'SUP006'),
-('PRO017', 'Cây trầu bà', 'img/caytrauba.jpg', 180000, 130, 'Trầu bà rất dễ trồng và không cần chăm sóc nhiều. Trong điều kiện thiếu nước và dưỡng chất, cây vẫn có thể phát triển tốt. Vốn là loài cây cây leo, trầu bà thích hợp trồng ở bên cửa sổ, trên kệ tủ hoặc kết hợp bể thuỷ sinh cũng rất đẹp mắt.', 1745223586, 1745223586, 'TYP005', 'SUP007'),
-('PRO018', 'Cây ngũ gia bì', 'img/cayngugiabi.jpg', 250000, 100, 'Cây ngũ gia bì hay còn có tên gọi khác là cây chân chim, cây đáng. Cây có tên khoa học là Schefflera heptaphylla. Cây thân gỗ, có chiều cao từ nhỏ đến trung bình, có thể cao tối đa đến 15m. Lá kép chân vịt, có 6-8 lá chét, hoa nhỏ màu trắng đẹp. Cây có mùi thơm nhẹ, mùi xạ hương. Trong một nghiên cứu thì mùi thơm phát ra từ cây có công dụng xua đuổi côn trùng như muỗi rất hiệu quả.', 1745223586, 1745223586, 'TYP001', 'SUP001'),
-('PRO019', 'Cây hạnh phúc', 'img/cayhanhphuc.jpg', 200000, 100, 'Cây hạnh phúc là dòng cây cảnh đẹp, sức sống khỏe mạnh, dễ chăm sóc. Trên cây có những tán lá xanh tươi, mượt mà thể hiện cho sự hi vọng và niềm tin mạnh mẽ. Với ý nghĩa mang lại may mắn và hạnh phúc nên cây thường được chọn để làm cây trưng trong nhà hoặc làm quà tặng.', 1745223613, 1745223613, 'TYP001', 'SUP002'),
-('PRO020', 'Cây phú quý', 'img/cayphuquy.jpg', 210000, 100, 'Phú Quý thuộc loài cây bụi, lan rất nhanh, có thể nhân giống bằng cách tách bụi. Cây sống được ở cả hai môi trường đất và nước. Gặp điều kiện chăm sóc thuận lợi, cây ra hoa từng cụm vàng được bao bọc trong mo hoa trắng muốt. Cây có tác dụng lọc không khí rất tốt, loại bỏ được formaldehyde, benzen, giảm bớt khói bụi cho môi trường sống trong lành hơn.', 1745223613, 1745223613, 'TYP001', 'SUP003'),
-('PRO021', 'Cây trầu bà leo cột', 'img/caytraubaleocot.jpg', 300000, 100, 'Cây trầu bà leo cột còn có tên gọi khác là Cây Trầu Bà Xanh, cây Hoàng kim, Với kích thước khá lớn, đây chắc hẳn là một trong những công cụ đắc lực để tạo thêm mảng xanh cho không gian của bạn. Với sức sống mãnh liệt, dễ sinh tồn, trong phong thủy nó có ý nghĩa mang đến bình an, sung túc, may mắn, thể hiện sự mạnh mẽ và ý chí vươn lên của gia chủ.', 1745223613, 1745223613, 'TYP001', 'SUP004'),
-('PRO022', 'Cây đuôi công tím', 'img/cayduoicongtim.jpg', 190000, 100, 'Cây đuôi công còn giúp mang lại không khí tự nhiên xanh mát, và là biểu tượng cho quyền quý, may mắn nên được lựa chọn làm món quà tặng trong các dịp sinh nhật, lễ tết, ngày đặc biệt…', 1745223644, 1745223644, 'TYP001', 'SUP005'),
-('PRO023', 'Cây bao thanh thiên', 'img/caybaothanhthien.jpg', 230000, 100, 'Cây bao thanh thiên có bộ lá sặc sỡ và khỏe khoắn nên rất thích hợp để trang hoàng thêm điểm nhấn cho không gian sống. Loại cây này còn được xe là tượng trưng cho sự ngay thẳng, chính trực trong phong thủy. Khi trồng sẽ giúp thu hút năng lượng tích cực, xua đuổi cái xấu.', 1745223644, 1745223644, 'TYP001', 'SUP006'),
-('PRO024', 'Cây bàng Singapore', 'img/caybangsingapore.jpg', 700000, 100, 'Cây Bàng Singapore Lớn có thể dễ dàng nhận ra ở những góc quán cafe, bàn làm việc công. Với những chiếc lá căng bóng hình đàn vĩ cầm rất lớn, nhiều gân là hình chân chim nổi bật và sức sống rất mạnh mẽ.', 1745223644, 1745223644, 'TYP001', 'SUP007'),
-('PRO025', 'Cây ngọc ngân', 'img/cayngocngan.jpg', 150000, 100, 'Cây ngọc ngân hay còn được gọi là cây Valentine, có tên khoa học là Aglaonema Oblongifolium. Đây là một loại cây thân thảo, thuộc họ Ráy, có nguồn gốc từ ở Châu Mỹ nhiệt đới, Trung Mỹ, Brazil,... Ở Đông Nam Á, loài cây này được trồng nhiều ở Việt Nam và Trung Quốc.', 1745223668, 1745223668, 'TYP001', 'SUP008'),
-('PRO028', 'Cây lan chi', 'img/caylanchi.jpg', 150000, 100, 'Cây lan chi (còn gọi là cỏ mệnh môn) có lá dài xanh viền trắng, thường dùng làm cây treo hoặc trồng trong chậu nhỏ để bàn. Cây có khả năng lọc không khí, hấp thu khí độc và tạo không gian xanh mát trong nhà.', 1745223718, 1745223718, 'TYP001', 'SUP001'),
-('PRO029', 'Cây trúc nhật', 'img/caytrucnhat.jpg', 150000, 100, 'Cây trúc Nhật có tên khoa học là Dracaena surculosa punctulata, là một loài cây cảnh phổ biến và được ưa chuộng trong giới yêu cây trồng. Đây là một loài cây có nguồn gốc từ khu vực Đông Nam Á, và được gọi bằng nhiều tên khác nhau như Tiểu Hồng Trúc, cây lưỡi hổ hay cây chân voi vì những đặc điểm riêng biệt của nó.', 1745223718, 1745223718, 'TYP001', 'SUP009'),
-('PRO030', 'Cây đại phú gia', 'img/caydaiphugia.jpg', 150000, 100, 'Cây đại phú gia thuộc họ cây ráy, có tên khoa học là Aglaoocma SP. Loài cây này mọc phân bổ chủ yếu ở các nước có khí hậu nhiệt đới, ưa ẩm và bóng râm có nguồn gốc từ châu Mỹ.', 1745223718, 2025, 'TYP001', 'SUP010'),
-('PRO031', NULL, NULL, NULL, NULL, NULL, 2025, 2025, NULL, NULL);
+('PRO001', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 1200, 79, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223237, 1745223237, 'TYP001', 'SUP001'),
+('PRO002', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 48, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223237, 1745223237, 'TYP002', 'SUP002'),
+('PRO003', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223237, 1745223237, 'TYP003', 'SUP001'),
+('PRO004', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223360, 1745223360, 'TYP001', 'SUP001'),
+('PRO005', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223360, 1745223360, 'TYP002', 'SUP002'),
+('PRO006', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223360, 1745223360, 'TYP003', 'SUP001'),
+('PRO007', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223383, 1745223383, 'TYP001', 'SUP001'),
+('PRO008', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223383, 1745223383, 'TYP002', 'SUP002'),
+('PRO009', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223383, 1745223383, 'TYP003', 'SUP001'),
+('PRO010', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223426, 1745223426, 'TYP001', 'SUP001'),
+('PRO011', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223426, 1745223426, 'TYP002', 'SUP002'),
+('PRO012', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223426, 1745223426, 'TYP003', 'SUP001'),
+('PRO013', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223477, 1745223477, 'TYP001', 'SUP001'),
+('PRO014', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223477, 1745223477, 'TYP002', 'SUP002'),
+('PRO015', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223477, 1745223477, 'TYP003', 'SUP001'),
+('PRO016', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223586, 1745223586, 'TYP001', 'SUP001'),
+('PRO017', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223586, 1745223586, 'TYP002', 'SUP002'),
+('PRO018', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223586, 1745223586, 'TYP003', 'SUP001'),
+('PRO019', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223613, 1745223613, 'TYP001', 'SUP001'),
+('PRO020', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223613, 1745223613, 'TYP002', 'SUP002'),
+('PRO021', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223613, 1745223613, 'TYP003', 'SUP001'),
+('PRO022', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223644, 1745223644, 'TYP001', 'SUP001'),
+('PRO023', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223644, 1745223644, 'TYP002', 'SUP002'),
+('PRO024', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223644, 1745223644, 'TYP003', 'SUP001'),
+('PRO025', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223668, 1745223668, 'TYP001', 'SUP001'),
+('PRO028', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223718, 1745223718, 'TYP001', 'SUP001'),
+('PRO029', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 30, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223718, 1745223718, 'TYP002', 'SUP002'),
+('PRO030', 'Cây Bonsai Tùn', 'images/bonsai_tung.jpg', 500000, 0, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223718, 2025, 'TYP003', 'SUP002'),
+('PRO031', '1', NULL, 1200, 11, '1', 2025, 2025, 'TYP001', 'SUP001');
 
 --
 -- Triggers `product`
@@ -490,14 +573,38 @@ CREATE TABLE `producttype` (
 --
 
 INSERT INTO `producttype` (`maloaisp`, `tenloaisp`) VALUES
-('TYP001', 'Cây dễ chăm'),
-('TYP002', 'Cây văn phòng'),
-('TYP003', 'Cây phong thủy'),
-('TYP004', 'Cây để bàn'),
-('TYP005', 'Cây trồng nước'),
-('TYP006', 'Cây cao cấp'),
-('TYP007', 'Chậu đất nung'),
-('TYP008', 'Chậu xi măng');
+('TYP001', 'Hoa'),
+('TYP002', 'Cây ăn quả'),
+('TYP003', 'Cây cảnh trong nhà'),
+('TYP004', 'Cây hoa'),
+('TYP005', 'Cây bonsai'),
+('TYP006', 'Cây cảnh trong nhà'),
+('TYP007', 'Cây hoa'),
+('TYP008', 'Cây bonsai'),
+('TYP009', 'Cây cảnh trong nhà'),
+('TYP010', 'Cây hoa'),
+('TYP011', 'Cây bonsai'),
+('TYP012', 'Cây cảnh trong nhà'),
+('TYP013', 'Cây hoa'),
+('TYP014', 'Cây bonsai'),
+('TYP015', 'Cây cảnh trong nhà'),
+('TYP016', 'Cây hoa'),
+('TYP017', 'Cây bonsai'),
+('TYP018', 'Cây cảnh trong nhà'),
+('TYP019', 'Cây hoa'),
+('TYP020', 'Cây bonsai'),
+('TYP021', 'Cây cảnh trong nhà'),
+('TYP022', 'Cây hoa'),
+('TYP023', 'Cây bonsai'),
+('TYP024', 'Cây cảnh trong nhà'),
+('TYP025', 'Cây hoa'),
+('TYP026', 'Cây bonsai'),
+('TYP027', 'Cây cảnh trong nhà'),
+('TYP028', 'Cây hoa'),
+('TYP029', 'Cây bonsai'),
+('TYP030', 'Cây cảnh trong nhà'),
+('TYP031', 'Cây hoa'),
+('TYP032', 'Cây bonsai');
 
 --
 -- Triggers `producttype`
@@ -529,8 +636,27 @@ CREATE TABLE `product_cart` (
 
 INSERT INTO `product_cart` (`masp`, `magiohang`, `soluong`) VALUES
 ('PRO001', 'CART001', 1),
-('PRO002', 'CART002', 2),
-('PRO003', 'CART680f31417e277', 1);
+('PRO002', 'CART002', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `provinces`
+--
+
+CREATE TABLE `provinces` (
+  `province_id` varchar(10) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `provinces`
+--
+
+INSERT INTO `provinces` (`province_id`, `name`) VALUES
+('01', 'TP. Hồ Chí Minh'),
+('02', 'TP. Đà Nẵng'),
+('03', 'TP. Hà Nội');
 
 -- --------------------------------------------------------
 
@@ -612,12 +738,6 @@ DELIMITER ;
 --
 
 --
--- Indexes for table `address`
---
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`address_id`);
-
---
 -- Indexes for table `bill`
 --
 ALTER TABLE `bill`
@@ -639,13 +759,22 @@ ALTER TABLE `comment`
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`macustomer`);
+  ADD PRIMARY KEY (`macustomer`),
+  ADD KEY `fk_customer_province` (`province_id`),
+  ADD KEY `fk_customer_district` (`district_id`);
 
 --
 -- Indexes for table `detail_entry_form`
 --
 ALTER TABLE `detail_entry_form`
   ADD PRIMARY KEY (`maphieunhap`,`masp`);
+
+--
+-- Indexes for table `districts`
+--
+ALTER TABLE `districts`
+  ADD PRIMARY KEY (`district_id`),
+  ADD KEY `province_id` (`province_id`);
 
 --
 -- Indexes for table `entry_form`
@@ -690,12 +819,6 @@ ALTER TABLE `powergroup`
   ADD PRIMARY KEY (`powergroupid`);
 
 --
--- Indexes for table `powergroup_func`
---
-ALTER TABLE `powergroup_func`
-  ADD PRIMARY KEY (`powergroupid`,`funcid`);
-
---
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
@@ -712,6 +835,12 @@ ALTER TABLE `producttype`
 --
 ALTER TABLE `product_cart`
   ADD PRIMARY KEY (`masp`,`magiohang`);
+
+--
+-- Indexes for table `provinces`
+--
+ALTER TABLE `provinces`
+  ADD PRIMARY KEY (`province_id`);
 
 --
 -- Indexes for table `staff`
@@ -734,6 +863,16 @@ ALTER TABLE `supplier`
 --
 ALTER TABLE `comment`
   MODIFY `macomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `districts`
+--
+ALTER TABLE `districts`
+  ADD CONSTRAINT `districts_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`province_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
