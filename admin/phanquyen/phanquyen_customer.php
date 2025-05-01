@@ -83,9 +83,9 @@
                         Sửa
                     </button>
 
-<a href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
-    class="btn btn-danger btn-sm"
-    onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
+                    <button href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
+                        class="btn btn-danger btn-sm"
+                        onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</button>
                 </td>
             </tr>
             <?php endforeach; ?>
