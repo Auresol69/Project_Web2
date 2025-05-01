@@ -47,20 +47,30 @@ $(document).ready(function() {
     $('.ajax-link').click(function(e) {
         e.preventDefault();
         var page = $(this).attr('href').split('page=')[1];
+        var projectBasePath = window.location.pathname.split('/').slice(0, 3).join(
+            '/'); // e.g. /1/Project_Web2
 
-$.ajax({
-    url:'ajax_content.php',
-    method: 'GET',
-    data: { page: page },
-    success: function(data) {
-        $('#main-content').html(data);
-        // Optionally update URL without reloading
-        history.pushState(null, '', '?page=' + page);
-    },
-    error: function() {
-        $('#main-content').html('<p>Đã xảy ra lỗi khi tải nội dung.</p>');
-    }
-});
+        $.ajax({
+            url: projectBasePath + '/admin/ajax_content.php',
+            method: 'GET',
+            data: {
+                page: page
+            },
+            success: function(data) {
+                $('#main-content').html(data);
+                // Optionally update URL without reloading
+                history.pushState(null, '', '?page=' + page);
+
+                if (page === 'banquyen') {
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 100); // Delay 100ms cho chắc
+                }
+            },
+            error: function() {
+                $('#main-content').html('<p>Đã xảy ra lỗi khi tải nội dung.</p>');
+            }
+        });
     });
 
     // Handle browser back/forward buttons
