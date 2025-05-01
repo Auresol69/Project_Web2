@@ -2,7 +2,7 @@
 
 class connect_db {
     private $host = "localhost";
-    private $db_name = "treeshop";
+    private $db_name = "treeshop1";
     private $username = "root";
     private $password = "";
     private $conn;
@@ -149,14 +149,18 @@ class connect_db {
         
         $params = [];
         
-        $joinAddress = (!empty($city) || !empty($district)) ? "INNER JOIN" : "LEFT JOIN";
+        $joinProvince = (!empty($city)) ? "INNER JOIN" : "LEFT JOIN";
+        $joinDistrict = (!empty($district)) ? "INNER JOIN" : "LEFT JOIN";
         
         $sql = "SELECT o.*, c.name as customer_name, 
-                       a.city, a.district,
-                       CONCAT(a.street_address, ', ', a.district, ', ', a.city) as address
+                       c.address_detail,
+                       p.name as province_name,
+                       d.name as district_name,
+                       CONCAT(c.address_detail, ', ', d.name, ', ', p.name) as address
                 FROM `order` o
                 JOIN customer c ON o.mauser = c.macustomer
-                $joinAddress address a ON o.address_deli = a.address_id
+                $joinProvince provinces p ON c.province_id = p.province_id
+                $joinDistrict districts d ON c.district_id = d.district_id
                 WHERE 1=1";
         
         if ($status !== '') {
@@ -175,12 +179,12 @@ class connect_db {
         }
         
         if (!empty($city)) {
-            $sql .= " AND LOWER(a.city) LIKE LOWER(CONCAT('%', :city, '%'))";
+            $sql .= " AND LOWER(p.name) LIKE LOWER(CONCAT('%', :city, '%'))";
             $params['city'] = $city;
         }
         
         if (!empty($district)) {
-            $sql .= " AND LOWER(a.district) LIKE LOWER(CONCAT('%', :district, '%'))";
+            $sql .= " AND LOWER(d.name) LIKE LOWER(CONCAT('%', :district, '%'))";
             $params['district'] = $district;
         }
         
@@ -192,13 +196,17 @@ class connect_db {
     public function getOrderDetails($order_id) {
         // Get order info with bill details
         $sql = "SELECT o.*, c.name as customer_name, 
-                       CONCAT(a.street_address, ', ', a.district, ', ', a.city) as address,
+                       c.address_detail,
+                       p.name as province_name,
+                       d.name as district_name,
+                       CONCAT(c.address_detail, ', ', d.name, ', ', p.name) as address,
                        c.phone, c.email,
                        b.mabill, b.tongtien, b.ngaymua,
                        pb.paybyname
                 FROM `order` o
                 JOIN customer c ON o.mauser = c.macustomer
-                LEFT JOIN address a ON o.address_deli = a.address_id
+                LEFT JOIN provinces p ON c.province_id = p.province_id
+                LEFT JOIN districts d ON c.district_id = d.district_id
                 LEFT JOIN bill b ON o.mabill = b.mabill
                 LEFT JOIN payby pb ON b.mapayby = pb.mapayby
                 WHERE o.maorder = :order_id";
@@ -271,11 +279,13 @@ class connect_db {
     }
 
     public function getUniqueLocations() {
-        $sql = "SELECT DISTINCT a.city, a.district 
+        $sql = "SELECT DISTINCT p.name as city, d.name as district
                 FROM `order` o
-                LEFT JOIN address a ON o.address_deli = a.address_id
-                WHERE a.city IS NOT NULL AND a.district IS NOT NULL
-                ORDER BY a.city, a.district";
+                JOIN customer c ON o.mauser = c.macustomer
+                LEFT JOIN provinces p ON c.province_id = p.province_id
+                LEFT JOIN districts d ON c.district_id = d.district_id
+                WHERE p.name IS NOT NULL AND d.name IS NOT NULL
+                ORDER BY p.name, d.name";
         return $this->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
 
