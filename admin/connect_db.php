@@ -4,7 +4,7 @@ class connect_db {
     private $host = "localhost";
     private $db_name = "treeshop";
     private $username = "root";
-    private $password = "";
+    private $password = "123";
     private $conn;
 
     // Kết nối CSDL
@@ -15,6 +15,10 @@ class connect_db {
         } catch(PDOException $exception) {
             die("Lỗi kết nối: " . $exception->getMessage());
         }
+    }
+
+    public function getConnection() {
+        return $this->conn;
     }
 
     // Hàm chạy truy vấn (SELECT, INSERT, UPDATE, DELETE)
@@ -289,5 +293,5 @@ class connect_db {
         return $statuses[$status] ?? 'Unknown';
     }
 }
-
+    
 ?>
