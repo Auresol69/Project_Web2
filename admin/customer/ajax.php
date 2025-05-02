@@ -59,17 +59,18 @@ switch ($action) {
         break;
 
     case 'add':
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = json_decode(file_get_contents(filename: 'php://input'), true);
         if (!$data) {
             echo json_encode(['success' => false, 'message' => 'Dữ liệu không hợp lệ']);
             exit;
         }
         $name = trim($data['name'] ?? '');
         $email = trim($data['email'] ?? '');
+        $powergroupid = trim($data['powergroupid'] ?? '');
         $phone = trim($data['phone'] ?? '');
         $password = $data['password'] ?? '';
 
-        if ($name === '' || $email === '' || $phone === '' || $password === '') {
+        if ($name === '' || $email === ''|| $powergroupid === '' || $phone === '' || $password === '') {
             echo json_encode(['success' => false, 'message' => 'Vui lòng nhập đầy đủ thông tin']);
             exit;
         }
@@ -85,6 +86,7 @@ switch ($action) {
         $customerData = [
             'name' => $name,
             'email' => $email,
+            'powergroupid' => $powergroupid,
             'phone' => $phone,
             'password' => $hashedPassword,
         ];
@@ -102,10 +104,11 @@ switch ($action) {
         $id = $data['id'] ?? '';
         $name = trim($data['name'] ?? '');
         $email = trim($data['email'] ?? '');
+        $powergroupid = trim($data['powergroupid'] ?? '');
         $phone = trim($data['phone'] ?? '');
         $password = $data['password'] ?? '';
 
-        if ($id === '' || $name === '' || $email === '' || $phone === '') {
+        if ($id === '' || $name === '' || $powergroupid === '' || $email === '' || $phone === '') {
             echo json_encode(['success' => false, 'message' => 'Vui lòng nhập đầy đủ thông tin']);
             exit;
         }
@@ -119,6 +122,7 @@ switch ($action) {
         $updateData = [
             'name' => $name,
             'email' => $email,
+            'powergroupid' => $powergroupid,
             'phone' => $phone,
         ];
 

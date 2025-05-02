@@ -93,7 +93,7 @@
                 <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
                 <?php endforeach; ?>
             </select>
-            
+
             <label for="edit-phone">Số điện thoại</label>
             <input type="text" id="edit-phone" name="phone" required>
 
@@ -120,7 +120,7 @@
                 <option value="<?=$powergroup['powergroupid'] ?>"><?=$powergroup['powergroupname']?></option>
                 <?php endforeach; ?>
             </select>
-            
+
             <label for="phone">Số điện thoại</label>
             <input type="text" id="phone" name="phone" required>
 
@@ -169,7 +169,9 @@ function loadCustomers(page) {
             if (response.success) {
                 updateCustomerList(response.customers);
                 updatePagination(page, response.totalPages);
-                $('.total-items span').html(`Có tất cả <strong>${response.totalRecordsCount}</strong> người dùng trên <strong>${response.totalPages}</strong> trang`);
+                $('.total-items span').html(
+                    `Có tất cả <strong>${response.totalRecordsCount}</strong> người dùng trên <strong>${response.totalPages}</strong> trang`
+                );
             } else {
                 alert('Không tìm thấy người dùng.');
                 $('#customer-list').html('');
@@ -191,10 +193,11 @@ function updateCustomerList(customers) {
             <tr id="customer-${customer.macustomer}">
                 <td>${customer.macustomer}</td>
                 <td>${customer.name}</td>
+                <td>${customer.powergroupid}</td
                 <td>${customer.email}</td>
                 <td>${customer.phone}</td>
                 <td>
-                    <button class="btn btn-warning btn-sm edit-btn" data-id="${customer.macustomer}" data-name="${customer.name}" data-email="${customer.email}" data-phone="${customer.phone}">Sửa</button>
+                    <button class="btn btn-warning btn-sm edit-btn" data-id="${customer.macustomer}" data-name="${customer.name}" data-powergroupid="${customer.powergroupid}" data-email="${customer.email}" data-phone="${customer.phone}">Sửa</button>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="${customer.macustomer}">Xóa</button>
                 </td>
             </tr>
@@ -211,6 +214,7 @@ function updateCustomerList(customers) {
 
         $('#edit-id').val(id);
         $('#edit-name').val(name);
+        $('#edit-powergroupid').val(powergroupid);
         $('#edit-email').val(email);
         $('#edit-phone').val(phone);
 
@@ -223,7 +227,9 @@ function updateCustomerList(customers) {
             $.ajax({
                 url: './customer/ajax.php?action=delete',
                 method: 'GET',
-                data: { id: id },
+                data: {
+                    id: id
+                },
                 dataType: 'json',
                 success: function(res) {
                     if (res.success) {
@@ -277,6 +283,7 @@ $(document).ready(function() {
         e.preventDefault();
         const formData = {
             name: $('#add-name').val(),
+            powergroupid: $('#add-powergroupid').val(),
             email: $('#add-email').val(),
             phone: $('#add-phone').val(),
             password: $('#add-password').val()
@@ -308,6 +315,7 @@ $(document).ready(function() {
         const formData = {
             id: $('#edit-id').val(),
             name: $('#edit-name').val(),
+            powergroupid: $('#edit-powergroupid').val(),
             email: $('#edit-email').val(),
             phone: $('#edit-phone').val(),
             password: $('#edit-password').val()
