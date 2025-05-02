@@ -76,16 +76,16 @@
                 <td><?= $powergroup['created_time']; ?></td>
                 <td><?= $powergroup['last_updated']; ?></td>
                 <td>
-                    <button class="btn btn-warning btn-sm edit-btn"
+                    <button type="button" class="btn btn-warning btn-sm edit-btn"
                         data-powergroupid="<?= $powergroup['powergroupid']; ?>"
                         data-powergroupname="<?= $powergroup['powergroupname']; ?>"
                         data-mapping="<?= htmlspecialchars(json_encode($powergroup['permission_func_map']), ENT_QUOTES, 'UTF-8'); ?>">
                         Sửa
                     </button>
 
-                    <button href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
+                    <a href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
                         class="btn btn-danger btn-sm"
-                        onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</button>
+                        onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -150,11 +150,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    initEventListeners();
-});
-
-function initEventListeners() {
+window.initEventListeners = function() {
 
     let addModal = document.getElementById("addModal");
     let editModal = document.getElementById("editModal");
@@ -180,6 +176,7 @@ function initEventListeners() {
     // Chỉnh sửa nhóm quyền
     editButtons.forEach(button => {
         button.addEventListener("click", function(event) {
+            event.preventDefault();
 
             document.getElementById("edit-id").value = this.dataset.powergroupid;
             document.getElementById("edit-name").value = this.dataset.powergroupname;
@@ -217,4 +214,8 @@ function initEventListeners() {
         }
     });
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    window.initEventListeners();
+});
 </script>

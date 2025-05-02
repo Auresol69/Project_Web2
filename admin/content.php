@@ -47,11 +47,25 @@ $(document).ready(function() {
     $('.ajax-link').click(function(e) {
         e.preventDefault();
         var page = $(this).attr('href').split('page=')[1];
-        var projectBasePath = window.location.pathname.split('/').slice(0, 3).join(
-            '/'); // e.g. /1/Project_Web2
+        // Fix projectBasePath to include 'Admin' with correct casing
+        var pathParts = window.location.pathname.split('/');
+        var adminIndex = pathParts.findIndex(part => part.toLowerCase() === 'admin');
+        var projectBasePath = '';
+        if (adminIndex !== -1) {
+            // Include next segments after 'Admin' to reach 'Admin/Project_Web2/admin'
+            // Find index of 'admin' folder after 'Admin' (case-insensitive)
+            var adminLowerIndex = pathParts.findIndex((part, idx) => idx > adminIndex && part.toLowerCase() === 'admin');
+            if (adminLowerIndex !== -1) {
+                projectBasePath = pathParts.slice(0, adminLowerIndex + 1).join('/');
+            } else {
+                projectBasePath = pathParts.slice(0, adminIndex + 1).join('/');
+            }
+        } else {
+            projectBasePath = pathParts.slice(0, 3).join('/');
+        }
 
         $.ajax({
-            url: projectBasePath + '/admin/ajax_content.php',
+            url: projectBasePath + '/ajax_content.php',
             method: 'GET',
             data: {
                 page: page
@@ -60,12 +74,15 @@ $(document).ready(function() {
                 $('#main-content').html(data);
                 // Optionally update URL without reloading
                 history.pushState(null, '', '?page=' + page);
-
-                if (page === 'banquyen') {
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 100); // Delay 100ms cho chắc
+                if (typeof initEventListeners === 'function') {
+                    initEventListeners();
                 }
+
+                // if (page === 'banquyen') {
+                //     setTimeout(function() {
+                //         window.location.reload();
+                //     }, 100); // Delay 100ms cho chắc
+                // }
             },
             error: function() {
                 $('#main-content').html('<p>Đã xảy ra lỗi khi tải nội dung.</p>');
