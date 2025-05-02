@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($result->num_rows > 0) {
                 $staff = $result->fetch_assoc();
-                if ($password == $staff['password']) {
+                if (password_verify($password,$staff['password'])) {
                     $response = ["status" => "success", "message" => "Đăng nhập thành công!"];
                     session_start();
                     $_SESSION['mastaff'] = $staff['mastaff'];
