@@ -23,29 +23,29 @@
             <div class="product-group">
                 <div class="product-item">
                     <img src="img/caykimtien.jpg" alt="Cây Kim Tiền">
-                    <p>Cây Kim Tiền - 250K</p>
+                    <p>Cây Kim Tiền</p>
                 </div>
                 <div class="product-item">
                     <img src="img/cayluoiho.jpg" alt="Cây Lưỡi Hổ">
-                    <p>Cây Lưỡi Hổ - 200K</p>
+                    <p>Cây Lưỡi Hổ</p>
                 </div>
                 <div class="product-item">
                     <img src="img/caytrauba.jpg" alt="Cây Trầu Bà">
-                    <p>Cây Trầu Bà - 180K</p>
+                    <p>Cây Trầu Bà</p>
                 </div>
             </div>
             <div class="product-group">
                 <div class="product-item">
                     <img src="img/cayphattai.jpg" alt="Cây Phát Tài">
-                    <p>Cây Phát Tài - 380K</p>
+                    <p>Cây Phát Tài</p>
                 </div>
                 <div class="product-item">
                     <img src="img/caysenda.jpg" alt="Cây Sen Đá">
-                    <p>Cây Sen Đá - 100K</p>
+                    <p>Cây Sen Đá</p>
                 </div>
                 <div class="product-item">
                     <img src="img/caykimngan.jpg" alt="Cây Kim Ngân">
-                    <p>Cây Kim Ngân - 120K</p>
+                    <p>Cây Kim Ngân</p>
                 </div>
             </div>
         </div>

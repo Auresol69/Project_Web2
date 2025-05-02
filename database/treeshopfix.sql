@@ -33,6 +33,8 @@ CREATE TABLE `bill` (
   `maorder` varchar(20) NOT NULL,
   `mapayby` varchar(20) NOT NULL,
   `ngaymua` datetime(6) DEFAULT current_timestamp(6),
+  `receiver_name` VARCHAR(255) DEFAULT NULL,
+  `phone_number` VARCHAR(20) DEFAULT NULL,
   `tongtien` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -515,7 +517,7 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`masp`, `tensp`, `image`, `dongiasanpham`, `soluong`, `content`, `created_time`, `last_updated`, `maloaisp`, `mancc`) VALUES
-('PRO001', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 1200, 79, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223237, 1745223237, 'TYP001', 'SUP001'),
+('PRO001', 'Cây Lưỡi Hổ', 'img/luoi_ho.jpg', 1200, 79, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223237, 1745223237, 'TYP001', 'SUP001'),
 ('PRO002', 'Cây Hoa Hồng', 'images/hoa_hong.jpg', 200000, 48, 'Cây hoa hồng đỏ tươi, thích hợp làm quà tặng.', 1745223237, 1745223237, 'TYP002', 'SUP002'),
 ('PRO003', 'Cây Bonsai Tùng', 'images/bonsai_tung.jpg', 500000, 15, 'Cây bonsai tùng mini, mang phong thủy tốt.', 1745223237, 1745223237, 'TYP003', 'SUP001'),
 ('PRO004', 'Cây Lưỡi Hổ', 'images/luoi_ho.jpg', 150000, 50, 'Cây lưỡi hổ dễ chăm sóc, thích hợp để bàn làm việc.', 1745223360, 1745223360, 'TYP001', 'SUP001'),

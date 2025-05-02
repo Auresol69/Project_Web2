@@ -928,96 +928,180 @@ function build(mode) {
 }
 
 function openModal(product) {
-  // Kiểm tra product.id
   if (!product.id || product.id === "undefined") {
       console.error("product.id không hợp lệ:", product);
       alert("Không thể mở chi tiết sản phẩm: Mã sản phẩm không hợp lệ!");
       return;
   }
 
-  // Sử dụng đường dẫn tương đối cho hình ảnh
-  document.getElementById("modal-img").src = "./img/" + product.image.split('/').pop();
-  document.getElementById("modal-title").textContent = product.name;
-  document.getElementById("modal-code").textContent = "Mã sản phẩm: " + product.id;
-  document.getElementById("modal-quantity").textContent = "Kho: " + product.soluong;
-  document.getElementById("modal-price").textContent = Number(product.price).toLocaleString("vi-VN") + "₫";
-  document.getElementById("modal-description").textContent = product.mota || "Chưa có mô tả";
-
-
-  document.getElementById("buy-now-quantity").value = 1;
-  // Cập nhật data-id cho biểu tượng giỏ hàng trong modal
-  const cartIcon = document.getElementById("modal-cart-icon");
-  if (cartIcon) {
-      cartIcon.setAttribute("data-id", product.id);
-      console.log("Đã thiết lập data-id cho modal-cart-icon:", product.id);
-  } else {
-      console.warn("Phần tử modal-cart-icon không tồn tại trong modal chi tiết sản phẩm!");
-      // Tạo động nếu cần (tùy chọn)
-      const newCartIcon = document.createElement("div");
-      newCartIcon.id = "modal-cart-icon";
-      newCartIcon.className = "cart-icon-sp";
-      newCartIcon.innerHTML = '<i class="fa fa-shopping-cart"></i> ';
-      document.querySelector("#productModal .button-group").appendChild(newCartIcon);
-      newCartIcon.setAttribute("data-id", product.id);
-  }
-
-  document.getElementById("productModal").style.display = "block";
-}
-function closeModal() {
-  document.getElementById("productModal").style.display = "none";
-}
-
-function liveSearch(keyword, type = 'desktop') {
-  if (keyword.trim() === "") {
-      // Ẩn kết quả tìm kiếm nếu không có từ khóa
-      if (type === 'desktop') {
-          document.getElementById("searchResult").style.display = "none";
-      } else if (type === 'mobile') {
-          document.getElementById("mobile-search-result").style.display = "none";
-      }
-      return;
-  }
-
-  fetch("handle/search.php", {
-      method: "POST",
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: "keyword=" + encodeURIComponent(keyword)
-  })
-  .then(res => res.json())
-  .then(data => {
-      let resultBox;
-      // Xác định nơi hiển thị kết quả
-      if (type === 'desktop') {
-          resultBox = document.getElementById("searchResult");
-      } else if (type === 'mobile') {
-          resultBox = document.getElementById("mobile-search-result");
-      }
-
-      if (data.products.length > 0) {
-          let html = "";
-          data.products.forEach(item => {
-              html += `
-                  <div class="search-item" onclick='openModal(${JSON.stringify(item)})'>
-                      <img src="${item.image}" alt="">
-                      <div class="info">
-                          <div>${item.name}</div>
-                          <div class="price">${Number(item.price).toLocaleString("vi-VN")}₫</div>
+  let modal = document.getElementById("productModal");
+  if (!modal) {
+      console.warn("Không tìm thấy #productModal trong DOM. Tạo modal động...");
+      // Tạo modal động với HTML giống trong contentt.php
+      const modalHTML = `
+          <div id="productModal" class="modal">
+              <div class="modal-content">
+                  <span class="close" onclick="closeModal()">×</span>
+                  <div class="modal-layout">
+                      <div class="modal-left">
+                          <img id="modal-img" src="" alt="Ảnh sản phẩm">
+                      </div>
+                      <div class="modal-right">
+                          <h1 id="modal-title" class="sanpham-ten">Tên sản phẩm</h1>
+                          <p id="modal-code" class="product-code">Mã sản phẩm</p>
+                          <p id="modal-quantity" class="product-quantity">Số lượng: 0</p>
+                          <p id="modal-price" class="sanpham-gia">0.000₫</p>
+                          <p id="modal-description">Mô tả sản phẩm...</p>
+                          <div class="quantity-input">
+                              <label for="buy-now-quantity">Số lượng:</label>
+                              <input type="number" id="buy-now-quantity" min="1" value="1">
+                          </div>
+                          <div class="button-group">
+                              <div class="cart-icon-sp" id="modal-cart-icon">
+                                  <i class="fa fa-shopping-cart"></i>
+                              </div>
+                              <button class="btn-muanhanh">Mua ngay</button>
+                          </div>
                       </div>
                   </div>
-              `;
-          });
-
-          resultBox.innerHTML = html;
-          resultBox.style.display = "block";
-      } else {
-          resultBox.innerHTML = "<div style='padding: 10px'>Không tìm thấy sản phẩm</div>";
-          resultBox.style.display = "block";
+              </div>
+          </div>
+      `;
+      // Thêm modal vào body
+      document.body.insertAdjacentHTML('beforeend', modalHTML);
+      modal = document.getElementById("productModal");
+      if (!modal) {
+          console.error("Không thể tạo #productModal.");
+          alert("Lỗi: Không thể hiển thị chi tiết sản phẩm!");
+          return;
       }
-  });
+  }
+
+  updateModalContent(product);
+  modal.style.display = "block";
 }
 
-// Khởi tạo modal thanh toán
-let allDistricts = []; // Biến toàn cục để lưu trữ danh sách quận/huyện
+function updateModalContent(product) {
+  try {
+      const modal = document.getElementById("productModal");
+      if (!modal) {
+          throw new Error("Không tìm thấy #productModal trong DOM.");
+      }
+
+      // Cập nhật nội dung modal
+      document.getElementById("modal-img").src = "./" + (product.image || './img/default.jpg');
+      document.getElementById("modal-title").textContent = product.name || 'Không có tên';
+      document.getElementById("modal-code").textContent = "Mã sản phẩm: " + (product.id || 'N/A');
+      document.getElementById("modal-quantity").textContent = "Số lượng: " + (product.soluong || 0);
+      document.getElementById("modal-price").textContent = Number(product.price || 0).toLocaleString("vi-VN") + "₫";
+      document.getElementById("modal-description").textContent = product.mota || "Chưa có mô tả";
+
+      // Đặt lại số lượng mặc định
+      const quantityInput = document.getElementById("buy-now-quantity");
+      if (quantityInput) {
+          quantityInput.value = 1;
+      }
+
+      // Cập nhật data-id cho nút "Thêm vào giỏ"
+      const cartIcon = document.getElementById("modal-cart-icon");
+      if (cartIcon) {
+          cartIcon.setAttribute("data-id", product.id);
+      } else {
+          console.warn("Phần tử modal-cart-icon không tồn tại.");
+      }
+  } catch (error) {
+      console.error("Lỗi trong updateModalContent:", error);
+      alert("Lỗi khi hiển thị chi tiết sản phẩm!");
+  }
+}
+
+
+function closeModal() {
+  const modal = document.getElementById("productModal");
+  if (modal) {
+      modal.style.display = "none";
+  }
+}
+
+let searchTimeout;
+function liveSearch(keyword, type = 'desktop') {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        if (keyword.trim() === "") {
+            const resultBox = type === 'desktop' ? 
+                document.getElementById("searchResult") : 
+                document.getElementById("mobile-search-result");
+            
+            if (resultBox) {
+                resultBox.style.display = "none";
+            }
+            return;
+        }
+
+        fetch("handle/search.php", {
+            method: "POST",
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: "keyword=" + encodeURIComponent(keyword)
+        })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then(data => {
+            const resultBox = type === 'desktop' ? 
+                document.getElementById("searchResult") : 
+                document.getElementById("mobile-search-result");
+
+            if (!resultBox) {
+                console.warn(`Không tìm thấy phần tử ${type === 'desktop' ? 'searchResult' : 'mobile-search-result'} trong DOM.`);
+                return;
+            }
+
+            if (data.products && data.products.length > 0) {
+                let html = "";
+                data.products.forEach(item => {
+                    const safeItem = {
+                        id: item.id || '',
+                        name: item.name || 'Không có tên',
+                        price: item.price || 0,
+                        image: item.image || './img/default.jpg',
+                        soluong: item.soluong || 0,
+                        mota: item.mota || 'Chưa có mô tả'
+                    };
+                    html += `
+                        <div class="search-item" onclick='openModal(${JSON.stringify(safeItem)})' title="Xem chi tiết ${safeItem.name}">
+                            <img src="${safeItem.image}" alt="${safeItem.name}" loading="lazy">
+                            <div class="info">
+                                <div>${safeItem.name}</div>
+                                <div class="price">${Number(safeItem.price).toLocaleString("vi-VN")}₫</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                resultBox.innerHTML = html;
+                resultBox.style.display = "block";
+            } else {
+                resultBox.innerHTML = "<div style='padding: 10px; text-align: center;'>Không tìm thấy sản phẩm</div>";
+                resultBox.style.display = "block";
+            }
+        })
+        .catch(error => {
+            console.error("Lỗi trong liveSearch:", error);
+            const resultBox = type === 'desktop' ? 
+                document.getElementById("searchResult") : 
+                document.getElementById("mobile-search-result");
+            
+            if (resultBox) {
+                resultBox.innerHTML = "<div style='padding: 10px; color: red;'>Lỗi khi tìm kiếm sản phẩm</div>";
+                resultBox.style.display = "block";
+            }
+        });
+    }, 300); 
+}
+
+let allDistricts = []; 
 
 function initializePaymentModal() {
   console.log("Khởi tạo modal thanh toán...");
@@ -1118,14 +1202,14 @@ function loadBuyNowSummary(productId) {
     }
   });
 }
-// Cập nhật danh sách quận/huyện dựa trên tỉnh/thành phố
+
 function updateDistricts(provinceId) {
   console.log("Gọi updateDistricts với provinceId:", provinceId);
   let districtSelect = $("#district");
   districtSelect.html('<option value="">-- Chọn quận/huyện --</option>');
 
   if (provinceId) {
-      // Lọc quận/huyện theo province_id từ allDistricts
+
       let filteredDistricts = allDistricts.filter(district => district.province_id === provinceId);
       console.log("Danh sách quận/huyện lọc được:", filteredDistricts);
 
@@ -1138,7 +1222,7 @@ function updateDistricts(provinceId) {
       });
   }
 }
-// Chuyển đổi trạng thái các trường dựa trên lựa chọn địa chỉ
+
 function toggleAddressFields() {
   const selectedOption = $('input[name="address_option"]:checked').val();
   if (selectedOption === "old") {
