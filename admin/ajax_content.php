@@ -17,7 +17,7 @@ switch ($page) {
     case 'customer':
         include __DIR__ . '/customer/customer_listing.php';
         break;
-    case 'banquyen':
+    case 'phanquyen':
         include __DIR__ . '/phanquyen/phanquyen_customer.php';
         break;
     default:

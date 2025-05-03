@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2025 at 03:02 PM
+-- Generation Time: May 03, 2025 at 10:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -358,11 +358,11 @@ INSERT INTO `func` (`funcid`, `funcname`) VALUES
 
 CREATE TABLE `image_library` (
   `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `product_id` varchar(20) NOT NULL,
   `path` varchar(255) NOT NULL,
   `created_time` int(11) NOT NULL,
   `last_updated` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -372,10 +372,8 @@ CREATE TABLE `image_library` (
 
 CREATE TABLE `order` (
   `maorder` varchar(20) NOT NULL,
-  `magiohang` varchar(20) NOT NULL,
+  `magiohang` varchar(20) DEFAULT NULL,
   `mauser` varchar(20) NOT NULL,
-  `address_deli` varchar(20) DEFAULT NULL,
-  `address_id` varchar(20) DEFAULT NULL,
   `mabill` varchar(20) DEFAULT NULL,
   `status` enum('0','1','2','3') DEFAULT '0',
   `status_change_timestamp` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -386,9 +384,9 @@ CREATE TABLE `order` (
 -- Dumping data for table `order`
 --
 
-INSERT INTO `order` (`maorder`, `magiohang`, `mauser`, `address_deli`, `address_id`, `mabill`, `status`, `status_change_timestamp`, `created_at`) VALUES
-('ORD001', 'CART001', 'CUS001', 'ADDR001', 'ADDR001', 'BIL001', '1', '2025-04-21 15:46:49', '2025-04-21 15:21:58'),
-('ORD002', 'CART002', 'CUS002', 'ADDR002', 'ADDR002', 'BIL002', '1', '2025-04-21 15:21:58', '2025-04-21 15:21:58');
+INSERT INTO `order` (`maorder`, `magiohang`, `mauser`, `mabill`, `status`, `status_change_timestamp`, `created_at`) VALUES
+('ORD001', 'CART001', 'CUS001', 'BIL001', '1', '2025-04-21 15:46:49', '2025-04-21 15:21:58'),
+('ORD002', 'CART002', 'CUS002', 'BIL002', '1', '2025-04-21 15:21:58', '2025-04-21 15:21:58');
 
 -- --------------------------------------------------------
 
@@ -452,7 +450,7 @@ CREATE TABLE `powergroup` (
 --
 
 INSERT INTO `powergroup` (`powergroupid`, `powergroupname`, `status`, `created_time`, `last_updated`) VALUES
-('GRP001', 'Quản trị viên', 1, '2025-04-28 12:48:39', '2025-04-29 03:16:11');
+('GRP001', 'Quản trị viên', 1, '2025-04-28 12:48:39', '2025-05-02 05:46:18');
 
 --
 -- Triggers `powergroup`
@@ -489,7 +487,9 @@ INSERT INTO `powergroup_func_permission` (`powergroupid`, `funcid`, `permissioni
 ('GRP001', 'sua', 'DANHMUC'),
 ('GRP001', 'them', 'DANHMUC'),
 ('GRP001', 'xem', 'DANHMUC'),
-('GRP001', 'sua', 'DONHANG');
+('GRP001', 'sua', 'DONHANG'),
+('GRP001', 'them', 'DONHANG'),
+('GRP001', 'sua', 'PHANQUYEN');
 
 -- --------------------------------------------------------
 
@@ -678,7 +678,8 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`mastaff`, `staffname`, `password`, `address`, `powergroupid`, `email`) VALUES
-('STAFF001', 'Quản trị viên', 'password_hash', 'Địa chỉ quản trị', 'PG001', 'admin@example.com');
+('STAFF001', 'Quản trị viên', 'password_hash', 'Địa chỉ quản trị', 'GRP001', 'admin@example.com'),
+('STAFF002', 'roy', '123', '123', 'GRP001', '123');
 
 -- --------------------------------------------------------
 
@@ -741,19 +742,26 @@ DELIMITER ;
 -- Indexes for table `bill`
 --
 ALTER TABLE `bill`
-  ADD PRIMARY KEY (`mabill`);
+  ADD PRIMARY KEY (`mabill`),
+  ADD KEY `fk_bill_macustomer` (`macustomer`),
+  ADD KEY `fk_bill_maorder` (`maorder`),
+  ADD KEY `fk_bill_mapayby` (`mapayby`);
 
 --
 -- Indexes for table `cart`
 --
 ALTER TABLE `cart`
-  ADD PRIMARY KEY (`magiohang`);
+  ADD PRIMARY KEY (`magiohang`),
+  ADD KEY `fk_cart_mauser` (`mauser`),
+  ADD KEY `fk_cart_maorder` (`maorder`);
 
 --
 -- Indexes for table `comment`
 --
 ALTER TABLE `comment`
-  ADD PRIMARY KEY (`macomment`);
+  ADD PRIMARY KEY (`macomment`),
+  ADD KEY `fk_comment_masp` (`masp`),
+  ADD KEY `fk_comment_mauser` (`mauser`);
 
 --
 -- Indexes for table `customer`
@@ -767,7 +775,8 @@ ALTER TABLE `customer`
 -- Indexes for table `detail_entry_form`
 --
 ALTER TABLE `detail_entry_form`
-  ADD PRIMARY KEY (`maphieunhap`,`masp`);
+  ADD PRIMARY KEY (`maphieunhap`,`masp`),
+  ADD KEY `fk_detail_entry_form_masp` (`masp`);
 
 --
 -- Indexes for table `districts`
@@ -780,7 +789,9 @@ ALTER TABLE `districts`
 -- Indexes for table `entry_form`
 --
 ALTER TABLE `entry_form`
-  ADD PRIMARY KEY (`maphieunhap`);
+  ADD PRIMARY KEY (`maphieunhap`),
+  ADD KEY `fk_entry_form_mancc` (`mancc`),
+  ADD KEY `fk_entry_form_mastaff` (`mastaff`);
 
 --
 -- Indexes for table `func`
@@ -792,13 +803,17 @@ ALTER TABLE `func`
 -- Indexes for table `image_library`
 --
 ALTER TABLE `image_library`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_image_library_product_1` (`product_id`);
 
 --
 -- Indexes for table `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`maorder`);
+  ADD PRIMARY KEY (`maorder`),
+  ADD KEY `fk_order_cart` (`magiohang`),
+  ADD KEY `fk_order_user` (`mauser`),
+  ADD KEY `fk_order_bill` (`mabill`);
 
 --
 -- Indexes for table `payby`
@@ -819,10 +834,20 @@ ALTER TABLE `powergroup`
   ADD PRIMARY KEY (`powergroupid`);
 
 --
+-- Indexes for table `powergroup_func_permission`
+--
+ALTER TABLE `powergroup_func_permission`
+  ADD KEY `fk_powergroup_func_permission_powergroupid` (`powergroupid`),
+  ADD KEY `fk_powergroup_func_permission_funcid` (`funcid`),
+  ADD KEY `fk_powergroup_func_permission_permissionid` (`permissionid`);
+
+--
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`masp`);
+  ADD PRIMARY KEY (`masp`),
+  ADD KEY `fk_product_maloaisp` (`maloaisp`),
+  ADD KEY `fk_product_mancc` (`mancc`);
 
 --
 -- Indexes for table `producttype`
@@ -834,7 +859,8 @@ ALTER TABLE `producttype`
 -- Indexes for table `product_cart`
 --
 ALTER TABLE `product_cart`
-  ADD PRIMARY KEY (`masp`,`magiohang`);
+  ADD PRIMARY KEY (`masp`,`magiohang`),
+  ADD KEY `fk_product_cart_cart` (`magiohang`);
 
 --
 -- Indexes for table `provinces`
@@ -846,7 +872,8 @@ ALTER TABLE `provinces`
 -- Indexes for table `staff`
 --
 ALTER TABLE `staff`
-  ADD PRIMARY KEY (`mastaff`);
+  ADD PRIMARY KEY (`mastaff`),
+  ADD KEY `fk_staff_powergroup` (`powergroupid`);
 
 --
 -- Indexes for table `supplier`
@@ -865,14 +892,98 @@ ALTER TABLE `comment`
   MODIFY `macomment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `image_library`
+--
+ALTER TABLE `image_library`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `bill`
+--
+ALTER TABLE `bill`
+  ADD CONSTRAINT `fk_bill_macustomer` FOREIGN KEY (`macustomer`) REFERENCES `customer` (`macustomer`),
+  ADD CONSTRAINT `fk_bill_maorder` FOREIGN KEY (`maorder`) REFERENCES `order` (`maorder`),
+  ADD CONSTRAINT `fk_bill_mapayby` FOREIGN KEY (`mapayby`) REFERENCES `payby` (`mapayby`);
+
+--
+-- Constraints for table `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `fk_cart_maorder` FOREIGN KEY (`maorder`) REFERENCES `order` (`maorder`),
+  ADD CONSTRAINT `fk_cart_mauser` FOREIGN KEY (`mauser`) REFERENCES `customer` (`macustomer`);
+
+--
+-- Constraints for table `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `fk_comment_masp` FOREIGN KEY (`masp`) REFERENCES `product` (`masp`),
+  ADD CONSTRAINT `fk_comment_mauser` FOREIGN KEY (`mauser`) REFERENCES `customer` (`macustomer`);
+
+--
+-- Constraints for table `detail_entry_form`
+--
+ALTER TABLE `detail_entry_form`
+  ADD CONSTRAINT `fk_detail_entry_form_masp` FOREIGN KEY (`masp`) REFERENCES `product` (`masp`);
 
 --
 -- Constraints for table `districts`
 --
 ALTER TABLE `districts`
   ADD CONSTRAINT `districts_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`province_id`);
+
+--
+-- Constraints for table `entry_form`
+--
+ALTER TABLE `entry_form`
+  ADD CONSTRAINT `fk_entry_form_mancc` FOREIGN KEY (`mancc`) REFERENCES `supplier` (`mancc`),
+  ADD CONSTRAINT `fk_entry_form_mastaff` FOREIGN KEY (`mastaff`) REFERENCES `staff` (`mastaff`);
+
+--
+-- Constraints for table `image_library`
+--
+ALTER TABLE `image_library`
+  ADD CONSTRAINT `fk_image_library_product` FOREIGN KEY (`product_id`) REFERENCES `product` (`masp`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_image_library_product_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`masp`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `order`
+--
+ALTER TABLE `order`
+  ADD CONSTRAINT `fk_order_bill` FOREIGN KEY (`mabill`) REFERENCES `bill` (`mabill`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_order_cart` FOREIGN KEY (`magiohang`) REFERENCES `cart` (`magiohang`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_order_user` FOREIGN KEY (`mauser`) REFERENCES `customer` (`macustomer`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `powergroup_func_permission`
+--
+ALTER TABLE `powergroup_func_permission`
+  ADD CONSTRAINT `fk_powergroup_func_permission_funcid` FOREIGN KEY (`funcid`) REFERENCES `func` (`funcid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_powergroup_func_permission_permissionid` FOREIGN KEY (`permissionid`) REFERENCES `permission` (`permissionid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_powergroup_func_permission_powergroupid` FOREIGN KEY (`powergroupid`) REFERENCES `powergroup` (`powergroupid`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `fk_product_maloaisp` FOREIGN KEY (`maloaisp`) REFERENCES `producttype` (`maloaisp`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_mancc` FOREIGN KEY (`mancc`) REFERENCES `supplier` (`mancc`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product_cart`
+--
+ALTER TABLE `product_cart`
+  ADD CONSTRAINT `fk_product_cart_cart` FOREIGN KEY (`magiohang`) REFERENCES `cart` (`magiohang`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_product_cart_product` FOREIGN KEY (`masp`) REFERENCES `product` (`masp`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `staff`
+--
+ALTER TABLE `staff`
+  ADD CONSTRAINT `fk_staff_powergroup` FOREIGN KEY (`powergroupid`) REFERENCES `powergroup` (`powergroupid`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

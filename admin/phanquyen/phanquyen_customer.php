@@ -52,7 +52,7 @@
 <div class="main-content">
     <h1>Phân quyền người dùng</h1>
     <div class="buttons">
-        <a id="openAddModal">Thêm nhóm quyền</a>
+        <a id="openAddModal" class="permission-them">Thêm nhóm quyền</a>
     </div>
 
     <table>
@@ -76,7 +76,7 @@
                 <td><?= $powergroup['created_time']; ?></td>
                 <td><?= $powergroup['last_updated']; ?></td>
                 <td>
-                    <button type="button" class="btn btn-warning btn-sm edit-btn"
+                    <button type="button" class="btn btn-warning btn-sm edit-btn permission-sua"
                         data-powergroupid="<?= $powergroup['powergroupid']; ?>"
                         data-powergroupname="<?= $powergroup['powergroupname']; ?>"
                         data-mapping="<?= htmlspecialchars(json_encode($powergroup['permission_func_map']), ENT_QUOTES, 'UTF-8'); ?>">
@@ -84,7 +84,7 @@
                     </button>
 
                     <a href="phanquyen/delete_phanquyen.php?id=<?= $powergroup['powergroupid']; ?>"
-                        class="btn btn-danger btn-sm"
+                        class="btn btn-danger btn-sm permission-xoa"
                         onclick="return confirm('Bạn có chắc muốn xóa không?');">Xóa</a>
                 </td>
             </tr>
@@ -161,45 +161,51 @@ window.initEventListeners = function() {
     let closeButtons = document.querySelectorAll(".close-btn");
 
     // Mở modal thêm nhóm quyền
-    openAddModalBtn.addEventListener("click", function(event) {
-        // addModal.style.display = "block";
-        $('#addModal').fadeIn(200);
-    });
+    if (openAddModalBtn) {
+        openAddModalBtn.addEventListener("click", function(event) {
+            // addModal.style.display = "block";
+            $('#addModal').fadeIn(200);
+        });
+    }
 
     // Đóng các modal
-    closeButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            $(this).closest(".modal").fadeOut(200);
+    if (closeButtons.length > 0) {
+        closeButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                $(this).closest(".modal").fadeOut(200);
+            });
         });
-    });
+    }
 
     // Chỉnh sửa nhóm quyền
-    editButtons.forEach(button => {
-        button.addEventListener("click", function(event) {
-            event.preventDefault();
+    if (editButtons.length > 0) {
+        editButtons.forEach(button => {
+            button.addEventListener("click", function(event) {
+                event.preventDefault();
 
-            document.getElementById("edit-id").value = this.dataset.powergroupid;
-            document.getElementById("edit-name").value = this.dataset.powergroupname;
+                document.getElementById("edit-id").value = this.dataset.powergroupid;
+                document.getElementById("edit-name").value = this.dataset.powergroupname;
 
-            $('#editModal').fadeIn(200);
+                $('#editModal').fadeIn(200);
 
-            // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
-            let mappingJSON = this.dataset.mapping;
-            let mapping = JSON.parse(mappingJSON);
+                // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
+                let mappingJSON = this.dataset.mapping;
+                let mapping = JSON.parse(mappingJSON);
 
-            document.querySelectorAll('input[name="permission_func_map[]"]').forEach(cb => {
-                cb.checked = false;
-            });
+                document.querySelectorAll('input[name="permission_func_map[]"]').forEach(cb => {
+                    cb.checked = false;
+                });
 
-            mapping.forEach(pair => {
-                let checkbox = document.querySelector(
-                    `input[type="checkbox"][value="${pair.permission}_${pair.func}"]`
-                );
-                if (checkbox)
-                    checkbox.checked = true;
+                mapping.forEach(pair => {
+                    let checkbox = document.querySelector(
+                        `input[type="checkbox"][value="${pair.permission}_${pair.func}"]`
+                    );
+                    if (checkbox)
+                        checkbox.checked = true;
+                });
             });
         });
-    });
+    }
 
     // Đóng modal nếu click ngoài vùng modal
     document.querySelectorAll('.modal-content').forEach(modalContent => {
@@ -208,11 +214,13 @@ window.initEventListeners = function() {
         });
     });
 
-    window.addEventListener("click", function(event) {
-        if (event.target.classList.contains("modal")) {
-            event.target.style.display = "none";
-        }
-    });
+    if (document.querySelector('.modal')) {
+        window.addEventListener("click", function(event) {
+            if (event.target.classList.contains("modal")) {
+                event.target.style.display = "none";
+            }
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function() {

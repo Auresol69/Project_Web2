@@ -23,7 +23,7 @@ $orders = $db->getOrdersWithFilters($status, $start_date, $end_date, $city, $dis
         <div class="listing-prop listing-button">Chi tiết</div>
         <div class="clear-both"></div>
     </li>
-    
+
     <?php foreach ($orders as $order): ?>
     <li>
         <div class="listing-prop"><?= $order['maorder'] ?></div>
@@ -41,11 +41,10 @@ $orders = $db->getOrdersWithFilters($status, $start_date, $end_date, $city, $dis
         <div class="listing-prop listing-button">
             <a href="../admin/order/order_details.php?id=<?= $order['maorder'] ?>">Chi tiết</a>
             <?php if ($order['status'] != '2' && $order['status'] != '3'): ?>
-                <a href="javascript:void(0);" class="update-status" 
-                    data-order-id="<?= $order['maorder'] ?>"
-                    data-current-status="<?= $order['status'] ?>">
-                    Cập nhật
-                </a>
+            <a href="javascript:void(0);" class="update-status permission-sua" data-order-id="<?= $order['maorder'] ?>"
+                data-current-status="<?= $order['status'] ?>">
+                Cập nhật
+            </a>
             <?php endif; ?>
         </div>
         <div class="clear-both"></div>

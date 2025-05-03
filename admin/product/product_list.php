@@ -42,183 +42,197 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <style>
-    body, h1, p, ul {
-        margin: 0;
-        padding: 0;
-    }
+body,
+h1,
+p,
+ul {
+    margin: 0;
+    padding: 0;
+}
 
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        color: #333;
-    }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
 
-    .main-content h1 {
-        text-align: center;
-        margin: 20px 0;
-        color: #2c3e50;
-    }
+.main-content h1 {
+    text-align: center;
+    margin: 20px 0;
+    color: #2c3e50;
+}
 
-    .listing-items {
-        max-width: 800px;
-        margin: 0 auto;
-        background: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
+.listing-items {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-    .buttons {
-        text-align: right;
-        margin-bottom: 20px;
-    }
+.buttons {
+    text-align: right;
+    margin-bottom: 20px;
+}
 
-    .buttons a {
-        background: #006ADD;
-        color: white;
-        padding: 10px 15px;
-        text-decoration: none;
-        border-radius: 5px;
-    }
+.buttons a {
+    background: #006ADD;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
 
-    .buttons a:hover {
-        background: #2980b9;
-    }
+.buttons a:hover {
+    background: #2980b9;
+}
 
-    .listing-search {
-        margin-bottom: 20px;
-    }
+.listing-search {
+    margin-bottom: 20px;
+}
 
-    .listing-search input[type="text"] {
-        padding: 8px;
-        margin-right: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
+.listing-search input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-    ul {
-        list-style-type: none;
-    }
+ul {
+    list-style-type: none;
+}
 
-    .listing-item-heading {
-        background: #eaeaea;
-        font-weight: bold;
-        padding: 10px;
-    }
+.listing-item-heading {
+    background: #eaeaea;
+    font-weight: bold;
+    padding: 10px;
+}
 
-    .listing-prop {
-        display: inline-block;
-        width: 12%;
-        padding: 10px;
-        text-align: center;
-    }
+.listing-prop {
+    display: inline-block;
+    width: 12%;
+    padding: 10px;
+    text-align: center;
+}
 
-    .listing-prop img {
-        max-width: 100px;
-        max-height: 100px;
-        border-radius: 5px;
-    }
+.listing-prop img {
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 5px;
+}
 
-    .listing-button a {
-        display: inline-block;
-        background: #e74c3c;
-        color: white;
-        padding: 5px 10px;
-        border-radius: 5px;
-        text-decoration: none;
-    }
+.listing-button a {
+    display: inline-block;
+    background: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
 
-    .listing-button a:hover {
-        background: #c0392b;
-    }
+.listing-button a:hover {
+    background: #c0392b;
+}
 
-    .listing-time {
-        color: #7f8c8d;
-    }
+.listing-time {
+    color: #7f8c8d;
+}
 
-    .clear-both {
-        clear: both;
-    }
+.clear-both {
+    clear: both;
+}
 
-    .total-items {
-        text-align: center;
-        margin: 20px 0;
-        font-style: italic;
-    }
+.total-items {
+    text-align: center;
+    margin: 20px 0;
+    font-style: italic;
+}
 
-    .pagination {
-        text-align: center;
-        margin-top: 20px;
-    }
+.pagination {
+    text-align: center;
+    margin-top: 20px;
+}
 
-    .pagination a {
-        display: inline-block;
-        padding: 8px 12px;
-        margin: 0 5px;
-        background: #006ADD;
-        color: white;
-        border-radius: 4px;
-        text-decoration: none;
-    }
+.pagination a {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 0 5px;
+    background: #006ADD;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+}
 
-    .pagination a:hover {
-        background: #2980b9;
-    }
+.pagination a:hover {
+    background: #2980b9;
+}
 </style>
 
 <div class="main-content">
     <h1>Danh sách <?= htmlspecialchars($config_title) ?></h1>
     <div class="listing-items">
         <div class="buttons">
-            <a href="./product/<?= htmlspecialchars($config_name) ?>_edit.php">Thêm <?= htmlspecialchars($config_title) ?></a>
+            <a href="./product/<?= htmlspecialchars($config_name)  ?>_edit.php" class="permission-them">Thêm
+                <?= htmlspecialchars($config_title) ?></a>
         </div>
         <div class="listing-search">
             <form id="<?= htmlspecialchars($config_name) ?>-search-form" onsubmit="return searchProducts();">
                 <fieldset>
                     <legend>Tìm kiếm <?= htmlspecialchars($config_title) ?>:</legend>
-                    ID: <input type="text" name="id" id="search-id" value="<?= !empty($_SESSION[$config_name . '_filter']['id']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['id']) : "" ?>" />
-                    Tên <?= htmlspecialchars($config_title) ?>: <input type="text" name="name" id="search-name" value="<?= !empty($_SESSION[$config_name . '_filter']['name']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['name']) : "" ?>" />
+                    ID: <input type="text" name="id" id="search-id"
+                        value="<?= !empty($_SESSION[$config_name . '_filter']['id']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['id']) : "" ?>" />
+                    Tên <?= htmlspecialchars($config_title) ?>: <input type="text" name="name" id="search-name"
+                        value="<?= !empty($_SESSION[$config_name . '_filter']['name']) ? htmlspecialchars($_SESSION[$config_name . '_filter']['name']) : "" ?>" />
                     <input type="submit" value="Tìm" />
                     <input type="button" value="Xóa bộ lọc" onclick="clearFilters()" />
                 </fieldset>
             </form>
         </div>
         <div class="total-items">
-            <span>Có tất cả <strong><?= htmlspecialchars($totalRecordsCount) ?></strong> <?= htmlspecialchars($config_title) ?> trên <strong><?= htmlspecialchars($pagination->total_pages) ?></strong> trang</span>
+            <span>Có tất cả <strong><?= htmlspecialchars($totalRecordsCount) ?></strong>
+                <?= htmlspecialchars($config_title) ?> trên
+                <strong><?= htmlspecialchars($pagination->total_pages) ?></strong> trang</span>
         </div>
         <ul id="product-list">
             <li class="listing-item-heading">
                 <div class="listing-prop listing-img">Ảnh</div>
                 <div class="listing-prop listing-name">Tên <?= htmlspecialchars($config_title) ?></div>
                 <div class="listing-prop">Loại sản phẩm</div>
-                <div class="listing-prop listing-button">Xóa</div>
-                <div class="listing-prop listing-button">Sửa</div>
+                <div class="listing-prop listing-button permission-xoa">Xóa</div>
+                <div class="listing-prop listing-button permission-sua">Sửa</div>
                 <div class="listing-prop listing-button">Ghi chú</div>
                 <div class="listing-prop listing-time">Ngày tạo</div>
                 <div class="listing-prop listing-time">Ngày cập nhật</div>
                 <div class="clear-both"></div>
             </li>
             <?php foreach ($products as $row) { ?>
-            <li id="product-<?= htmlspecialchars($row['masp']) ?>"> 
-                    <div class="listing-prop listing-img">
-                        <img src="./<?= htmlspecialchars($row['image'] ?? '') ?>" alt="<?= htmlspecialchars($row['name'] ?? '') ?>" title="<?= htmlspecialchars($row['name'] ?? '') ?>" />
-                    </div>
-                    <div class="listing-prop listing-name"><?= htmlspecialchars($row['name'] ?? '') ?></div>
-                    <div class="listing-prop"><?= htmlspecialchars($row['tenloaisp'] ?? '') ?></div>
-                    <div class="listing-prop listing-button">
-                        <?php if ($row['soluong'] == 0) { ?>
-                            <span style="color: red; font-weight: bold;">Đã bán hết</span>
-                        <?php } else { ?>
-                <a href="javascript:void(0);" onclick="removeRow('<?= htmlspecialchars($row['masp']) ?>', './product/ajax.php?action=delete')">Xóa</a> <!-- Giữ lại chỉ 1 liên kết xóa -->
-                        <?php } ?>
-                    </div>
-                    <div class="listing-prop listing-button">
-                        <a href="./product/<?= htmlspecialchars($config_name) ?>_edit.php?id=<?= htmlspecialchars($row['masp']) ?>">Sửa</a>
-                    </div>
-                    <div class="listing-prop listing-time"><?= date('d/m/Y H:i', strtotime($row['created_time'])) ?></div>
-                    <div class="listing-prop listing-time"><?= date('d/m/Y H:i', strtotime($row['last_updated'])) ?></div>
-                    <div class="clear-both"></div>
-                </li>
+            <li id="product-<?= htmlspecialchars($row['masp']) ?>">
+                <div class="listing-prop listing-img">
+                    <img src="./<?= htmlspecialchars($row['image'] ?? '') ?>"
+                        alt="<?= htmlspecialchars($row['name'] ?? '') ?>"
+                        title="<?= htmlspecialchars($row['name'] ?? '') ?>" />
+                </div>
+                <div class="listing-prop listing-name"><?= htmlspecialchars($row['name'] ?? '') ?></div>
+                <div class="listing-prop"><?= htmlspecialchars($row['tenloaisp'] ?? '') ?></div>
+                <div class="listing-prop listing-button permission-xoa">
+                    <?php if ($row['soluong'] == 0) { ?>
+                    <span style="color: red; font-weight: bold;">Đã bán hết</span>
+                    <?php } else { ?>
+                    <a href="javascript:void(0);"
+                        onclick="removeRow('<?= htmlspecialchars($row['masp']) ?>', './product/ajax.php?action=delete')">Xóa</a>
+                    <?php } ?>
+                </div>
+
+                <div class="listing-prop listing-button permission-sua">
+                    <a
+                        href="./product/<?= htmlspecialchars($config_name) ?>_edit.php?id=<?= htmlspecialchars($row['masp']) ?>">Sửa</a>
+                </div>
+
+                <div class="listing-prop listing-time"><?= date('d/m/Y H:i', strtotime($row['created_time'])) ?></div>
+                <div class="listing-prop listing-time"><?= date('d/m/Y H:i', strtotime($row['last_updated'])) ?></div>
+                <div class="clear-both"></div>
+            </li>
             <?php } ?>
         </ul>
 
@@ -236,18 +250,18 @@ $products = $productStmt->fetchAll(PDO::FETCH_ASSOC);
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-
 function removeRow(id, url) {
     if (confirm('Bạn có chắc không?')) {
         $.ajax({
             url: url,
-            data: { id: id },
+            data: {
+                id: id
+            },
             method: 'GET',
             dataType: 'JSON',
-            success: function (res) {
+            success: function(res) {
                 console.log(res);
-                if (res.success) { 
+                if (res.success) {
                     // Xóa phần tử tương ứng khỏi giao diện
                     $('#product-' + id).remove(); // Mỗi dòng có một ID là product-[id]
                     // Reload product list to update total count and pagination
@@ -256,7 +270,7 @@ function removeRow(id, url) {
                     alert('Xóa không thành công, vui lòng thử lại!');
                 }
             },
-            error: function (jqXHR, textStatus, errorThrown) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 console.error("Error details: ", textStatus, errorThrown);
                 alert('Đã xảy ra lỗi: ' + textStatus);
             }
@@ -286,7 +300,7 @@ function clearFilters() {
 function loadProducts(page) {
     currentPage = page;
     $.ajax({
-        url:'./product/ajax.php?action=pagination',
+        url: './product/ajax.php?action=pagination',
         method: 'GET',
         data: {
             page: page,
@@ -300,7 +314,9 @@ function loadProducts(page) {
                 updateProductList(response.products);
                 updatePagination(page, response.totalPages);
                 // Update total product count display
-                $('.total-items span').html(`Có tất cả <strong>${response.totalRecordsCount}</strong> <?= htmlspecialchars($config_title) ?> trên <strong>${response.totalPages}</strong> trang`);
+                $('.total-items span').html(
+                    `Có tất cả <strong>${response.totalRecordsCount}</strong> <?= htmlspecialchars($config_title) ?> trên <strong>${response.totalPages}</strong> trang`
+                );
             } else {
                 alert('No products found.');
                 $('#product-list').html('');
@@ -325,8 +341,8 @@ function updateProductList(products) {
                 <div class="listing-prop listing-img">Ảnh</div>
                 <div class="listing-prop listing-name">Tên <?= htmlspecialchars($config_title) ?></div>
                 <div class="listing-prop">Loại sản phẩm</div>
-                <div class="listing-prop listing-button">Xóa</div>
-                <div class="listing-prop listing-button">Sửa</div>
+                <div class="listing-prop listing-button permission-xoa">Xóa</div>
+                <div class="listing-prop listing-button permission-sua">Sửa</div>
                 <div class="listing-prop listing-button">Ghi chú</div>
                 <div class="listing-prop listing-time">Ngày tạo</div>
                 <div class="listing-prop listing-time">Ngày cập nhật</div>
@@ -343,10 +359,10 @@ function updateProductList(products) {
             </div>
             <div class="listing-prop listing-name">${row.name}</div>
             <div class="listing-prop listing-type">${row.tenloaisp || ''}</div>
-            <div class="listing-prop listing-button">
+            <div class="listing-prop listing-button permission-xoa">
                 <a href="javascript:void(0);" onclick="removeRow('${row.masp}', './product/ajax.php?action=delete')">Xóa</a>
             </div>
-            <div class="listing-prop listing-button">
+            <div class="listing-prop listing-button permission-sua">
                 <a href="./product/${config_name}_edit.php?id=${row.masp}">Sửa</a>
             </div>
             <div class="listing-prop listing-button">
@@ -375,6 +391,4 @@ function updatePagination(currentPage, totalPages) {
 $(document).ready(function() {
     loadProducts(1);
 });
-
-
 </script>

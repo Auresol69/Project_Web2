@@ -9,7 +9,7 @@
                     <li><a href="?page=sanpham" class="ajax-link">Sản phẩm</a></li>
                     <li><a href="?page=donhang" class="ajax-link">Đơn hàng</a></li>
                     <li><a href="?page=customer" class="ajax-link">Quản lý tài khoản</a></li>
-                    <li><a href="?page=banquyen" class="ajax-link">Phân quyền</a></li>
+                    <li><a href="?page=phanquyen" class="ajax-link">Phân quyền</a></li>
                 </ul>
             </div>
         </div>
@@ -54,7 +54,8 @@ $(document).ready(function() {
         if (adminIndex !== -1) {
             // Include next segments after 'Admin' to reach 'Admin/Project_Web2/admin'
             // Find index of 'admin' folder after 'Admin' (case-insensitive)
-            var adminLowerIndex = pathParts.findIndex((part, idx) => idx > adminIndex && part.toLowerCase() === 'admin');
+            var adminLowerIndex = pathParts.findIndex((part, idx) => idx > adminIndex && part
+                .toLowerCase() === 'admin');
             if (adminLowerIndex !== -1) {
                 projectBasePath = pathParts.slice(0, adminLowerIndex + 1).join('/');
             } else {
@@ -77,12 +78,6 @@ $(document).ready(function() {
                 if (typeof initEventListeners === 'function') {
                     initEventListeners();
                 }
-
-                // if (page === 'banquyen') {
-                //     setTimeout(function() {
-                //         window.location.reload();
-                //     }, 100); // Delay 100ms cho chắc
-                // }
             },
             error: function() {
                 $('#main-content').html('<p>Đã xảy ra lỗi khi tải nội dung.</p>');

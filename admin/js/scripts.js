@@ -97,4 +97,85 @@ $(document).ready(function () {
             },
         });
     });
+
+    function checkPowerGroup() {
+        setTimeout(function () {
+            $.ajax({
+                type: "POST",
+                url: "handle/auth.php",
+                data: { action: "check_powergroup" },
+                dataType: "json",
+                success: function (response) {
+                    // Hàm lấy thông tin page từ URL
+                    function getPageFromURL() {
+                        const UrlParams = new URLSearchParams(window.location.search);
+                        return UrlParams.get("page")?.toUpperCase();
+                    }
+
+                    let currentModule = getPageFromURL();
+                    console.log(currentModule + " " + response[currentModule]);
+
+                    // 1. Ẩn toàn bộ menu trước
+                    $(".ajax-link").each(function () {
+                        const page = $(this).attr("href").split("page=")[1]?.toUpperCase();
+
+                        if (page === "HOME") {
+                            $(this).show();
+                            return; // bỏ qua xử lý tiếp theo
+                        }
+
+                        if (response[page] && response[page].includes("xem")) {
+                            $(this).show();
+                        } else {
+                            $(this).hide();
+                        }
+                    });
+
+                    if (response[currentModule]) {
+                        // Hiển thị module nếu có quyền
+                        $("." + currentModule).show();
+
+                        // Ẩn tất cả các nút hành động trước khi hiển thị chúng dựa trên quyền của module hiện tại
+                        $(".permission-sua, .permission-xoa, .permission-them").hide();
+
+                        // Lặp qua quyền của module hiện tại để hiển thị các nút hành động
+                        response[currentModule].forEach(function (action) {
+                            // Kiểm tra quyền cho các hành động như "sua", "xoa", "them"
+                            if (action === "sua") {
+                                $(".permission-sua").show();
+                            } else if (action === "xoa") {
+                                $(".permission-xoa").show();
+                            } else if (action === "them") {
+                                $(".permission-them").show();
+                            }
+                        });
+                    } else {
+                        // Nếu module hiện tại không có quyền nào, ẩn tất cả các nút hành động
+                        $(".permission-sua, .permission-xoa, .permission-them").hide();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 401) {
+                        // Xử lý khi chưa đăng nhập
+                        $("body").html(`
+                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
+                                <div style="font-size: 100px;">🔒</div>
+                                <div style="font-size: 24px; color: red;">Bạn chưa đăng nhập</div>
+                                <button id="login-btn" style="margin-top: 20px; padding: 10px 20px; font-size: 18px;">Đăng nhập ngay</button>
+                            </div>
+                        `);
+                    } else {
+                        console.error("Lỗi khác:", xhr);
+                    }
+                },
+            });
+        }, 50);
+    }
+
+    checkPowerGroup();
+
+    $(".ajax-link").on("click", function () {
+        checkPowerGroup();
+    });
+
 });

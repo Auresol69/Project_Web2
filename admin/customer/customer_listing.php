@@ -35,7 +35,7 @@
     <h1>Danh sách người dùng</h1>
 
     <div class="buttons">
-        <a id="openAddModal" type="button" class="btn btn-primary btn-sm">Thêm người dùng</a>
+        <a id="openAddModal" type="button" class="btn btn-primary btn-sm permission-them">Thêm người dùng</a>
     </div>
 
     <div class="listing-search">
@@ -197,8 +197,8 @@ function updateCustomerList(customers) {
                 <td>${customer.email}</td>
                 <td>${customer.phone}</td>
                 <td>
-                    <button class="btn btn-warning btn-sm edit-btn" data-id="${customer.macustomer}" data-name="${customer.name}" data-powergroupid="${customer.powergroupid}" data-email="${customer.email}" data-phone="${customer.phone}">Sửa</button>
-                    <button class="btn btn-danger btn-sm delete-btn" data-id="${customer.macustomer}">Xóa</button>
+                    <button class="btn btn-warning btn-sm edit-btn permission-sua" data-id="${customer.macustomer}" data-name="${customer.name}" data-powergroupid="${customer.powergroupid}" data-email="${customer.email}" data-phone="${customer.phone}">Sửa</button>
+                    <button class="btn btn-danger btn-sm delete-btn permission-xoa" data-id="${customer.macustomer}">Xóa</button>
                 </td>
             </tr>
         `;
