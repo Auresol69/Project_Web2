@@ -157,13 +157,31 @@ $(document).ready(function () {
                 error: function (xhr, status, error) {
                     if (xhr.status === 401) {
                         // Xử lý khi chưa đăng nhập
-                        $("body").html(`
-                            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif;">
-                                <div style="font-size: 100px;">🔒</div>
-                                <div style="font-size: 24px; color: red;">Bạn chưa đăng nhập</div>
-                                <button id="login-btn" style="margin-top: 20px; padding: 10px 20px; font-size: 18px;">Đăng nhập ngay</button>
-                            </div>
+                        $("#overlay").show();
+
+                        $("#content-wrapper").css({
+                            "margin": "0",
+                            "padding": "0",
+                            "width": "100vw",
+                            "height": "80vh",
+                            "display": "flex",
+                            "align-items": "center",
+                            "justify-content": "center",
+                            "flex-direction": "column",
+                            "font-family": "'Segoe UI', 'Roboto', sans-serif",
+                            "text-align": "center"
+                        }).html(`
+                            <img src="uploads/22-03-2025/Error 401.jpg" 
+                                 alt="Lỗi 401 - Chưa đăng nhập" 
+                                 style="max-width: 90%; width: 600px; height: auto; margin-bottom: 20px;" />
+                            <p style="font-size: 24px; color: #333;">
+                                401
+                            </p>
+                            <p style="font-size: 24px; color: #333;">
+                                You don't have permission to access the resource.
+                            </p>
                         `);
+
                     } else {
                         console.error("Lỗi khác:", xhr);
                     }
