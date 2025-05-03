@@ -102,6 +102,30 @@
             <label for="powergroupname">Tên nhóm quyền</label>
             <input type="text" id="powergroupname" name="powergroupname" required>
 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tên quyền</th>
+                        <?php foreach($funcs as $func) :?>
+                        <th><?=htmlspecialchars(string: $func['funcname']) ?></th>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($permissions as $permission) :?>
+                    <tr>
+                        <td><?= htmlspecialchars($permission['permissionname']); ?></td>
+                        <?php foreach($funcs as $func) :?>
+                        <td>
+                            <input type="checkbox" name="permission_func_map[]"
+                                value="<?=$permission['permissionid'] . '_' . $func['funcid'] ?>">
+                        </td>
+                        <?php endforeach; ?>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
             <button type="submit" class="save-btn">Thêm</button>
         </form>
     </div>
@@ -163,7 +187,6 @@ window.initEventListeners = function() {
     // Mở modal thêm nhóm quyền
     if (openAddModalBtn) {
         openAddModalBtn.addEventListener("click", function(event) {
-            // addModal.style.display = "block";
             $('#addModal').fadeIn(200);
         });
     }
@@ -183,29 +206,43 @@ window.initEventListeners = function() {
             button.addEventListener("click", function(event) {
                 event.preventDefault();
 
+                // Lấy giá trị data từ button
                 document.getElementById("edit-id").value = this.dataset.powergroupid;
                 document.getElementById("edit-name").value = this.dataset.powergroupname;
 
-                $('#editModal').fadeIn(200);
-
-                // Tự động check những checkbox tương ứng với chức năng của powergroup đã có
+                // Lấy mapping JSON từ data-mapping
                 let mappingJSON = this.dataset.mapping;
+                console.log('Mapping JSON:', mappingJSON); // Kiểm tra xem dữ liệu có tồn tại
+
+                // Nếu có mapping, parse thành mảng đối tượng
                 let mapping = JSON.parse(mappingJSON);
+                console.log('Parsed Mapping:', mapping); // In ra mảng đối tượng đã được parse
 
-                document.querySelectorAll('input[name="permission_func_map[]"]').forEach(cb => {
-                    cb.checked = false;
-                });
+                // Mở modal
+                $('#editModal').fadeIn(20, () => {
+                    // Sau khi fadeIn xong, mới xử lý các checkbox
 
-                mapping.forEach(pair => {
-                    let checkbox = document.querySelector(
-                        `input[type="checkbox"][value="${pair.permission}_${pair.func}"]`
-                    );
-                    if (checkbox)
-                        checkbox.checked = true;
+                    // Xóa tất cả checkbox đã check
+                    document.querySelectorAll(
+                            `#editModal input[name="permission_func_map[]"]`)
+                        .forEach(cb => cb.checked = false);
+
+                    // Tự động check lại những checkbox theo mapping
+                    mapping.forEach(pair => {
+                        let value = `${pair.permission}_${pair.func}`;
+                        let checkbox = document.querySelector(
+                            `#editModal input[type="checkbox"][value="${value}"]`
+                        );
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
                 });
             });
         });
     }
+
+
 
     // Đóng modal nếu click ngoài vùng modal
     document.querySelectorAll('.modal-content').forEach(modalContent => {

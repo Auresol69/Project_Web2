@@ -4,11 +4,6 @@ require_once '../connect_db.php';
 $db = new connect_db();
 
 if ($_SERVER['REQUEST_METHOD']=="POST"){
-
-    echo '<pre>';
-print_r($_POST['permission_func_map']);
-echo '</pre>';
-
     $check_permission_func_map = $_POST['permission_func_map'];
     $powergroupid = $_POST['powergroupid'];
     $db->query("DELETE FROM powergroup_func_permission WHERE powergroupid = ?",[$powergroupid]);

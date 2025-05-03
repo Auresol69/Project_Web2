@@ -1,4 +1,4 @@
-<!-- Thêm khách hàng -->
+<!-- Thêm Phân quyền -->
 <?php
 require_once '../connect_db.php';
 
@@ -8,9 +8,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Nhận dữ liệu từ form
     $powergroupname = trim($_POST['powergroupname']);
 
-    // $vai_tro = trim($_POST['vai_tro']); // Lấy vai trò từ form
+    $check_permission_func_map = $_POST['permission_func_map'];
 
-    // Kiểm tra email đã tồn tại chưa
     $existingPowerGroup = $db->query("SELECT powergroupid FROM powergroup WHERE powergroupname = ?", [$powergroupname])->fetch();
     if ($existingPowerGroup) {
         die("Nhóm quyền đã tồn tại! Vui lòng chọn nhóm quyền khác.");
@@ -21,9 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'powergroupname' => $powergroupname
     ];
 
-    // Thêm khách hàng
-    if ($db->insert("powergroup", $powerGroupData)) {
-        // Chuyển hướng về danh sách khách hàng
+    // Thêm phân quyền
+    $idLasted= $db->insertAndGetID("powergroup", $powerGroupData);
+    var_dump($idLasted);
+
+    if ($idLasted!=null) {
+        // Chuyển hướng về danh sách phân quyền
+        foreach($check_permission_func_map as $value){
+            list($permissionid,$funcid) =explode('_',$value);
+            $db->query("INSERT INTO powergroup_func_permission (powergroupid,funcid,permissionid) VALUES(?,?,?)",[$idLasted,$funcid,$permissionid]);
+        }
         header("Location: ../index.php?page=phanquyen");
         exit();
     } else {

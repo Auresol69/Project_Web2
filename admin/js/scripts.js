@@ -113,7 +113,6 @@ $(document).ready(function () {
                     }
 
                     let currentModule = getPageFromURL();
-                    console.log(currentModule + " " + response[currentModule]);
 
                     // 1. Ẩn toàn bộ menu trước
                     $(".ajax-link").each(function () {
