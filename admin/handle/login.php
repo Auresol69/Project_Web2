@@ -1,6 +1,8 @@
 <?php 
 include('../database/database.php');
 
+session_start();
+
 if ($conn->connect_error) {
     die(json_encode([
         "status" => "error",
@@ -28,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($result->num_rows > 0) {
                 $staff = $result->fetch_assoc();
-                if (password_verify($password,$staff['password'])) {
+                // Temporary fix: direct password comparison instead of password_verify
+                if ($password === $staff['password']) {
                     $response = ["status" => "success", "message" => "Đăng nhập thành công!"];
-                    session_start();
                     $_SESSION['mastaff'] = $staff['mastaff'];
                     $response['staffname'] = $staff['staffname'];
                 } else {

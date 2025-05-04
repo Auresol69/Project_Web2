@@ -44,7 +44,7 @@ if ($_POST['action'] === 'check') {
         $mastaff = $_SESSION['mastaff'];
 
         $check_sql = "SELECT pfp.funcid, pfp.permissionid FROM staff s LEFT JOIN powergroup_func_permission pfp ON s.powergroupid = pfp.powergroupid WHERE s.mastaff = ?";
-        $stmt = $conn->prepare(query: $check_sql);
+        $stmt = $conn->prepare($check_sql);
         if (!$stmt) {
             http_response_code(500);
             echo json_encode(['status' => 'error', 'message' => 'SQL error: ' . $conn->error]);
@@ -57,6 +57,7 @@ if ($_POST['action'] === 'check') {
             exit();
         }
         $result = $stmt->get_result();
+        $response = array();
         if ($result->num_rows>0){
             while($powergroupid=$result->fetch_assoc()){
                $permissionid = $powergroupid['permissionid'];
