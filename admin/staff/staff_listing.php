@@ -226,6 +226,7 @@ function updateStaffList(staffs) {
                     if (res.success) {
                         $('#staff-' + id).remove();
                         loadStaff();
+                        window.location.reload();
                     } else {
                         alert('Xóa không thành công, vui lòng thử lại!');
                     }
@@ -311,6 +312,7 @@ $(document).ready(function() {
                     alert('Cập nhật nhân viên thành công');
                     $('#editModal').hide();
                     loadStaff();
+                    window.location.reload();
                 } else {
                     alert('Cập nhật nhân viên thất bại: ' + res.message);
                 }
