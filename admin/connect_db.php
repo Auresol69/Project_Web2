@@ -78,6 +78,19 @@ class connect_db {
         return $this->query($sql, $data);
     }
 
+  public function insertAndGetID($table, $data) {
+        $columns = implode(", ", array_keys($data));
+        $values = ":" . implode(", :", array_keys($data));
+        $sql = "INSERT INTO $table ($columns) VALUES ($values)";
+        
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt->execute($data)) {
+            return $this->conn->lastInsertId(); // chỉ trả ID nếu thành công
+        } else {
+            return null; // insert thất bại
+        }
+    }
+    
     // Cập nhật dữ liệu
     public function update($table, $data, $id) {
 
