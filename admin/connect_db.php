@@ -2,7 +2,7 @@
 
 class connect_db {
     private $host = "localhost";
-    private $db_name = "treeshop1";
+    private $db_name = "treeshop";
     private $username = "root";
     private $password = "123";
     private $conn;
@@ -77,6 +77,20 @@ class connect_db {
         $sql = "INSERT INTO $table ($columns) VALUES ($values)";
         return $this->query($sql, $data);
     }
+
+    public function insertAndGetID($table, $data) {
+        $columns = implode(", ", array_keys($data));
+        $values = ":" . implode(", :", array_keys($data));
+        $sql = "INSERT INTO $table ($columns) VALUES ($values)";
+        
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt->execute($data)) {
+            return $this->conn->lastInsertId(); // chỉ trả ID nếu thành công
+        } else {
+            return null; // insert thất bại
+        }
+    }
+    
 
     // Cập nhật dữ liệu
     public function update($table, $data, $id) {
