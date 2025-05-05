@@ -2,7 +2,7 @@
         include("../database/database.php");
         header("Content-Type: application/json");
 
-        $ItemPerPage = 6;
+        $ItemPerPage = 10;
         $page = isset($_POST['page']) ? $_POST['page'] : 1;
         $page = max(1, $page);
 
@@ -59,8 +59,9 @@
                 "id" => $row["masp"],
                 "name" => $row["tensp"],
                 "price" => $row["dongiasanpham"],
-                "image" => $row["img"],
-                "soluong" => $row["soluong"]
+                "image" => $row["image"],
+                "soluong" => $row["soluong"],
+                "mota" => $row["content"],
             ];
         }
         $response["total"] = $TotalPage;

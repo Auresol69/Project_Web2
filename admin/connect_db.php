@@ -2,9 +2,9 @@
 
 class connect_db {
     private $host = "localhost";
-    private $db_name = "treeshop2";
+    private $db_name = "treeshop";
     private $username = "root";
-    private $password = "";
+    private $password = "123";
     private $conn;
 
     // Kết nối CSDL
@@ -65,7 +65,7 @@ class connect_db {
     public function insert($table, $data) {
 
         // Add created_time and last_updated only for tables that have these columns
-        $tablesWithTimestamps = ['product', 'order', 'bill', 'supplier', 'staff', 'producttype', 'entry_form'];
+        $tablesWithTimestamps = ['product'];
 
         if (in_array($table, $tablesWithTimestamps)) {
             $data['created_time'] = date('Y-m-d H:i:s'); 
