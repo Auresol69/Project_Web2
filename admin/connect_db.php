@@ -95,7 +95,7 @@ class connect_db {
     public function update($table, $data, $id) {
 
         // Add last_updated only for tables that have this column
-        $tablesWithLastUpdated = ['product', 'order', 'bill', 'supplier', 'staff', 'producttype', 'entry_form'];
+        $tablesWithLastUpdated = ['product'];
 
         if (in_array($table, $tablesWithLastUpdated)) {
             $data['last_updated'] = date('Y-m-d H:i:s');  
