@@ -32,7 +32,7 @@
 <div class="main-content">
     <h1>Danh sách nhân viên</h1>
 
-    <div class="buttons">
+    <div class="buttons permission-them">
         <a id="openAddModal" type="button" class="btn btn-primary btn-sm">Thêm nhân viên</a>
     </div>
 
@@ -184,14 +184,14 @@ function updateStaffList(staffs) {
                 '<td>' + (staff.address || '') + '</td>' +
                 '<td>' + (staff.powergroupname || '') + '</td>' +
                 '<td>' +
-                    '<button class="btn btn-warning btn-sm edit-btn" ' +
+                    '<button class="btn btn-warning btn-sm edit-btn permission-sua" ' +
                         'data-id="' + staff.mastaff + '" ' +
                         'data-staffname="' + (staff.staffname || '') + '" ' +
                         'data-email="' + (staff.email || '') + '" ' +
                         'data-address="' + (staff.address || '') + '" ' +
                         'data-powergroupid="' + (staff.powergroupid || '') + '">' +
                         'Sửa</button>' +
-                    '<button class="btn btn-danger btn-sm delete-btn" data-id="' + staff.mastaff + '">Xóa</button>' +
+                    '<button class="btn btn-danger btn-sm delete-btn permission-xoa" data-id="' + staff.mastaff + '">Xóa</button>' +
                 '</td>' +
             '</tr>';
         staffList.append(row);
