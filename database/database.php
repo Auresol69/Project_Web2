@@ -1,7 +1,7 @@
 <?php 
     $db_name = "treeshop";
     $db_user = "root";
-    $db_pass = "123";
+    $db_pass = "";
     $db_port = 3306;
     $db_host = "localhost";
 

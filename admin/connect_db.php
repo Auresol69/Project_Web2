@@ -4,7 +4,7 @@ class connect_db {
     private $host = "localhost";
     private $db_name = "treeshop";
     private $username = "root";
-    private $password = "123";
+    private $password = "";
     private $conn;
 
     // Kết nối CSDL
